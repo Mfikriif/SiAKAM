@@ -12,6 +12,11 @@
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
     <nav class="bg-black">
+        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-white">Logout</a>
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
         <div class=" text-white flex justify-between h-14 items-center text-sm w-2/3 mx-auto">
             <div class="flex">
                 <img class="w-8 h-9 mr-2" src="{{ asset('undipLogo.png') }}" alt="">
