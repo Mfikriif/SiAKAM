@@ -20,33 +20,31 @@
             </div>
 
             <form method="POST" action="{{ route('login') }}">
-                    @csrf
+                @csrf
 
-                    <div class="flex items-center border rounded-lg p-2 mt-5">
-                        <img src="{{ asset('account.png') }}" alt="">
-                        <input type="text" name="email" placeholder="Username/Email" class="flex-1 outline-none bg-transparent pl-4" required autofocus>
-                    </div>
-                    @error('email')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
+                <div class="flex items-center border rounded-lg p-2 mt-5">
+                    <img src="{{ asset('account.png') }}" alt="">
+                    <input type="text" name="email" placeholder="Email"
+                        class="flex-1 border-none bg-transparent pl-4" required autofocus>
+                </div>
+                @error('email')
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                @enderror
 
-                    <div class="flex items-center border rounded-lg p-2 mt-3">
-                        <img src="{{ asset('lock-outline.png') }}" alt="">
-                        <input type="password" name="password" placeholder="Password" class="flex-1 outline-none bg-transparent pl-4" required>
-                    </div>
-                    @error('password')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
+                <div class="flex items-center border rounded-lg p-2 mt-3">
+                    <img src="{{ asset('lock-outline.png') }}" alt="">
+                    <input type="password" name="password" placeholder="Password"
+                        class="flex-1 border-none bg-transparent pl-4" required>
+                </div>
+                @error('password')
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                @enderror
 
-                    <button type="submit"
-                        class="border-solid border-2 border-slate-300 w-full h-12 mt-3 rounded-md text-slate-300 hover:border-sky-700 hover:text-sky-700">
-                        LOGIN
-                    </button>
-                </form>
-
-            <button class="w-full h-10 mt-4 rounded-md text-white bg-red-500 hover:bg-red-600 transition duration-200">Reset Password</button>
-            <p class="text-slate-400 font-light text-center mt-4">Belum memiliki akun?</p>
-            <p class="text-red-500 text-center">Daftar sekarang!</p>
+                <button type="submit"
+                    class="border-solid border-2 border-blue-700 w-full h-12 mt-3 rounded-md text-white bg-blue-600">
+                    LOGIN
+                </button>
+            </form>
         </div>
     </div>
 </body>
