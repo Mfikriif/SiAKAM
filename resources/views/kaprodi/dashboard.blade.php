@@ -5,27 +5,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>dashboard Kaprodi</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
+    <title>dashboard Kaprodi</title>
 
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
-    <nav class="bg-black">
-        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-white">Logout</a>
+    <nav class="bg-black" x-data="{ isOpen: false }">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex">
+                        <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
+                        <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
 
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-        <div class=" text-white flex justify-between h-14 items-center text-sm w-2/3 mx-auto">
-            <div class="flex">
-                <img class="w-8 h-9 mr-2" src="{{ asset('undipLogo.png') }}" alt="">
-                <h3 class="mt-1.5">SiAKAM Undip</h3>
-            </div>
-            <div class="flex">
-                <img class="w-4 h-4 text-center my-auto mr-3" src="{{ asset('notif-logo.png') }}" alt="">
-                <h3 class="mt-1.5">Muhammad Ajisadda Firdaus</h3>
-                <img class="w-9 h-9 rounded-full ml-3" src="{{ asset('profilPembimbing.png') }}" alt="">
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button type="button"
+                            class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <span class="absolute -inset-1.5"></span>
+                            <span class="sr-only">View notifications</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                            </svg>
+                        </button>
+
+                        <div>
+                            <h3 class="ml-3 text-white">Muhammad Ajisadda Firdaus</h3>
+
+                        </div>
+
+                        <!-- Profile dropdown -->
+                        <div class="relative ml-3">
+                            <div>
+                                <button type="button" @click="isOpen = !isOpen"
+                                    class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="absolute -inset-1.5"></span>
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}"
+                                        alt="">
+                                </button>
+                            </div>
+
+                            <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75 transform"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
+                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
+                                tabindex="-1">
+                                <!-- Active: "bg-gray-100", Not Active: "" -->
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                    id="user-menu-item-2">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

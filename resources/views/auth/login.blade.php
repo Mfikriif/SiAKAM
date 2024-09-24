@@ -25,7 +25,7 @@
                 <div class="flex items-center border rounded-lg p-2 mt-5">
                     <img src="{{ asset('account.png') }}" alt="">
                     <input type="text" name="email" placeholder="Email"
-                        class="flex-1 border-none bg-transparent pl-4" required autofocus>
+                        class="flex-1 border-none bg-transparent pl-4" autofocus>
                 </div>
                 @error('email')
                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -34,7 +34,7 @@
                 <div class="flex items-center border rounded-lg p-2 mt-3">
                     <img src="{{ asset('lock-outline.png') }}" alt="">
                     <input type="password" name="password" placeholder="Password"
-                        class="flex-1 border-none bg-transparent pl-4" required>
+                        class="flex-1 border-none bg-transparent pl-4">
                 </div>
                 @error('password')
                     <span class="text-red-500 text-xs">{{ $message }}</span>
