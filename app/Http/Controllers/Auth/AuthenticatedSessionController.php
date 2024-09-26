@@ -22,25 +22,48 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
-    
         $request->session()->regenerate();
-    
-        // Check user type and redirect accordingly
-        switch ($request->user()->usertype) {
-            case 'dekan':
-                return redirect('dekan/dashboard');
-            case 'dosenwali':
-                return redirect('dosenwali/dashboard');
-            case 'akademik':
-                return redirect('akademik/dashboard');
-            case 'kaprodi':
-                return redirect('kaprodi/dashboard');
-            default:
-                return redirect('user/dashboard');
+
+        $usertype = explode(',', $request->user()->usertype);
+
+        if (count($usertype) > 1) {
+            return redirect()->route('role.selection');
         }
+        return redirect($this->getDashboardUrl($usertype[0]));
+    }
+    
+    private function getDashboardUrl($role)
+    {
+        switch ($role) {
+            case 'dekan':
+                return 'dekan/dashboard';
+            case 'dosenwali':
+                return 'dosenwali/dashboard';
+            case 'akademik':
+                return 'akademik/dashboard';
+            case 'kaprodi':
+                return 'kaprodi/dashboard';
+            default:
+                return 'user/dashboard';
+        }
+    }
+    /**
+     * Digunakan untuk menampilkan rolenya user
+     */
+    public function showRoleSelection()
+    {
+        $usertype = explode(',', auth()->user()->usertype);
+        return view('auth.select-role', ['roles' => $usertype]);
+    }
+    
+    public function selectRole(Request $request)
+    {
+        $role = $request->input('role');
+        session(['user_role' => $role]);
+        return redirect($this->getDashboardUrl($role));
     }
 
     /**
