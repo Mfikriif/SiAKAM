@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -22,3 +23,6 @@ route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->mi
 route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->middleware(['auth','dosenwali']);
 route::get('kaprodi/dashboard',[HomeController::class,'dashboardKaprodi'])->middleware(['auth','kaprodi']);
 route::get('user/dashboard',[HomeController::class,'dashboardUser'])->middleware(['auth','user']);
+
+Route::get('/select-role', [AuthenticatedSessionController::class, 'showRoleSelection'])->name('role.selection');
+Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'])->name('role.select');
