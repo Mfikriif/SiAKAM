@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -27,14 +26,42 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        $usertype = explode(',', $request->user()->usertype);
+        $user = $request->user();
+        $usertype = $this->getUserRoles($user);
 
+        // Jika user memiliki lebih dari satu role, arahkan ke halaman pemilihan role
         if (count($usertype) > 1) {
             return redirect()->route('role.selection');
         }
+
         return redirect($this->getDashboardUrl($usertype[0]));
     }
-    
+
+    private function getUserRoles($user)
+    {
+        $usertype = [];
+        if ($user->mahasiswa == 1) {
+            $usertype[] = 'mahasiswa';
+        }
+        if ($user->dekan == 1) {
+            $usertype[] = 'dekan';
+        }
+        if ($user->kaprodi == 1) {
+            $usertype[] = 'kaprodi';
+        }
+        if ($user->dosenwali == 1) {
+            $usertype[] = 'dosenwali';
+        }
+        if ($user->akademik == 1) {
+            $usertype[] = 'akademik';
+        }
+
+        return $usertype;
+    }
+
+    /**
+     * Helper function to return the correct dashboard URL based on the selected role.
+     */
     private function getDashboardUrl($role)
     {
         switch ($role) {
@@ -47,21 +74,34 @@ class AuthenticatedSessionController extends Controller
             case 'kaprodi':
                 return 'kaprodi/dashboard';
             default:
-                return 'user/dashboard';
+                return 'mahasiswa/dashboard';
         }
     }
+
     /**
-     * Digunakan untuk menampilkan rolenya user
+     * Display the role selection page for users with multiple roles.
      */
     public function showRoleSelection()
     {
-        $usertype = explode(',', auth()->user()->usertype);
+        $user = auth()->user();
+
+        $usertype = $this->getUserRoles($user);
         return view('auth.select-role', ['roles' => $usertype]);
     }
-    
+
+    /**
+     * Handle the role selection after user chooses a role.
+     */
     public function selectRole(Request $request)
     {
         $role = $request->input('role');
+        $user = auth()->user();
+
+        $usertype = $this->getUserRoles($user);
+        if (!in_array($role, $usertype)) {
+            return redirect()->route('role.selection')->withErrors('Role yang dipilih tidak valid.');
+        }
+
         session(['user_role' => $role]);
         return redirect($this->getDashboardUrl($role));
     }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class Dosenwali
+class Mahasiswa
 {
     /**
      * Handle an incoming request.
@@ -20,25 +20,27 @@ class Dosenwali
     {
         $selectedRole = session('user_role');
 
-        // Jika role belum ada di session, cek dari user yang login
+        // Jika role belum ada di session, coba ambil dari Auth user berdasarkan kolom boolean di DB
         if (!$selectedRole) {
             $user = Auth::user();
 
-            if ($user->dosenwali == 1) {
-                $selectedRole = 'dosenwali';
+            if ($user->mahasiswa == 1) {
+                $selectedRole = 'mahasiswa';
             } else {
                 $selectedRole = $this->getUserPrimaryRole($user);
             }
         }
 
-        // Jika role yang dipilih bukan dosenwali, redirect sesuai role lain
-        if ($selectedRole !== 'dosenwali') {
+        // Jika role yang dipilih bukan mahasiswa, redirect sesuai role
+        if ($selectedRole !== 'mahasiswa') {
             return $this->redirectBasedOnRole($selectedRole);
         }
-
         return $next($request);
     }
 
+    /**
+     * Mendapatkan role utama pengguna jika bukan mahasiswa
+     */
     private function getUserPrimaryRole($user)
     {
         if ($user->dekan == 1) {
@@ -47,16 +49,19 @@ class Dosenwali
         if ($user->kaprodi == 1) {
             return 'kaprodi';
         }
+        if ($user->dosenwali == 1) {
+            return 'dosenwali';
+        }
         if ($user->akademik == 1) {
             return 'akademik';
         }
-        if ($user->mahasiswa == 1) {
-            return 'mahasiswa';
-        }
 
-        return 'dosenwali';
+        return 'mahasiswa';
     }
 
+    /**
+     * Redirect berdasarkan role yang dipilih atau default role
+     */
     private function redirectBasedOnRole($role)
     {
         switch ($role) {
@@ -66,8 +71,8 @@ class Dosenwali
                 return redirect('kaprodi/dashboard');
             case 'akademik':
                 return redirect('akademik/dashboard');
-            case 'mahasiswa':
-                return redirect('user/dashboard');
+            case 'dosenwali':
+                return redirect('dosenwali/dashboard');
             default:
                 return redirect('login')->with('error', 'Unauthorized access.');
         }
