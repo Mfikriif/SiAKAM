@@ -20,25 +20,56 @@ class Kaprodi
     {
         $selectedRole = session('user_role');
 
+        // Jika role belum ada di session, cek dari user yang login
         if (!$selectedRole) {
-            $selectedRole = Auth::user()->usertype;
-        }
+            $user = Auth::user();
 
-        if ($selectedRole !== 'kaprodi') {
-            switch ($selectedRole) {
-                case 'dekan':
-                    return redirect('dekan/dashboard');
-                case 'user':
-                    return redirect('user/dashboard');
-                case 'akademik':
-                    return redirect('akademik/dashboard');
-                case 'dosenwali':
-                    return redirect('dosenwali/dashboard');
-                default:
-                    return redirect('login')->with('error', 'Unauthorized access.');
+            if ($user->kaprodi == 1) {
+                $selectedRole = 'kaprodi';
+            } else {
+                $selectedRole = $this->getUserPrimaryRole($user);
             }
         }
 
+        // Jika role yang dipilih bukan kaprodi, redirect sesuai role lain
+        if ($selectedRole !== 'kaprodi') {
+            return $this->redirectBasedOnRole($selectedRole);
+        }
+
         return $next($request);
+    }
+
+    private function getUserPrimaryRole($user)
+    {
+        if ($user->dekan == 1) {
+            return 'dekan';
+        }
+        if ($user->dosenwali == 1) {
+            return 'dosenwali';
+        }
+        if ($user->akademik == 1) {
+            return 'akademik';
+        }
+        if ($user->mahasiswa == 1) {
+            return 'mahasiswa';
+        }
+
+        return 'kaprodi';
+    }
+
+    private function redirectBasedOnRole($role)
+    {
+        switch ($role) {
+            case 'dekan':
+                return redirect('dekan/dashboard');
+            case 'dosenwali':
+                return redirect('dosenwali/dashboard');
+            case 'akademik':
+                return redirect('akademik/dashboard');
+            case 'mahasiswa':
+                return redirect('user/dashboard');
+            default:
+                return redirect('login')->with('error', 'Unauthorized access.');
+        }
     }
 }
