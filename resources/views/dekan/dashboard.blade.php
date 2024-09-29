@@ -141,16 +141,20 @@
             </div>
         </div>
 
-        <div class=" w-2/3 mx-auto">
-            <div class="w-100 mt-7 grid grid-cols-2 text-lg">
-                <button class="flex h-20 w-64 border text-white items-center rounded-md ">
-                    <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
-                    <p class="mx-auto w-36">Pengajuan Ruang Kuliah</p>
-                </button>
-                <button class="flex h-20 w-64 border text-white items-center rounded-md ">
-                    <img class="w-11 mr-2 ml-4" src="{{ asset('calendarLogo.svg') }}" alt="">
-                    <p class="mx-auto w-36">Pengajuan Jadwal Kuliah</p>
-                </button>
+        <div id="menu-container" class=" w-2/3 mx-auto">
+            <div id="menu" class="w-100 mt-7 grid grid-cols-2 text-lg">
+                <a href="{{ route('dekan.listPengajuanRuang') }}">
+                    <button class="flex h-20 w-64 border text-white items-center rounded-md ">
+                        <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
+                        <p class="mx-auto w-36">Pengajuan Ruang Kuliah</p>
+                    </button>
+                </a>
+                <a href="{{ route('dekan.listPengajuanJadwal') }}">
+                    <button class="flex h-20 w-64 border text-white items-center rounded-md ">
+                        <img class="w-11 mr-2 ml-4" src="{{ asset('calendarLogo.svg') }}" alt="">
+                        <p class="mx-auto w-36">Pengajuan Jadwal Kuliah</p>
+                    </button>
+                </a>
             </div>
         </div>
     </section>

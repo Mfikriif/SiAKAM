@@ -13,6 +13,7 @@
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
+    {{-- navbar --}}
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -79,6 +80,7 @@
             </div>
         </div>
     </nav>
+    {{-- section dasbor --}}
     <section>
         <div class=" w-2/3 mx-auto">
             <div class="text-white flex justify-between mt-10 text-sm">
@@ -144,7 +146,7 @@
                 </div>
             </div>
         </div>
-
+        {{-- menu pengajuan ruang kuliah --}}
         <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
             <button class="flex h-20 border text-white items-center rounded-md ">
                 <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">

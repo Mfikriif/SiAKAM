@@ -5,18 +5,15 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\DekanController;
+use App\Http\Controllers\MenuController;
+use App\Http\Middleware\Dekan;
 
 Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::get('/jadwal', function () {
-    return view('dekan/listPengajuanJadwal');
-});
 
-Route::get('/ruang', function () {
-    return view('dekan/listPengajuanRuang');
-});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,11 +23,17 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->middleware(['auth','dekan']);
-route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->middleware(['auth','akademik']);
-route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->middleware(['auth','dosenwali']);
-route::get('kaprodi/dashboard',[HomeController::class,'dashboardKaprodi'])->middleware(['auth','kaprodi']);
-route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->middleware(['auth','mahasiswa']);
+Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->middleware(['auth','dekan']);
+Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->middleware(['auth','akademik']);
+Route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->middleware(['auth','dosenwali']);
+Route::get('kaprodi/dashboard',[HomeController::class,'dashboardKaprodi'])->middleware(['auth','kaprodi']);
+Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->middleware(['auth','mahasiswa']);
 
 Route::get('/select-role', [AuthenticatedSessionController::class, 'showRoleSelection'])->name('role.selection');
 Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'])->name('role.select');
+
+// controller Dekan
+Route::middleware('auth')->group(function() {
+    Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
+    Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
+});

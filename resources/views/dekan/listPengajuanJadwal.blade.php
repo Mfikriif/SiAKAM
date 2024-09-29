@@ -92,7 +92,7 @@
         <div class="container-table ">
             <div id="table-list">
 
-                <h2 class="text-2xl text-center mx-auto max-w-64">LIST PENGAJUAN JADWAL </h2>
+                <h2 class="text-2xl text-center mx-auto max-w-64 ">LIST PENGAJUAN JADWAL </h2>
 
                 <div class=" flex justify-end mt-5 mr-16">
                     <div id="input-text">
