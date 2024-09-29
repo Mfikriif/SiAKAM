@@ -9,6 +9,14 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
+Route::get('/jadwal', function () {
+    return view('dekan/listPengajuanJadwal');
+});
+
+Route::get('/ruang', function () {
+    return view('dekan/listPengajuanRuang');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

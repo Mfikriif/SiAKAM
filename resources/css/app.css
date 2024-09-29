@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .btn-detail {
+        @apply bg-[#002687] text-white w-16 h-6 text-sm rounded-lg;
+    }
+}
