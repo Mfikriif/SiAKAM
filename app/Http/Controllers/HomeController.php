@@ -19,7 +19,7 @@ class HomeController extends Controller
     public function dashboardKaprodi(){
         return view('kaprodi.dashboard');
     }
-    public function dashboardUser(){
-        return view('user.dashboard');
+    public function dashboardMahasiswa(){
+        return view('mahasiswa.dashboard');
     }
 }
