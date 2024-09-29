@@ -37,3 +37,11 @@ Route::middleware('auth')->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
     Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
 });
+
+// controller Dosenwali
+Route::get('/pengajuanIRS', function () {
+    return view('dosenwali/listPengajuanIRS');
+});
+Route::get('/mahasiswaPerwalian', function () {
+    return view('dosenwali/listMahasiswaPerwalian');
+});
