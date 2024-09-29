@@ -129,7 +129,7 @@
                             </td>
                             <td>Diterima, 21/08/2024</td>
                         </tr>
-                        <tr>j
+                        <tr>
                             <td>2. </td>
                             <td>S1-BIOLOGI</td>
                             <td>50</td>
