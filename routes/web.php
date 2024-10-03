@@ -39,15 +39,14 @@ Route::middleware('auth')->group(function() {
 });
 
 // controller Dosenwali
-Route::get('/pengajuanIRS', function () {
-    return view('dosenwali/listPengajuanIRS');
+Route::middleware('auth')->group(function () {
+    Route::get('dosenwali/pengajuan-irs',[MenuController::class,'PengajuanIrsMahasiswa'])->name('dosenwali.listPengajuanIRS');
+    Route::get('dosenwali/mahasiswa-perwalian',[MenuController::class,'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
 });
-Route::get('/mahasiswaPerwalian', function () {
-    return view('dosenwali/listMahasiswaPerwalian');
-});
-
 // controller Kaprodi
 Route::middleware('auth')->group(function() {
     Route::get('kaprodi/pembuatan-jadwal',[MenuController::class,'PengajuanJadwalKaprodi'])->name('kaprodi.listPengajuan');
 });
 Route::get('/kaprodi/dashboard', [HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');
+
+

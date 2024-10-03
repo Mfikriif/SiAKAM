@@ -150,15 +150,18 @@
         </div>
 
         <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <button class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
-                <img class="w-11 mr-2" src="{{ asset('irsLogo.svg') }}" alt="">
-                <p>Pengajuan IRS</p>
-            </button>
-            <button class="flex h-20 w-64 border text-white items-center rounded-md justify-center ">
-                <img class="h-11 w-20  " src="{{ asset('logoMHS.svg') }}" alt="">
-                <p class=" text-center">Mahasiswa Perwalian</p>
-            </button>
-
+            <a href="{{ route('dosenwali.listPengajuanIRS') }}">
+                <button class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+                    <img class="w-11 mr-2" src="{{ asset('irsLogo.svg') }}" alt="">
+                    <p>Pengajuan IRS</p>
+                </button>
+            </a>
+            <a href="{{ route('dosenwali.mahasiswaPerwalian') }}">
+                <button class="flex h-20 w-64 border text-white items-center rounded-md justify-center ">
+                    <img class="h-11 w-20  " src="{{ asset('logoMHS.svg') }}" alt="">
+                    <p class=" text-center">Mahasiswa Perwalian</p>
+                </button>
+            </a>
         </div>
     </section>
 
