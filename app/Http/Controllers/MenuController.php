@@ -20,7 +20,6 @@ class MenuController extends Controller
     public function pengajuanJadwalKaprodi(){
         return view('kaprodi.listPengajuan');
     }
-=======
 
     // Controller Dosen Wali
     public function pengajuanIrsMahasiswa()
