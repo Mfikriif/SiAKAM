@@ -17,6 +17,9 @@ class MenuController extends Controller
     }
     // end Controller Dekan
 
-    
+    // Controller Kaprodi
+    public function pengajuanJadwalKaprodi(){
+        return view('kaprodi.listPengajuan');
+    }
 }
 ?>

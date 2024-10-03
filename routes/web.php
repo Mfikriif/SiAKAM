@@ -45,3 +45,9 @@ Route::get('/pengajuanIRS', function () {
 Route::get('/mahasiswaPerwalian', function () {
     return view('dosenwali/listMahasiswaPerwalian');
 });
+
+// controller Kaprodi
+Route::middleware('auth')->group(function() {
+    Route::get('kaprodi/pembuatan-jadwal',[MenuController::class,'PengajuanJadwalKaprodi'])->name('kaprodi.listPengajuan');
+});
+Route::get('/kaprodi/dashboard', [HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');
