@@ -16,6 +16,11 @@ class MenuController extends Controller
     }
     // end Controller Dekan
 
+    // Controller Kaprodi
+    public function pengajuanJadwalKaprodi(){
+        return view('kaprodi.listPengajuan');
+    }
+=======
 
     // Controller Dosen Wali
     public function pengajuanIrsMahasiswa()
@@ -28,5 +33,6 @@ class MenuController extends Controller
         return view('dosenwali.listMahasiswaPerwalian');
     }
     // end Controller Dosen Wali
+
 }
 ?>

@@ -43,3 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::get('dosenwali/pengajuan-irs',[MenuController::class,'PengajuanIrsMahasiswa'])->name('dosenwali.listPengajuanIRS');
     Route::get('dosenwali/mahasiswa-perwalian',[MenuController::class,'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
 });
+// controller Kaprodi
+Route::middleware('auth')->group(function() {
+    Route::get('kaprodi/pembuatan-jadwal',[MenuController::class,'PengajuanJadwalKaprodi'])->name('kaprodi.listPengajuan');
+});
+Route::get('/kaprodi/dashboard', [HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');
+
+

@@ -16,12 +16,11 @@
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex">
+                <div class="flex">
+                    <a href="{{ route('kaprodi.dashboard') }}" class="flex items-center">
                         <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
-                        <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
-
-                    </div>
+                        <h3 class="ml-2 text-white">SiAKAM Undip</h3>
+                    </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
@@ -147,11 +146,15 @@
             </div>
         </div>
 
-        <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <button class="flex h-20 border text-white items-center rounded-md ">
-                <img class="w-11 mr-2 ml-4" src="{{ asset('calendarLogo.svg') }}" alt="">
-                <p class="mx-auto w-36">Pengajuan Jadwal Kuliah</p>
-            </button>
+        <div id="menu-container" class=" w-2/3 mx-auto">
+            <div id="menu" class="w-100 mt-7 grid grid-cols-2 text-lg">
+                <a href="{{ route('kaprodi.listPengajuan') }}">
+                    <button class="flex h-20 w-64 border text-white items-center rounded-md ">
+                        <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
+                        <p class="mx-auto w-36">Pembuatan Jadwal</p>
+                    </button>
+                </a>
+            </div>
         </div>
     </section>
 
