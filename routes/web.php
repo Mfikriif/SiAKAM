@@ -39,9 +39,7 @@ Route::middleware('auth')->group(function() {
 });
 
 // controller Dosenwali
-Route::get('/pengajuanIRS', function () {
-    return view('dosenwali/listPengajuanIRS');
-});
-Route::get('/mahasiswaPerwalian', function () {
-    return view('dosenwali/listMahasiswaPerwalian');
+Route::middleware('auth')->group(function () {
+    Route::get('dosenwali/pengajuan-irs',[MenuController::class,'PengajuanIrsMahasiswa'])->name('dosenwali.listPengajuanIRS');
+    Route::get('dosenwali/mahasiswa-perwalian',[MenuController::class,'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
 });

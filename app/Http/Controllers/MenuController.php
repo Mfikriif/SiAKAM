@@ -1,7 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
 
-use Illuminate\Auth\Access;
 
 class MenuController extends Controller
 {
@@ -17,6 +16,17 @@ class MenuController extends Controller
     }
     // end Controller Dekan
 
+
+    // Controller Dosen Wali
+    public function pengajuanIrsMahasiswa()
+    {
+        return view('dosenwali.listPengajuanIRS');
+    }
     
+    public function mahasiswaPerwalian()
+    {
+        return view('dosenwali.listMahasiswaPerwalian');
+    }
+    // end Controller Dosen Wali
 }
 ?>
