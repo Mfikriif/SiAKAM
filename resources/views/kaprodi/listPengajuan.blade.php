@@ -16,9 +16,10 @@
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
                     <div class="flex">
-                        <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
-                        <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
-
+                        <a href="{{ route('kaprodi.dashboard') }}" class="flex items-center">
+                            <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
+                            <h3 class="ml-2 text-white">SiAKAM Undip</h3>
+                        </a>
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -80,15 +81,17 @@
     <section class="relative top-20">
         <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
             <p class="font-bold">IRS MAHASISWA</p>
-            <div class="flex">
-                <img src="{{ asset('home-outline.svg') }}" alt="">
-                <p class="ml-2">Dasbor / IRS Mahasiswa</p>
-            </div>
+            <a href="{{ route('kaprodi.dashboard') }}">
+                <div class="flex">
+                    <img src="{{ asset('home-outline.svg') }}" alt="">
+                    <p class="ml-2">Dasbor / IRS Mahasiswa</p>
+                </div>
+            </a>
         </div>
     </section>
 
 
-    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
+    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
         <div class="container-table ">
             <div id="table-list">
 
