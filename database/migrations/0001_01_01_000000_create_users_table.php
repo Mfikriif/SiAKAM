@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('name'); // Nama pengguna
             $table->string('email')->unique(); // Email unik
             $table->string('password'); // Password
-            $table->string('usertype')->default('user'); // Usertype default 'user'
             $table->timestamp('email_verified_at')->nullable(); // Verifikasi email nullable
             $table->rememberToken(); // Token ingat (remember me)
             $table->timestamps(); // Kolom created_at dan updated_at
