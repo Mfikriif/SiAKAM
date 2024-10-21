@@ -112,6 +112,20 @@ class UsersTableSeeder extends Seeder
                 'dosenwali' => 1,
                 'akademik' => 0,
             ],
+            [
+                'id' => 8,
+                'name' => 'Muhammad FIkri Firdaus',
+                'email' => 'mfikrif@gmail.com',
+                'password' => 'Fikri12345',
+                'remember_token' => null,
+                'created_at' => '2024-09-23 03:34:03',
+                'updated_at' => '2024-09-24 06:53:33',
+                'mahasiswa' => 1,
+                'dekan' => 0,
+                'kaprodi' => 0,
+                'dosenwali' => 0,
+                'akademik' => 0,
+            ],
         ]);
     }
 }

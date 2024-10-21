@@ -10,7 +10,10 @@ return new class extends Migration {
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->char('nim', 15)->unique();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
