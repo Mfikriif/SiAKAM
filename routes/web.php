@@ -36,17 +36,19 @@ Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'
 Route::middleware('auth')->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
     Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
+    Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->name('dekan.dashboard');
 });
 
 // controller Dosenwali
 Route::middleware('auth')->group(function () {
     Route::get('dosenwali/pengajuan-irs',[MenuController::class,'PengajuanIrsMahasiswa'])->name('dosenwali.listPengajuanIRS');
     Route::get('dosenwali/mahasiswa-perwalian',[MenuController::class,'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
+    Route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->name('dosenwali.dashboard');
 });
 // controller Kaprodi
 Route::middleware('auth')->group(function() {
     Route::get('kaprodi/pembuatan-jadwal',[MenuController::class,'PengajuanJadwalKaprodi'])->name('kaprodi.listPengajuan');
+    Route::get('kaprodi/dashboard',[HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');    
 });
-Route::get('/kaprodi/dashboard', [HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');
 
 

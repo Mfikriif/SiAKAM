@@ -15,11 +15,12 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
-                    <div class="flex">
-                        <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
-                        <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
-
-                    </div>
+                    <a href="{{ route('dosenwali.dashboard') }}">
+                        <div class="flex">
+                            <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
+                            <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
+                        </div>
+                    </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
@@ -80,10 +81,12 @@
     <section class="relative top-20">
         <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
             <p class="font-bold">IRS MAHASISWA</p>
-            <div class="flex">
-                <img src="{{ asset('home-outline.svg') }}" alt="">
-                <p class="ml-2">Dasbor / IRS Mahasiswa</p>
-            </div>
+            <a href="{{ route('dosenwali.dashboard') }}">
+                <div class="flex">
+                    <img src="{{ asset('home-outline.svg') }}" alt="">
+                    <p class="ml-2">Dasbor / IRS Mahasiswa</p>
+                </div>
+            </a>
         </div>
     </section>
 
