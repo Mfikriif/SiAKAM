@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembimbing_akademik', function (Blueprint $table) {
-            $table->id(); 
-            $table->char('nip', 20)->unique(); 
-            $table->timestamps(); 
-
+        Schema::table('kaprodi', function (Blueprint $table) {
+            $table->foreign(['id'], 'kaprodi_ibfk_1')->references(['id'])->on('users')->onUpdate('no action')->onDelete('no action');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembimbing_akademik');
+        Schema::table('kaprodi', function (Blueprint $table) {
+            $table->dropForeign('kaprodi_ibfk_1');
+        });
     }
 };
