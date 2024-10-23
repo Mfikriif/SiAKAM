@@ -32,6 +32,13 @@ Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->
 Route::get('/select-role', [AuthenticatedSessionController::class, 'showRoleSelection'])->name('role.selection');
 Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'])->name('role.select');
 
+// controller Mahasiswa
+Route::middleware('auth')->group(function() {
+    Route::get('mahasiswa/jadwal-kuliah',[MenuController::class,'jadwalKuliah'])->name('mahasiswa.jadwalKuliah');
+    Route::get('mahasiswa/herreg',[MenuController::class,'herReg'])->name('mahasiswa.herReg');
+    Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
+});
+
 // controller Dekan
 Route::middleware('auth')->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
