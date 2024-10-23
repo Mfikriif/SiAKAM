@@ -4,6 +4,16 @@ namespace App\Http\Controllers;
 
 class MenuController extends Controller
 {
+    // Controller Mahasiswa
+    public function jadwalKuliah()
+    {
+        return view('mahasiswa.jadwalKuliah');
+    }
+
+    public function herReg()
+    {
+        return view('mahasiswa.herReg');
+    }
     // Controlle Dekan
     public function pengajuanJadwalDekan()
     {

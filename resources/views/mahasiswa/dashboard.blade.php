@@ -166,10 +166,10 @@
         </div>
 
         <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <button class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+            <a href="{{ route('mahasiswa.herReg')}}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="w-11 mr-2" src="{{ asset('logoMHS.svg') }}" alt="">
                 <p>Her-Registrasi</p>
-            </button>
+            </a>
             <button class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="h-11 w-11 pl-2" src="{{ asset('irsLogo.svg') }}" alt="">
                 <p class="ml-2">IRS Mahasiswa</p>
@@ -178,10 +178,10 @@
                 <img class="w-11 pl-2" src="{{ asset('khsLogo.svg') }}" alt="">
                 <p class="ml-2">KHS Mahasiswa</p>
             </button>
-            <button class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+            <a href="{{ route('mahasiswa.jadwalKuliah') }}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
                 <p class="ml-2">Jadwal Kuliah</p>
-            </button>
+            </a>
         </div>
     </section>
 
