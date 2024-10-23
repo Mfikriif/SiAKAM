@@ -12,8 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kaprodi', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->bigIncrements('id')->primary();
             $table->char('nip', 20)->unique('nip');
+            $table->string('email')->unique();
+            $table->string('jurusan');
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
+            $table->text('alamat')->nullable();
+            $table->string('no_hp')->nullable();
+            $table->boolean('status')->default(true);
+            $table->rememberToken();
+            $table->timestamps();
+            
+            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
         });
     }
 
