@@ -37,7 +37,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">{{ $userName }}</h3>
+                            <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
 
                         </div>
 
@@ -85,7 +85,7 @@
                 <p class="">Dasbor</p>
                 <p class="">Home / Dasbor</p>
             </div>
-            <h1 class="text-white w-2/4 h-20 text-4xl text-start mt-16">Selamat Datang, {{ $userName }}!
+            <h1 class="text-white w-2/4 h-20 text-4xl text-start mt-16">Selamat Datang, {{ Auth::user()->name }}!
             </h1>
             <div class="bg-white rounded-lg mt-16">
                 <div class="p-7">
@@ -95,17 +95,16 @@
                             <img class="rounded-full ml-2 mt-5 w-36 h-36" src="{{ asset('profileMhs.png') }}"
                                 alt="">
                             <div class="ml-6 text-base text-gray-500 mt-6 tracking-wide">
-                                <p>{{ $userName }} <br>
-                                    24060122130500 <br>
-                                    {{ $userEmail }} <br>
-                                    {{ $userEmail }} <br>
-                                    087877654321
+                                <p>{{ $user->name }} <br>
+                                    {{ $nim }} <br>
+                                    {{ $user->email }} <br>
+                                    {{ $nomorHP }}
                                 </p>
 
                                 <br>
                                 <p>Fakultas Sains Dan Matematika <span class="font-bold">(FSM)</span></p>
                                 <p>Departemen Ilmu Komputer/Informatika</p>
-                                <p>S1 Informatika</p>
+                                <p>{{ $jurusan }}</p>
                             </div>
                         </div>
 

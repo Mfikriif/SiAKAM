@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Mahasiswa;
 
 class HomeController extends Controller
 {
@@ -42,11 +43,17 @@ class HomeController extends Controller
     }
     public function dashboardMahasiswa(){
 
-        $user = auth()->user();
+        $user = Auth::user();
+    
         $userName = $user->name;
-        $userEmail = $user->email;
 
-        return view('mahasiswa.dashboard',compact('userName','userEmail'));
+        $nim = Mahasiswa::where('id',$user->id)->first()->nim;
+
+        $jurusan = Mahasiswa::where('email',$user->email)->first()->jurusan;
+
+        $nomorHP = Mahasiswa::where('id',$user->id)->first()->no_hp;
+        return view('mahasiswa.dashboard', compact('user','userName','nim','jurusan','nomorHP'));
+
     }
 }
 
