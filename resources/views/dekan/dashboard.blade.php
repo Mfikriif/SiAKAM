@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
-    <title>dashboard Akademik</title>
+    <title>dashboard Dekan</title>
 
 </head>
 
@@ -37,7 +37,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">Mulyadi Ajisadda</h3>
+                            <h3 class="ml-3 text-white">{{ $userName }}</h3>
 
                         </div>
 
@@ -88,7 +88,7 @@
             <h1 class="text-white w-80 text-4xl text-start mt-16">Selamat
                 Datang,
             </h1>
-            <h1 class="text-white w-101 h-20 text-4xl text-start"> Mulyadi Ajisadda!</h1>
+            <h1 class="text-white w-101 h-20 text-4xl text-start"> {{ $userName }}</h1>
             <div class="bg-white rounded-lg mt-10">
                 <div class="p-7">
                     <div class="flex justify-between h-72">
@@ -102,10 +102,10 @@
                                     alt="">
                             </div>
                             <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
-                                <p>Mulyadi Ajisadda <br>
+                                <p>{{ $userName }} <br>
                                     199603032024061003 <br>
-                                    mulyaaji@dekan.undip.ac.id <br>
-                                    mulyaaji@gmail.com <br>
+                                    {{ $userEmail }} <br>
+                                    {{ $userEmail }} <br>
                                     085872251414
                                 </p>
 

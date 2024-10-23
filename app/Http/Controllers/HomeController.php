@@ -2,25 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function dashboardDekan(){
-        return view('dekan.dashboard');
+        $user = auth()->user();
+        $userName = $user->name;
+        $userEmail = $user->email;
+
+        return view('dekan.dashboard',compact('userName','userEmail'));
     }
 
     public function dashboardAkademik(){
-        return view('akademik.dashboard');
+
+        $user = auth()->user();
+        $userName = $user->name;
+        $userEmail = $user->email;
+
+        return view('akademik.dashboard',compact('userName','userEmail'));
     }
     public function dashboardDosenwali(){
-        return view('dosenwali.dashboard');
+
+        $user = auth()->user();
+        $userName = $user->name;
+        $userEmail = $user->email;
+
+        return view('dosenwali.dashboard',compact('userName','userEmail'));
     }
     public function dashboardKaprodi(){
-        return view('kaprodi.dashboard');
+
+        $user = auth()->user();
+        $userName = $user->name;
+        $userEmail = $user->email;
+
+        return view('kaprodi.dashboard',compact('userName','userEmail'));
     }
     public function dashboardMahasiswa(){
-        return view('mahasiswa.dashboard');
+
+        $user = auth()->user();
+        $userName = $user->name;
+        $userEmail = $user->email;
+
+        return view('mahasiswa.dashboard',compact('userName','userEmail'));
     }
 }
 
