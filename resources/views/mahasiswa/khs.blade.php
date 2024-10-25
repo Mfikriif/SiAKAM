@@ -7,10 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
-    <!-- Tambahkan SweetAlert2 CSS dan JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Her-Registrasi</title>
+    <title>Jadwal Kuliah</title>
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
@@ -83,49 +80,71 @@
 
     <section class="relative top-20">
         <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
-            <p class="font-bold">Her-Registrasi</p>
+            <p class="font-bold">Kartu Hasil Studi</p>
             <a href="{{ route('mahasiswa.dashboard') }}">
                 <div class="flex">
                     <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Her-Registrasi </p>
+                    <p class="ml-2">Dasbor / KHS</p>
                 </div>
             </a>
         </div>
-        <div class="flex flex-col container mx-auto mt-24">
-            <p class="text-white text-center font-bold text-3xl"> Pilih Status Akademik </p>
-            <p class="text-white text-center font-normal text-xl mt-3"> Silahkan Pilih Salah Satu Status Akademik Berikut Untuk Semester Ini</p>
-        </div>
     </section>
 
-    <div class="flex justify-center space-x-10 mt-32">
-        <!-- Container Aktif -->
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
-            <img src="{{ asset('aktif.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">
-            <div class="text-4xl font-bold mb-2">
-                Aktif
+    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
+        <div class="container-table ">
+            <div id="table-list">
+
+                <h2 class="text-2xl text-center font-light mx-auto max-w-64 mt-5">KARTU HASIL STUDI (KHS)</h2>
+
+            <div class="flex flex-col">
+        <div class=" overflow-x-auto pb-4">
+            <div class="min-w-full inline-block align-middle">
+                <div class="overflow-hidden rounded-lg border border-black-500 w-11/12 mx-auto mt-5">
+                    <table class="table-auto min-w-full rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex-row">
+                                <p class="ml-2 text-xl">Semester-1</p>
+                                <p class="ml-2 text-base font-thin">Jumlah SKS 21</p>
+                                <hr>
+                            </div>
+                            <div class="mr-2">
+                                <button class="text-xl font-bold bg-blue-900 text-white px-2 py-1 rounded">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-4">
+                            <div class="flex-row">
+                                <p class="ml-2 text-xl">Semester-2</p>
+                                <p class="ml-2 text-base font-thin">Jumlah SKS 24</p>
+                                <hr>
+                            </div>
+                            <div class="mr-2">
+                                <button class="text-xl font-bold bg-blue-900 text-white px-2 py-1 rounded">+</button>
+                            </div>
+                        </div>
+                    </table>
+                </div>
+                <div class="overflow-hidden rounded-lg w-11/12 mx-auto">
+                    <p class="ml-2 mt-5 font-extralight text-lg">IP. Semester : 4</p>
+                    <p class="ml-2 text-gray-500">96/24</p>
+                    <p class="ml-2 ">total(SKSxBOBOT) / total SKS</p>
+                </div>
+
+                <div class="overflow-hidden rounded-lg w-11/12 mx-auto">
+                    <p class="ml-2 mt-5 font-extralight text-lg">IP. Kumulatif : 4</p>
+                    <p class="ml-2 text-gray-500">96/87</p>
+                    <p class="ml-2 ">total(SKSxBOBOT) terbaik / total SKS</p>
+                </div>
+                <button class="flex ml-16 mt-3 h-10 w-40 border border-black text-black items-center rounded-md justify-center">
+                    <img class="h-11 w-11 pl-2" src="{{ asset('printer.svg') }}" alt="">
+                    <p class="ml-2 mr-2 font-bold">Cetak KHS</p>
+                </button>
             </div>
-            <p class="text-gray-700 mb-4">
-                Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).
-            </p>
-            <button onclick="confirmAktif()" class="bg-blue-900 text-white font-bold py-2 px-6 rounded-lg">
-                Pilih
-            </button>
         </div>
-    
-        <!-- Container Cuti -->
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
-            <img src="{{ asset('cuti.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">
-            <div class="text-4xl font-bold mb-2">
-                Cuti
+        </div>
             </div>
-            <p class="text-gray-700 mb-4">
-                Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.
-            </p>
-            <button onclick="confirmCuti()" class="bg-blue-900 text-white font-bold py-2 px-6 rounded-lg">
-                Pilih
-            </button>
         </div>
-    </div>
+    </section>
 
     <section class="relative top-32">
         <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
@@ -136,51 +155,5 @@
         </footer>
     </section>
 </body>
-
-<script>
-    // SweetAlert untuk opsi Aktif
-    function confirmAktif() {
-        Swal.fire({
-            title: 'Anda yakin memilih status Aktif?',
-            text: "Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Pilih!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Dipilih!',
-                    'Anda telah memilih status Aktif.',
-                    'success'
-                )
-                // Redirect atau aksi lainnya
-            }
-        })
-    }
-
-    // SweetAlert untuk opsi Cuti
-    function confirmCuti() {
-        Swal.fire({
-            title: 'Anda yakin memilih status Cuti?',
-            text: "Anda akan menghentikan perkuliahan untuk semester ini!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Pilih!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Dipilih!',
-                    'Anda telah memilih status Cuti.',
-                    'success'
-                )
-                // Redirect atau aksi lainnya
-            }
-        })
-    }
-</script>
 
 </html>
