@@ -178,18 +178,14 @@
                 class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="w-11 pl-2" src="{{ asset('khsLogo.svg') }}" alt="">
                 <p class="ml-2">KHS Mahasiswa</p>
+            </a>
 
-                </button>
-                <a href="{{ route('mahasiswa.jadwalKuliah') }}"
-                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+            <a href="{{ route('mahasiswa.jadwalKuliah') }}"
+                class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
 
-                </a>
-                <a href="{{ route('mahasiswa.jadwalKuliah') }}"
-                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
-
-                    <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
-                    <p class="ml-2">Jadwal Kuliah</p>
-                </a>
+                <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
+                <p class="ml-2">Jadwal Kuliah</p>
+            </a>
         </div>
     </section>
 
