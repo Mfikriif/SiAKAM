@@ -145,10 +145,10 @@
         </div>
         {{-- menu pengajuan ruang kuliah --}}
         <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <button class="flex h-20 border text-white items-center rounded-md ">
+            <a href="{{ route('akademik.listRuangKuliah') }}"class="flex h-20 border text-white items-center rounded-md ">
                 <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
                 <p class="mx-auto">Pengajuan Ruang Kuliah</p>
-            </button>
+            </a>
         </div>
     </section>
 
