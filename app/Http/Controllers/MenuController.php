@@ -9,27 +9,26 @@ class MenuController extends Controller
     {
         return view('mahasiswa.jadwalKuliah');
     }
-
     public function herReg()
     {
         return view('mahasiswa.herReg');
     }
-
     public function khs()
     {
         return view('mahasiswa.khs');
     }
+    // End Controller Mahasiswa
+
     // Controlle Dekan
     public function pengajuanJadwalDekan()
     {
         return view('dekan.listPengajuanJadwal');
     }
-
     public function pengajuanRuangKuliahDekan()
     {
         return view('dekan.listPengajuanJadwal');
     }
-    // end Controller Dekan
+    // End Controller Dekan
 
     // Controller Kaprodi
     public function pengajuanJadwalKaprodi(){
@@ -46,7 +45,7 @@ class MenuController extends Controller
     {
         return view('dosenwali.listMahasiswaPerwalian');
     }
-    // end Controller Dosen Wali
+    // End Controller Dosen Wali
 
 }
 ?>

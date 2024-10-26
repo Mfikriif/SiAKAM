@@ -103,16 +103,13 @@
                             </div>
                             <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
                                 <p>{{ $userName }} <br>
-                                    199603032024061003 <br>
+                                    {{ $userNIP }} <br>
                                     {{ $userEmail }} <br>
-                                    {{ $userEmail }} <br>
-                                    085872251414
+                                    {{ $nomorHP }}
                                 </p>
 
                                 <br>
                                 <p>Fakultas Sains Dan Matematika <span class="font-bold">(FSM)</span></p>
-                                <p>Departemen Ilmu Komputer/Informatika</p>
-                                <p>S1 Informatika</p>
                             </div>
                         </div>
 

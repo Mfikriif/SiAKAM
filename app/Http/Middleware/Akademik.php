@@ -70,7 +70,7 @@ class Akademik
             case 'dosenwali':
                 return redirect('dosenwali/dashboard');
             case 'mahasiswa':
-                return redirect('user/dashboard');
+                return redirect('mahasiswa/dashboard');
             default:
                 return redirect('login')->with('error', 'Unauthorized access.');
         }

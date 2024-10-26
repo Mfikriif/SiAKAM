@@ -36,7 +36,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">Firdaus Ajisadda Adiyanto Adriansyah</h3>
+                            <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
                         </div>
 
                         <!-- Profile dropdown -->

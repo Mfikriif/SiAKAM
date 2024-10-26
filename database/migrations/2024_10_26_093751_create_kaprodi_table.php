@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dekan', function (Blueprint $table) {
-            $table->bigIncrements('id')->primary();
+        Schema::create('kaprodi', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->char('nama');
             $table->char('nip', 20)->unique('nip');
             $table->string('email')->unique();
             $table->string('jurusan');
@@ -24,8 +25,6 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
         });
     }
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dekan');
+        Schema::dropIfExists('kaprodi');
     }
 };

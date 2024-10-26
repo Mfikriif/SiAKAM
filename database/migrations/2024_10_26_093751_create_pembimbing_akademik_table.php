@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pembimbing_akademik', function (Blueprint $table) {
-            $table->bigIncrements('id')->primary();
-            $table->char('nama',255);
+            $table->bigIncrements('id');
+            $table->char('nama');
             $table->char('nip', 20)->unique('nip');
             $table->string('email')->unique();
             $table->string('jurusan');
-            $table->integer('id_mahasiswa_perwalian');
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
@@ -26,9 +25,6 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            
-            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
-            // $table->foreign('id_mahasiswa_perwalian')->references('id')->on('users');
         });
     }
 

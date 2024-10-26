@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bagian_akademik', function (Blueprint $table) {
-            $table->bigIncrements('id')->primary();
-            $table->char('nip', 20)->unique('nip');
+        Schema::create('mahasiswa', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->char('nama');
+            $table->char('nim', 14)->unique();
             $table->string('email')->unique();
             $table->string('jurusan');
+            $table->year('angkatan');
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
@@ -24,8 +26,7 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();
-            
-            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('pembimbing_akademik_id')->nullable()->index('fk_pembimbing');
         });
     }
 
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bagian_akademik');
+        Schema::dropIfExists('mahasiswa');
     }
 };

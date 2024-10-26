@@ -29,6 +29,9 @@ class Kaprodi
             } else {
                 $selectedRole = $this->getUserPrimaryRole($user);
             }
+
+            // Simpan role ke session untuk penggunaan berikutnya
+            session(['user_role' => $selectedRole]);
         }
 
         // Jika role yang dipilih bukan kaprodi, redirect sesuai role lain
@@ -39,6 +42,9 @@ class Kaprodi
         return $next($request);
     }
 
+    /**
+     * Fungsi untuk menentukan role utama user.
+     */
     private function getUserPrimaryRole($user)
     {
         if ($user->dekan == 1) {
@@ -54,9 +60,13 @@ class Kaprodi
             return 'mahasiswa';
         }
 
+        // Default ke kaprodi jika tidak ada role lain
         return 'kaprodi';
     }
 
+    /**
+     * Redirect berdasarkan role yang dipilih.
+     */
     private function redirectBasedOnRole($role)
     {
         switch ($role) {
@@ -67,7 +77,7 @@ class Kaprodi
             case 'akademik':
                 return redirect('akademik/dashboard');
             case 'mahasiswa':
-                return redirect('user/dashboard');
+                return redirect('mahasiswa/dashboard');
             default:
                 return redirect('login')->with('error', 'Unauthorized access.');
         }

@@ -36,7 +36,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">Firdaus Ajisadda Adiyanto Adriansyah</h3>
+                            <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
                         </div>
 
                         <!-- Profile dropdown -->
@@ -84,7 +84,7 @@
             <a href="{{ route('dosenwali.dashboard') }}">
                 <div class="flex">
                     <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Mhs Perwalian</p>
+                    <p class="ml-2">Dasbor / Mahasiswa Perwalian</p>
                 </div>
             </a>
         </div>
@@ -97,27 +97,33 @@
 
                 <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST MAHASISWA PERWALIAN</h2>
 
-                <div class=" flex justify-end mt-5 mr-16">
-                    <div id="dropdown">
-                        <select name="angkatan" id="angkatan"
-                            class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
-                            <option value="" disabled selected>Angkatan</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
-                    </div>
-                    <div id="input-text">
-                        <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" placeholder="Search"
-                            type="text">
-                    </div>
-                    <div id="button-search">
-                        <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2 "><img src="{{ asset('searchLogo.svg') }}"
-                                alt=""></button>
-                    </div>
+                <div class="flex justify-end mt-5 mr-16">
+                    <form method="GET" action="{{ route('dosenwali.mahasiswaPerwalian') }}" class="flex">
+                        <!-- Dropdown for 'Angkatan' -->
+                        <div id="dropdown">
+                            <select name="angkatan" id="angkatan" class="bg-white border-gray-300 rounded-l-xl h-8 w-40 mr-3 text-sm py-px">
+                                <option value="" disabled selected>Angkatan</option>
+                                <option value="2019" {{ request('angkatan') == '2019' ? 'selected' : '' }}>2019</option>
+                                <option value="2020" {{ request('angkatan') == '2020' ? 'selected' : '' }}>2020</option>
+                                <option value="2021" {{ request('angkatan') == '2021' ? 'selected' : '' }}>2021</option>
+                                <option value="2022" {{ request('angkatan') == '2022' ? 'selected' : '' }}>2022</option>
+                                <option value="2023" {{ request('angkatan') == '2023' ? 'selected' : '' }}>2023</option>
+                                <option value="2024" {{ request('angkatan') == '2024' ? 'selected' : '' }}>2024</option>
+                            </select>
+                        </div>
+                
+                        <!-- Search input field -->
+                        <div id="input-text">
+                            <input name="search" value="{{ request('search') }}" class="bg-[#002687] text-white h-8 rounded-l-xl pl-3" placeholder="Search.." type="text">
+                        </div>
+                
+                        <!-- Search button -->
+                        <div id="button-search">
+                            <button class="bg-[#002687] h-8 w-8 rounded-r-xl flex items-center justify-center" type="submit">
+                                <img src="{{ asset('searchLogo.svg') }}" alt="">
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
                 <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
@@ -126,109 +132,29 @@
                             <th>No</th>
                             <th class="text-left pl-4">NIM</th>
                             <th class="text-left pl-4">NAMA</th>
-                            <th>SEMESTER</th>
+                            <th>ANGKATAN</th>
                             <th>SKS</th>
                             <th>STATUS</th>
                         </tr>
 
                     </thead>
                     <tbody>
+                        @foreach ($mahasiswaPerwalian as $index => $mahasiswa)
                         <tr>
-                            <td>1. </td>
-                            <td class="text-left pl-4">24060122140118</td>
-                            <td class="text-left pl-4">Leslie Alexander</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>AKTIF</td>
+                            <td>{{ $index + 1 }}.</td>
+                            <td class="text-left pl-4">{{ $mahasiswa->nim }}</td>
+                            <td class="text-left pl-4">{{ $mahasiswa->nama }}</td>
+                            <td>{{ $mahasiswa->angkatan }}</td>
+                            <td>{{ $mahasiswa->sks }} SKS</td> 
+                            <td>
+                                @if($mahasiswa->status == 1)
+                                    AKTIF
+                                @else
+                                    TIDAK AKTIF
+                                @endif
+                            </td>
                         </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td class="text-left pl-4">24060122140120</td>
-                            <td class="text-left pl-4">Guy Hawkins</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>3.</td>
-                            <td class="text-left pl-4">24060122140124</td>
-                            <td class="text-left pl-4">Bessie Cooper</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>4.</td>
-                            <td class="text-left pl-4">24060122140128</td>
-                            <td class="text-left pl-4">Denis Rexmen</td>
-                            <td>5</td>
-                            <td>19 SKS</td>
-                            <td>CUTI</td>
-                        </tr>
-                        <tr>
-                            <td>5.</td>
-                            <td class="text-left pl-4">24060122140130</td>
-                            <td class="text-left pl-4">Theresa Webb</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>6.</td>
-                            <td class="text-left pl-4">24060122140132</td>
-                            <td class="text-left pl-4">Thomas Beta</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>7.</td>
-                            <td class="text-left pl-4">24060122140134</td>
-                            <td class="text-left pl-4">Jeremy Teddy</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>CUTI</td>
-                        </tr>
-                        <tr>
-                            <td>8.</td>
-                            <td class="text-left pl-4">24060122140135</td>
-                            <td class="text-left pl-4">Jenny Wilson</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>CUTI</td>
-                        </tr>
-                        <tr>
-                            <td>9.</td>
-                            <td class="text-left pl-4">24060122140138</td>
-                            <td class="text-left pl-4">Jacob Jones</td>
-                            <td>5</td>
-                            <td>21 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>10.</td>
-                            <td class="text-left pl-4">24060122140139</td>
-                            <td class="text-left pl-4">Kristin Digg</td>
-                            <td>5</td>
-                            <td>19 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>11.</td>
-                            <td class="text-left pl-4">24060122140142</td>
-                            <td class="text-left pl-4">Anna Ladiana</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>AKTIF</td>
-                        </tr>
-                        <tr>
-                            <td>12.</td>
-                            <td class="text-left pl-4">24060122140144</td>
-                            <td class="text-left pl-4">Jackson Mandela</td>
-                            <td>5</td>
-                            <td>19 SKS</td>
-                            <td>CUTI</td>
-                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

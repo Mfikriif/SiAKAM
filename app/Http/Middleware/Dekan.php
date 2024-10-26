@@ -20,7 +20,7 @@ class Dekan
     {
         $selectedRole = session('user_role');
 
-        // Jika role belum ada di session, coba ambil dari Auth user berdasarkan kolom boolean di DB
+        // Jika role belum ada di session, cek dari user yang login
         if (!$selectedRole) {
             $user = Auth::user();
 
@@ -31,26 +31,24 @@ class Dekan
             }
         }
 
-        // Jika role yang dipilih bukan mahasiswa, redirect sesuai role
+        // Jika role yang dipilih bukan dekan, redirect sesuai role lain
         if ($selectedRole !== 'dekan') {
             return $this->redirectBasedOnRole($selectedRole);
         }
+
         return $next($request);
     }
 
-    /**
-     * Mendapatkan role utama pengguna jika bukan mahasiswa
-     */
     private function getUserPrimaryRole($user)
     {
-        if ($user->mahasiswa == 1) {
-            return 'mahasiswa';
-        }
         if ($user->kaprodi == 1) {
             return 'kaprodi';
         }
         if ($user->dosenwali == 1) {
             return 'dosenwali';
+        }
+        if ($user->mahasiswa == 1) {
+            return 'mahasiswa';
         }
         if ($user->akademik == 1) {
             return 'akademik';
@@ -65,14 +63,14 @@ class Dekan
     private function redirectBasedOnRole($role)
     {
         switch ($role) {
-            case 'mahasiswa':
-                return redirect('mahasiswa/dashboard');
             case 'kaprodi':
                 return redirect('kaprodi/dashboard');
-            case 'akademik':
-                return redirect('akademik/dashboard');
             case 'dosenwali':
                 return redirect('dosenwali/dashboard');
+            case 'mahasiswa':
+                return redirect('mahasiswa/dashboard');
+            case 'akademik':
+                return redirect('akademik/dashboard');
             default:
                 return redirect('login')->with('error', 'Unauthorized access.');
         }

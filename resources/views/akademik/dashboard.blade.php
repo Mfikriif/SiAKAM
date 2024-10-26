@@ -104,17 +104,14 @@
                                     alt="">
                             </div>
                             <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
-                                <p>{{ Auth::user()->name }}<br>
-                                    128198217373671631 <br>
-                                    firmanutina@employee.undip.ac.id <br>
-                                    firmanutina@gmail.com <br>
-                                    08818281288121
+                                <p>{{ $userName }}<br>
+                                    {{ $userNIP }} <br>
+                                    {{ $userEmail }} <br>
+                                    {{ $nomorHP }}
                                 </p>
 
                                 <br>
                                 <p>Fakultas Sains Dan Matematika <span class="font-bold">(FSM)</span></p>
-                                <p>Departemen Ilmu Komputer/Informatika</p>
-                                <p>S1 Informatika</p>
                             </div>
                         </div>
 

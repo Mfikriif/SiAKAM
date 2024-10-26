@@ -29,6 +29,9 @@ class Dosenwali
             } else {
                 $selectedRole = $this->getUserPrimaryRole($user);
             }
+
+            // Simpan role ke session untuk penggunaan berikutnya
+            session(['user_role' => $selectedRole]);
         }
 
         // Jika role yang dipilih bukan dosenwali, redirect sesuai role lain
@@ -39,6 +42,9 @@ class Dosenwali
         return $next($request);
     }
 
+    /**
+     * Fungsi untuk menentukan role utama user.
+     */
     private function getUserPrimaryRole($user)
     {
         if ($user->dekan == 1) {
@@ -54,9 +60,13 @@ class Dosenwali
             return 'mahasiswa';
         }
 
+        // Default ke dosen wali jika tidak ada role lain
         return 'dosenwali';
     }
 
+    /**
+     * Redirect berdasarkan role yang dipilih.
+     */
     private function redirectBasedOnRole($role)
     {
         switch ($role) {
@@ -67,7 +77,7 @@ class Dosenwali
             case 'akademik':
                 return redirect('akademik/dashboard');
             case 'mahasiswa':
-                return redirect('user/dashboard');
+                return redirect('mahasiswa/dashboard');
             default:
                 return redirect('login')->with('error', 'Unauthorized access.');
         }
