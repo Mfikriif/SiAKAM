@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->bigIncrements('id')->primary();
+            $table->char('nama',255);
             $table->char('nim', 14)->unique();
             $table->string('email')->unique();
             $table->string('jurusan');

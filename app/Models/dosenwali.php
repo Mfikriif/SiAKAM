@@ -4,30 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
-class Mahasiswa extends Model
+class dosenwali extends Model
 {
     use HasFactory;
-    protected $table = "mahasiswa";
+
+    protected $table = "pembimbing_akademik" ;
+
     protected $fillable = [
         'id',
-        'nim',
+        'nama',
+        'nip',
         'email',
         'jurusan',
-        'angkatan',
+        'id_mahasiswa_perwalian',
         'tempat_lahir',
         'tanggal_lahir',
         'jenis_kelamin',
         'alamat',
         'no_hp',
-        'status',
-        
     ];
-
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
 }

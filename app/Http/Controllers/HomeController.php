@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
+use App\Models\Dosenwali;
 
 class HomeController extends Controller
 {
@@ -52,7 +53,14 @@ class HomeController extends Controller
         $jurusan = Mahasiswa::where('email',$user->email)->first()->jurusan;
 
         $nomorHP = Mahasiswa::where('id',$user->id)->first()->no_hp;
-        return view('mahasiswa.dashboard', compact('user','userName','nim','jurusan','nomorHP'));
+
+        $doswal = dosenwali::where('id_mahasiswa_perwalian',$user->id)->first();
+
+        $namaDoswal =  $doswal->nama;
+
+        $nipDoswal = $doswal->nip;
+        
+        return view('mahasiswa.dashboard', compact('user','userName','nim','jurusan','nomorHP','namaDoswal','nipDoswal'));
 
     }
 }

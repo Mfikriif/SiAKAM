@@ -39,7 +39,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">Firdaus Ajisadda Adiyanto Adriansyah</h3>
+                            <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
                         </div>
 
                         <!-- Profile dropdown -->
@@ -93,7 +93,8 @@
         </div>
         <div class="flex flex-col container mx-auto mt-24">
             <p class="text-white text-center font-bold text-3xl"> Pilih Status Akademik </p>
-            <p class="text-white text-center font-normal text-xl mt-3"> Silahkan Pilih Salah Satu Status Akademik Berikut Untuk Semester Ini</p>
+            <p class="text-white text-center font-normal text-xl mt-3"> Silahkan Pilih Salah Satu Status Akademik
+                Berikut Untuk Semester Ini</p>
         </div>
     </section>
 
@@ -111,7 +112,7 @@
                 Pilih
             </button>
         </div>
-    
+
         <!-- Container Cuti -->
         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
             <img src="{{ asset('cuti.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">

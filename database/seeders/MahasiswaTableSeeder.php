@@ -15,7 +15,15 @@ class MahasiswaTableSeeder extends Seeder
     {
         DB::table('mahasiswa')->insert([
             'id' => 1,
-            'nim' => '24060122140115'
+            'nama'=> 'Muhammad Fikri Firdaus',
+            'nim' => '24060122140115',
+            'email' => 'fikrifirdaus2112@gmail.com',
+            'jurusan' => 'S1 Teknik Informatika',
+            'angkatan'=> 2022,
+            'tempat_lahir' => 'Bekasi',
+            'alamat' => 'Bumi Mutiara Blok Ji 2 No 8 Gunung Putri Bogor',
+            'no_hp' => '087870805235',
+            'status' => 1,
         ]);
     }
 }

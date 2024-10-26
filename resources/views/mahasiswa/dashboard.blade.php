@@ -133,9 +133,9 @@
                             <div class="w-96 mx-auto">
                                 <div class="text-center text-xs font-light mt-2">
                                     <p class=""><span class="font-semibold text-gray-500 text-xs">Dosen wali:
-                                        </span>Dr.Eng. Adi Wibowo, S.Si,. M.Kom </p>
+                                        </span>{{ $namaDoswal }} </p>
                                     <p class=""><span class="font-semibold text-gray-500 text-xs">NIP:
-                                        </span>198203092006041002</p>
+                                        </span>{{ $nipDoswal }}</p>
                                 </div>
 
                                 <div class="flex justify-between mt-4">
@@ -165,7 +165,8 @@
         </div>
 
         <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <a href="{{ route('mahasiswa.herReg')}}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+            <a href="{{ route('mahasiswa.herReg') }}"
+                class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="w-11 mr-2" src="{{ asset('logoMHS.svg') }}" alt="">
                 <p>Her-Registrasi</p>
             </a>
@@ -177,7 +178,8 @@
                 <img class="w-11 pl-2" src="{{ asset('khsLogo.svg') }}" alt="">
                 <p class="ml-2">KHS Mahasiswa</p>
             </button>
-            <a href="{{ route('mahasiswa.jadwalKuliah') }}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+            <a href="{{ route('mahasiswa.jadwalKuliah') }}"
+                class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
                 <p class="ml-2">Jadwal Kuliah</p>
             </a>
