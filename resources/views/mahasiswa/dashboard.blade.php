@@ -174,15 +174,22 @@
                 <img class="h-11 w-11 pl-2" src="{{ asset('irsLogo.svg') }}" alt="">
                 <p class="ml-2">IRS Mahasiswa</p>
             </button>
-            <button class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+            <a href="{{ route('mahasiswa.khs') }}"
+                class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                 <img class="w-11 pl-2" src="{{ asset('khsLogo.svg') }}" alt="">
                 <p class="ml-2">KHS Mahasiswa</p>
-            </button>
-            <a href="{{ route('mahasiswa.jadwalKuliah') }}"
-                class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
-                <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
-                <p class="ml-2">Jadwal Kuliah</p>
-            </a>
+
+                </button>
+                <a href="{{ route('mahasiswa.jadwalKuliah') }}"
+                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+
+                </a>
+                <a href="{{ route('mahasiswa.jadwalKuliah') }}"
+                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+
+                    <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
+                    <p class="ml-2">Jadwal Kuliah</p>
+                </a>
         </div>
     </section>
 

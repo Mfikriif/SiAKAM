@@ -38,7 +38,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">Firman Utina Hoantu</h3>
+                            <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
 
                         </div>
 
@@ -90,7 +90,7 @@
             <h1 class="text-white w-80 text-4xl text-start mt-16">Selamat
                 Datang,
             </h1>
-            <h1 class="text-white w-101 h-20 text-4xl text-start"> Firman Utina Hoantu!</h1>
+            <h1 class="text-white w-101 h-20 text-4xl text-start"> {{ Auth::user()->name }}!</h1>
             <div class="bg-white rounded-lg mt-10">
                 <div class="p-7">
                     <div class="flex justify-between h-72">
@@ -104,7 +104,7 @@
                                     alt="">
                             </div>
                             <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
-                                <p>Firman Utina Hoantu <br>
+                                <p>{{ Auth::user()->name }}<br>
                                     128198217373671631 <br>
                                     firmanutina@employee.undip.ac.id <br>
                                     firmanutina@gmail.com <br>
