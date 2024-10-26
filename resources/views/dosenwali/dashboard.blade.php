@@ -157,7 +157,7 @@
             <a href="{{ route('dosenwali.mahasiswaPerwalian') }}">
                 <button class="flex h-20 w-64 border text-white items-center rounded-md justify-center ">
                     <img class="h-11 w-20  " src="{{ asset('logoMHS.svg') }}" alt="">
-                    <p class=" text-center">Mahasiswa Perwalian</p>
+                    <p class=" text-center mr-5">Mahasiswa Perwalian</p>
                 </button>
             </a>
         </div>

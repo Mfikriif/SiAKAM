@@ -33,7 +33,7 @@ class MahasiswaSeeder extends Seeder
             ],
             [
                 'id'=> '2',
-                'nama' => 'Arya Ajisadda Purwanto',
+                'nama' => 'Arya Ajisadda Haryanto',
                 'nim' => '24060122140118',
                 'email' => 'aryaajisadda@gmail.com',
                 'jurusan' => 'S1 Informatika',
