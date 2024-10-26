@@ -65,6 +65,23 @@ class MahasiswaSeeder extends Seeder
                 'updated_at' => now(),
                 'pembimbing_akademik_id' => '5',
             ],
+            [
+                'id'=> '4',
+                'nama' => 'Rizal Adiyanto Nugroho',
+                'nim' => '24060122140156',
+                'email' => 'rizaladiyantonugroho@gmail.com',
+                'jurusan' => 'S1 Informatika',
+                'tempat_lahir' => 'Pemalang',
+                'tanggal_lahir' => '2004-11-20',
+                'jenis_kelamin' => 'L',
+                'alamat' => 'Jalan Sulawesi 48, Pemalang',
+                'no_hp' => '082314755575',
+                'angkatan' => '2022',
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'pembimbing_akademik_id' => '5',
+            ]
         ];
 
         // Insert data ke tabel mahasiswa
