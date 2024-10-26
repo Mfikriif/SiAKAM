@@ -26,8 +26,8 @@ class NewUser extends Seeder
             'akademik' => 0,
         ],
         [
-            'name' => 'Arya Ajisadda Purwanto',
-            'email' => 'aryasadda@gmail.com',
+            'name' => 'Arya Ajisadda Haryanto',
+            'email' => 'aryaajisadda@gmail.com',
             'password' =>'arya12345', 
             'mahasiswa' => 1,
             'dekan' => 0,
@@ -36,8 +36,8 @@ class NewUser extends Seeder
             'akademik' => 0,
         ],
         [
-            'name' => 'Daffa Nurul Hudda',
-            'email' => 'daffanh@gmail.com',
+            'name' => 'Muhammad Daffa Aradhana Adriansyah',
+            'email' => 'daffaadrnn@gmail.com',
             'password' =>'daffa12345', 
             'mahasiswa' => 1,
             'dekan' => 0,
@@ -100,7 +100,5 @@ class NewUser extends Seeder
         $user['password'] = Hash::make($user['password']);
         User::create($user);
     }
-
-
     }
 }

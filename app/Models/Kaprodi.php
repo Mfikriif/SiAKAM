@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dosenwali extends Model
+class Kaprodi extends Model
 {
     use HasFactory;
-    protected $table = "pembimbing_akademik" ;
+    protected $table = 'kaprodi';
     protected $fillable = [
         'id',
         'nama',
@@ -21,10 +21,4 @@ class Dosenwali extends Model
         'alamat',
         'no_hp',
     ];
-
-    //Relasi dengan Mahasiswa
-    public function mahasiswa()
-    {
-        return $this->hasMany(Mahasiswa::class, 'pembimbing_akademik_id');
-    }
 }

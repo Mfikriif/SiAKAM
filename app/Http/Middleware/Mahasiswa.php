@@ -20,7 +20,7 @@ class Mahasiswa
     {
         $selectedRole = session('user_role');
 
-        // Jika role belum ada di session, coba ambil dari Auth user berdasarkan kolom boolean di DB
+        // Jika role belum ada di session, cek dari user yang login
         if (!$selectedRole) {
             $user = Auth::user();
 
@@ -29,12 +29,16 @@ class Mahasiswa
             } else {
                 $selectedRole = $this->getUserPrimaryRole($user);
             }
+
+            // Simpan role ke session untuk request berikutnya
+            session(['user_role' => $selectedRole]);
         }
 
         // Jika role yang dipilih bukan mahasiswa, redirect sesuai role
         if ($selectedRole !== 'mahasiswa') {
             return $this->redirectBasedOnRole($selectedRole);
         }
+
         return $next($request);
     }
 
@@ -56,6 +60,7 @@ class Mahasiswa
             return 'akademik';
         }
 
+        // Jika tidak ada role lain, default ke 'mahasiswa'
         return 'mahasiswa';
     }
 

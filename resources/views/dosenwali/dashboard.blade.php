@@ -37,7 +37,7 @@
                         </button>
 
                         <div>
-                            <h3 class="ml-3 text-white">Firdaus Ajisadda Adiyanto Adriansyah</h3>
+                            <h3 class="ml-3 text-white">{{ $userName }}</h3>
 
                         </div>
 
@@ -88,8 +88,7 @@
             <h1 class="text-white w-80 text-4xl text-start mt-16">Selamat
                 Datang,
             </h1>
-            <h1 class="text-white w-101 h-20 text-4xl text-start"> Firdaus Ajisadda Adiyanto
-                Adriansyah!</h1>
+            <h1 class="text-white w-101 h-20 text-4xl text-start"> {{ $userName }}!</h1>
             <div class="bg-white rounded-lg mt-16">
                 <div class="p-7">
                     <div class="flex justify-between h-72">
@@ -104,17 +103,16 @@
                                     alt="">
                             </div>
                             <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
-                                <p>Firdaus Ajisadda Adiyanto Adriansyah <br>
-                                    128198217373671631 <br>
-                                    akudosen@lecturer.undip.ac.id <br>
-                                    akudosen@gmail.com <br>
-                                    08818281288121
+                                <p>{{ $userName }}<br>
+                                    {{ $userNIP }} <br>
+                                    {{ $userEmail }} <br>
+                                    {{ $nomorHP }}
                                 </p>
 
                                 <br>
                                 <p>Fakultas Sains Dan Matematika <span class="font-bold">(FSM)</span></p>
                                 <p>Departemen Ilmu Komputer/Informatika</p>
-                                <p>S1 Informatika</p>
+                                <p>{{ $jurusan }}</p>
                             </div>
                         </div>
 

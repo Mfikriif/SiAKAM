@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\MenuController;
 use App\Http\Middleware\Dekan;
+use App\Http\Controllers\DosenWaliController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -23,38 +24,39 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->middleware(['auth','dekan']);
-Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->middleware(['auth','akademik']);
-Route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->middleware(['auth','dosenwali']);
-Route::get('kaprodi/dashboard',[HomeController::class,'dashboardKaprodi'])->middleware(['auth','kaprodi']);
-Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->middleware(['auth','mahasiswa']);
-
+// Controller untuk Multi Role Users
 Route::get('/select-role', [AuthenticatedSessionController::class, 'showRoleSelection'])->name('role.selection');
 Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'])->name('role.select');
 
-// controller Mahasiswa
-Route::middleware('auth')->group(function() {
+// Controller Mahasiswa Untuk Melindungi Pengaksesan via Link Address
+Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::get('mahasiswa/jadwal-kuliah',[MenuController::class,'jadwalKuliah'])->name('mahasiswa.jadwalKuliah');
     Route::get('mahasiswa/herreg',[MenuController::class,'herReg'])->name('mahasiswa.herReg');
     Route::get('mahasiswa/khs',[MenuController::class,'khs'])->name('mahasiswa.khs');
     Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
 });
 
-// controller Dekan
-Route::middleware('auth')->group(function() {
+// Controller Akademik untuk Melindungi Pengaksesan via Link Address
+Route::middleware('auth', 'akademik')->group(function() {
+    Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->middleware(['auth','akademik']);
+});
+
+// Controller Dekan Untuk Melindungi Pengaksesan via Link Address
+Route::middleware(['auth', 'dekan'])->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
     Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
     Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->name('dekan.dashboard');
 });
 
-// controller Dosenwali
-Route::middleware('auth')->group(function () {
+// Controller Dosenwali Untuk Melindungi Pengaksesan via Link Address
+Route::middleware('auth', 'dosenwali')->group(function () {
     Route::get('dosenwali/pengajuan-irs',[MenuController::class,'PengajuanIrsMahasiswa'])->name('dosenwali.listPengajuanIRS');
-    Route::get('dosenwali/mahasiswa-perwalian',[MenuController::class,'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
+    Route::get('dosenwali/mahasiswa-perwalian', [DosenWaliController::class, 'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
     Route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->name('dosenwali.dashboard');
 });
-// controller Kaprodi
-Route::middleware('auth')->group(function() {
+
+// Controller Kaprodi Untuk Melindungi Pengaksesan via Link Address
+Route::middleware('auth', 'kaprodi')->group(function() {
     Route::get('kaprodi/pembuatan-jadwal',[MenuController::class,'PengajuanJadwalKaprodi'])->name('kaprodi.listPengajuan');
     Route::get('kaprodi/dashboard',[HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');    
 });

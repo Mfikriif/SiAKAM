@@ -23,11 +23,12 @@ class Mahasiswa extends Model
         'alamat',
         'no_hp',
         'status',
-        
+        'pembimbing_akademik_id',
     ];
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    //Relasi dengan Dosen Wali / Pembimbing Akademik
+    public function Dosenwali()
+    {
+        return $this->belongsTo(Dosenwali::class, 'pembimbing_akademik_id');
+    }
 }
