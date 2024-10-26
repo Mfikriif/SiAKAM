@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
     <!-- Tambahkan SweetAlert2 CSS dan JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -108,7 +109,9 @@
             <p class="text-gray-700 mb-4">
                 Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).
             </p>
-            <button onclick="confirmAktif()" class="bg-blue-900 text-white font-bold py-2 px-6 rounded-lg">
+            <button
+                onclick="showConfirm('Anda yakin memilih status Aktif?','Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS','warning')"
+                class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
                 Pilih
             </button>
         </div>
@@ -122,7 +125,9 @@
             <p class="text-gray-700 mb-4">
                 Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.
             </p>
-            <button onclick="confirmCuti()" class="bg-blue-900 text-white font-bold py-2 px-6 rounded-lg">
+            <button
+                onclick="showAlert('Anda yakin memilih status Cuti?','Anda akan menghentikan perkuliahan untuk semester ini!','warning')"
+                class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
                 Pilih
             </button>
         </div>
@@ -137,51 +142,5 @@
         </footer>
     </section>
 </body>
-
-<script>
-    // SweetAlert untuk opsi Aktif
-    function confirmAktif() {
-        Swal.fire({
-            title: 'Anda yakin memilih status Aktif?',
-            text: "Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Pilih!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Dipilih!',
-                    'Anda telah memilih status Aktif.',
-                    'success'
-                )
-                // Redirect atau aksi lainnya
-            }
-        })
-    }
-
-    // SweetAlert untuk opsi Cuti
-    function confirmCuti() {
-        Swal.fire({
-            title: 'Anda yakin memilih status Cuti?',
-            text: "Anda akan menghentikan perkuliahan untuk semester ini!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Pilih!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Dipilih!',
-                    'Anda telah memilih status Cuti.',
-                    'success'
-                )
-                // Redirect atau aksi lainnya
-            }
-        })
-    }
-</script>
 
 </html>
