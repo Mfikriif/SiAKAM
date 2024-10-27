@@ -36,7 +36,7 @@
                             <button type="button" @click="isOpen = !isOpen"
                                 class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                 id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}" alt="">
+                                <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}" alt="">
                             </button>
                             <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
                                 x-transition:enter-start="opacity-0 scale-95"
@@ -73,7 +73,7 @@
         </div>
     </section>
 
-    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg p-6" id="body">
+    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg p-6" id="body">
         <h2 class="text-2xl text-center text-gray-800 mb-6">INPUT RUANG KULIAH</h2>
         <form action="{{ route('akademik.inputRuangKuliah') }}" method="POST" class="mx-auto max-w-lg">
             @csrf
@@ -104,8 +104,8 @@
             </div>
 
             <div class="flex justify-center mt-6">
-                <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded-lg mr-2">Simpan</button>
-                <button type="reset" class="bg-red-600 text-white px-4 py-2 rounded-lg">Batalkan</button>
+                <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2">Simpan</button>
+                <button type="reset" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Batalkan</button>
             </div>
         </form>
     </section>

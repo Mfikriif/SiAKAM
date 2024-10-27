@@ -20,7 +20,7 @@
                 <div class="flex items-center">
                     <div class="flex">
                         <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
-                        <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
+                        <h3 class="mt-1.5 ml-2 text-white">SiAKAM Undip</h3>
 
                     </div>
                 </div>

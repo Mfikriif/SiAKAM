@@ -47,7 +47,7 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}"
+                                    <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}"
                                         alt="">
                                 </button>
                             </div>
@@ -90,15 +90,24 @@
         </div>
     </section>
 
-
-    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
+    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-6" id="body">
         <div class="container-table ">
             <div id="table-list">
 
                 <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST RUANG KULIAH</h2>
 
-                <div class="flex justify mt-5 mb-3 ml-20">
-                    <button class="h-8 w-48 flex bg-[#002687] text-white rounded-lg pt-1 pl-2 mb-4 ">Atur Ruang<img class="w-5 h-5 mx-auto pt-1 ml-2 " src="{{asset('plus.svg')}}" alt=""></button>
+                <div class="flex justify-between items-center w-11/12 mx-auto mt-5 mb-3">
+                    <button class="h-8 inline-flex bg-[#002687] text-white rounded-lg pt-1 pl-2">
+                        Atur Ruang
+                        <img class="w-5 h-5 pt-1 ml-2" src="{{ asset('plus.svg') }}" alt="">
+                    </button>
+                    
+                    <div class="flex items-center">
+                        <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white px-2" placeholder="Search" type="text">
+                        <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2">
+                            <img src="{{ asset('searchLogo.svg') }}" alt="">
+                        </button>
+                    </div>
                 </div>
 
                 <div class="flex flex-col">
@@ -115,14 +124,14 @@
                                 <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> AKSI </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-300 ">
+                        <tbody class="divide-y divide-gray-300">
                             <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center"> 1 </td>
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> S1-INFORMATIKA </td>
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> E101, E102, E103, A303</td>
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> E101, E102, E103, A303, A304, A305, B101, B102</td>
                                 <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="btn-detail">Edit</a>
+                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
                                 </td>
                             </tr>
                             <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
@@ -131,7 +140,7 @@
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> K101, K102, K103</td>
                                 <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="btn-detail">Edit</a>
+                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
                                 </td>
                             </tr>
                             <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
@@ -140,7 +149,7 @@
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> K102</td>
                                 <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="btn-detail">Edit</a>
+                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
                                 </td>
                             </tr>
                             <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
@@ -149,7 +158,7 @@
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
                                 <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> K202</td>
                                 <td>
-                                    <button class="btn-detail">Edit</button>
+                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
                                 </td>
                             </tr>
                         </tbody>
