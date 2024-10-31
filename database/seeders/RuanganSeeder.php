@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class RuanganSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      */
