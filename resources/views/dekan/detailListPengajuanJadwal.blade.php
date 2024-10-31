@@ -5,24 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
-    <title>dashboard Akademik</title>
-
+    <title>List Pengajuan Jadwal Kuliah</title>
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
-    {{-- navbar --}}
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
-                    <div class="flex">
-                        <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
-                        <h3 class="mt-1.5 ml-2 text-white">SiAKAM Undip</h3>
-
-                    </div>
+                    <a href="{{ route('dekan.dashboard') }}">
+                        <div class="flex">
+                            <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
+                            <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
+                        </div>
+                    </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
@@ -39,7 +37,6 @@
 
                         <div>
                             <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
-
                         </div>
 
                         <!-- Profile dropdown -->
@@ -80,84 +77,94 @@
             </div>
         </div>
     </nav>
-    {{-- section dasbor --}}
-    <section>
-        <div class=" w-2/3 mx-auto">
-            <div class="text-white flex justify-between mt-10 text-sm">
-                <p class="">Dasbor</p>
-                <p class="">Home / Dasbor</p>
-            </div>
-            <h1 class="text-white w-80 text-4xl text-start mt-16">Selamat
-                Datang,
-            </h1>
-            <h1 class="text-white w-101 h-20 text-4xl text-start"> {{ Auth::user()->name }}!</h1>
-            <div class="bg-white rounded-lg mt-10">
-                <div class="p-7">
-                    <div class="flex justify-between h-72">
-                        <div class="flex w-2/4">
-                            <div class=" w-72">
-                                <p class="  font-semibold text-gray-700 w-full">Profil
-                                    Akademik
-                                </p>
 
-                                <img class="rounded-full ml-2 mt-5 w-36 h-36" src="{{ asset('firmanUtina.png') }}"
-                                    alt="">
-                            </div>
-                            <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
-                                <p>{{ $userName }}<br>
-                                    {{ $userNIP }} <br>
-                                    {{ $userEmail }} <br>
-                                    {{ $nomorHP }}
-                                </p>
-
-                                <br>
-                                <p>Fakultas Sains Dan Matematika <span class="font-bold">(FSM)</span></p>
-                            </div>
-                        </div>
-
-                        <div class="border border-slate-300"></div>
-
-                        <div class=" w-2/4 flex justify-center">
-                            <div class="mx-auto pl-7">
-                                <div class="pt-4 flex flex-wrap justify-start items-center gap-7">
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Mahasiswa</p>
-                                        <p class="pt-2 font-semibold text-lg">4440</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Gedung</p>
-                                        <p class="pt-2 font-semibold text-lg">11</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Ruang Kelas</p>
-                                        <p class="pt-2 font-semibold text-lg">130</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Dosen</p>
-                                        <p class="pt-2 font-semibold text-lg">1989</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <section class="relative top-20">
+        <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
+            <p class="font-bold">Detail Pengajuan Jadwal</p>
+            <a href="{{ route('dekan.listPengajuanJadwal') }}">
+                <div class="flex">
+                    <img src="{{ asset('home-outline.svg') }}" alt="">
+                    <p class="ml-2">Pengajuan Jadwal / Detail Pengajuan Jadwal</p>
                 </div>
-            </div>
-        </div>
-        {{-- menu pengajuan ruang kuliah --}}
-        <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <a href="{{ route('akademik.listRuangKuliah') }}"class="flex h-20 border text-white items-center rounded-md ">
-                <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
-                <p class="mx-auto">Pengajuan Ruang Kuliah</p>
             </a>
         </div>
     </section>
 
-    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-        <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+
+    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
+        <div class="container-table ">
+            <div id="table-list">
+
+                <h2 class="text-2xl text-center mx-auto max-w-64 ">LIST DETAIL PENGAJUAN JADWAL </h2>
+
+                <div class="flex mt-5 ml-16">
+                    <p>
+                        Jurusan:
+                    </p>
+                    <p class="font-semibold ml-px">
+                        Teknik Informatika
+                    </p>
+                </div>
+
+                <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>HARI</th>
+                            <th>JAM</th>
+                            <th>KODE_RUANGAN</th>
+                            <th>NAMA_MK</th>
+                            <th>SKS</th>
+                            <th>PENGAMPU</th>
+                            <th>KELAS</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. </td>
+                            <td>Senin</td>
+                            <td>15.40-18.10</td>
+                            <td>E101</td>
+                            <td>SISTEM INFORMASI</td>
+                            <td>3</td>
+                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>2. </td>
+                            <td>Selasa</td>
+                            <td>7.00-9.30</td>
+                            <td>E101</td>
+                            <td>SISTEM INFORMASI</td>
+                            <td>3</td>
+                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>3. </td>
+                            <td>Selasa</td>
+                            <td>15.40-18.10</td>
+                            <td>E101</td>
+                            <td>SISTEM INFORMASI</td>
+                            <td>3</td>
+                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
+                            <td>D</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </footer>
+    </section>
+
+    <section class="relative top-32">
+        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
+            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
+                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+            </div>
+        </footer>
+    </section>
 </body>
 
 </html>

@@ -46,9 +46,9 @@ class NewUser extends Seeder
             'akademik' => 0,
         ],
         [
-            'name' => 'Rahman Rizal Arifianto',
-            'email' => 'rizalrahman@gmail.com',
-            'password' =>'rizalrahman12345', 
+            'name' => 'Rizal Adiyanto Nugroho',
+            'email' => 'rizaladiyantonugroho@gmail.com',
+            'password' =>'rizal12345', 
             'mahasiswa' => 1,
             'dekan' => 0,
             'kaprodi' => 0,

@@ -5,23 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
-    <title>dashboard Akademik</title>
-
+    <title>List Ruang Kuliah</title>
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
-    {{-- navbar --}}
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
                     <div class="flex">
-                        <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
-                        <h3 class="mt-1.5 ml-2 text-white">SiAKAM Undip</h3>
-
+                        <a href="{{ route('kaprodi.dashboard') }}" class="flex items-center">
+                            <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
+                            <h3 class="ml-2 text-white">SiAKAM Undip</h3>
+                        </a>
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -39,7 +37,6 @@
 
                         <div>
                             <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
-
                         </div>
 
                         <!-- Profile dropdown -->
@@ -80,84 +77,82 @@
             </div>
         </div>
     </nav>
-    {{-- section dasbor --}}
-    <section>
-        <div class=" w-2/3 mx-auto">
-            <div class="text-white flex justify-between mt-10 text-sm">
-                <p class="">Dasbor</p>
-                <p class="">Home / Dasbor</p>
-            </div>
-            <h1 class="text-white w-80 text-4xl text-start mt-16">Selamat
-                Datang,
-            </h1>
-            <h1 class="text-white w-101 h-20 text-4xl text-start"> {{ Auth::user()->name }}!</h1>
-            <div class="bg-white rounded-lg mt-10">
-                <div class="p-7">
-                    <div class="flex justify-between h-72">
-                        <div class="flex w-2/4">
-                            <div class=" w-72">
-                                <p class="  font-semibold text-gray-700 w-full">Profil
-                                    Akademik
-                                </p>
 
-                                <img class="rounded-full ml-2 mt-5 w-36 h-36" src="{{ asset('firmanUtina.png') }}"
-                                    alt="">
-                            </div>
-                            <div class="text-base text-gray-500 mt-6 tracking-wide w-96">
-                                <p>{{ $userName }}<br>
-                                    {{ $userNIP }} <br>
-                                    {{ $userEmail }} <br>
-                                    {{ $nomorHP }}
-                                </p>
-
-                                <br>
-                                <p>Fakultas Sains Dan Matematika <span class="font-bold">(FSM)</span></p>
-                            </div>
-                        </div>
-
-                        <div class="border border-slate-300"></div>
-
-                        <div class=" w-2/4 flex justify-center">
-                            <div class="mx-auto pl-7">
-                                <div class="pt-4 flex flex-wrap justify-start items-center gap-7">
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Mahasiswa</p>
-                                        <p class="pt-2 font-semibold text-lg">4440</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Gedung</p>
-                                        <p class="pt-2 font-semibold text-lg">11</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Ruang Kelas</p>
-                                        <p class="pt-2 font-semibold text-lg">130</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Dosen</p>
-                                        <p class="pt-2 font-semibold text-lg">1989</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <section class="relative top-20">
+        <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
+            <p class="font-bold">Ruang Kuliah</p>
+            <a href="{{ route('akademik.dashboard') }}">
+                <div class="flex">
+                    <img src="{{ asset('home-outline.svg') }}" alt="">
+                    <p class="ml-2">Dasbor / Ruang Kuliah</p>
                 </div>
-            </div>
-        </div>
-        {{-- menu pengajuan ruang kuliah --}}
-        <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-            <a href="{{ route('akademik.listRuangKuliah') }}"class="flex h-20 border text-white items-center rounded-md ">
-                <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
-                <p class="mx-auto">Pengajuan Ruang Kuliah</p>
             </a>
         </div>
     </section>
 
-    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-        <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-6" id="body">
+        <div class="container-table ">
+            <div id="table-list">
+
+                <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST RUANG KULIAH</h2>
+
+                <div class="flex justify-between items-center w-11/12 mx-auto mt-5 mb-3">
+                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-8 w-32 inline-flex bg-[#002687] text-white rounded-lg pt-1 pl-2">Atur Ruang
+                        <img class="w-5 h-5 pt-1 ml-2" src="{{ asset('plus.svg') }}" alt="">
+                    </a>
+                    <div class="flex items-center">
+                        <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white px-2" placeholder="Search" type="text">
+                        <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2">
+                            <img src="{{ asset('searchLogo.svg') }}" alt="">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+        <div class=" overflow-x-auto pb-4">
+            <div class="min-w-full inline-block align-middle">
+                <div class="overflow-hidden  border rounded-lg border-gray-300 w-11/12 mx-auto">
+                    <table class="table-auto min-w-full rounded-xl">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th scope="col" class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> NO </th>
+                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> PROGRAM STUDI </th>
+                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> RUANGAN </th>
+                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> AKSI </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-300">
+                            @foreach ( $ruangan as $index => $ruangan )
+                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">{{$index + 1}}</td>
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $ruangan->jurusan }} </td>
+                                <div grid grid-cols-4 gap-2>
+                                <td class="break-all p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{$ruangan->kode_ruangan}}</td>
+                                </div>
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $ruangan->status }}</td>
+                                <td>
+                                    <a href="{{ route('akademik.listRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </footer>
+        </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative top-32">
+        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
+            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
+                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+            </div>
+        </footer>
+    </section>
 </body>
 
 </html>
