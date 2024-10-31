@@ -56,5 +56,17 @@ class MenuController extends Controller
     }
     // End Controller mahasiswa perwwalian
 
+    // Controller Akademik
+    public function listRuangKuliah()
+    {
+        return view('akademik.listRuangKuliah');
+    }
+
+    public function inputRuangKuliah()
+    {
+        return view('akademik.inputRuangKuliah');
+    }
+    // End Controller Dosen Wali
+    
 }
 ?>
