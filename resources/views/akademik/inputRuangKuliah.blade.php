@@ -94,7 +94,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700">Ruangan:</label>
                 <div class="grid grid-cols-4 gap-2">
-                    @foreach(['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A201', 'A202'] as $ruang)
+                    @foreach(['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B201', 'B202'] as $ruang)
                         <div class="flex items-center">
                             <input type="checkbox" id="{{ $ruang }}" name="ruangs[]" value="{{ $ruang }}" class="mr-2">
                             <label for="{{ $ruang }}" class="text-gray-700">{{ $ruang }}</label>

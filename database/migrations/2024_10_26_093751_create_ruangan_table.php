@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ruangan', function (Blueprint $table) {
+            $table->id()->primary();
+            $table->timestamps();
             $table->integer('kapasitas');
-            $table->string('kode_ruangan', 5)->primary();
+            $table->string('jurusan');
+            $table->string('kode_ruangan', 255);
+            $table->enum('status', ['Disetujui', 'Tidak Disetujui'])->default('Tidak Disetujui');
         });
     }
 

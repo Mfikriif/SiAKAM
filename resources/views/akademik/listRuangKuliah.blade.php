@@ -97,11 +97,9 @@
                 <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST RUANG KULIAH</h2>
 
                 <div class="flex justify-between items-center w-11/12 mx-auto mt-5 mb-3">
-                    <button class="h-8 inline-flex bg-[#002687] text-white rounded-lg pt-1 pl-2">
-                        Atur Ruang
+                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-8 w-32 inline-flex bg-[#002687] text-white rounded-lg pt-1 pl-2">Atur Ruang
                         <img class="w-5 h-5 pt-1 ml-2" src="{{ asset('plus.svg') }}" alt="">
-                    </button>
-                    
+                    </a>
                     <div class="flex items-center">
                         <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white px-2" placeholder="Search" type="text">
                         <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2">
@@ -119,48 +117,24 @@
                             <tr class="bg-gray-50">
                                 <th scope="col" class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> NO </th>
                                 <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> PROGRAM STUDI </th>
-                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> KAPASITAS </th>
                                 <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> RUANGAN </th>
                                 <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> AKSI </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-300">
+                            @foreach ( $ruangan as $index => $ruangan )
                             <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center"> 1 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> S1-INFORMATIKA </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> E101, E102, E103, A303, A304, A305, B101, B102</td>
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">{{$index + 1}}</td>
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $ruangan->jurusan }} </td>
+                                <div grid grid-cols-4 gap-2>
+                                <td class="break-all p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{$ruangan->kode_ruangan}}</td>
+                                </div>
+                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $ruangan->status }}</td>
                                 <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
+                                    <a href="{{ route('akademik.listRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
                                 </td>
                             </tr>
-                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center "> 2 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> S1-MATEMATIKA </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> K101, K102, K103</td>
-                                <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
-                                </td>
-                            </tr>
-                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center "> 3 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> S1-BIOLOGI </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> K102</td>
-                                <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
-                                </td>
-                            </tr>
-                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center "> 4 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> S1-STATISTIKA </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> 50 </td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> K202</td>
-                                <td>
-                                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

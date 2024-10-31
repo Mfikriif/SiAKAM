@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\akademikController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DekanController;
@@ -39,8 +41,8 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'akademik')->group(function() {
     Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->name('akademik.dashboard');
-    Route::get('akademik/list-ruang-kuliah',[MenuController::class,'listRuangKuliah'])->name('akademik.listRuangKuliah');
     Route::get('akademik/input-ruang-kuliah',[MenuController::class,'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
+    Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
 });
 
 // Controller Dekan Untuk Melindungi Pengaksesan via Link Address
