@@ -46,6 +46,7 @@ Route::middleware(['auth', 'dekan'])->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
     Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
     Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->name('dekan.dashboard');
+    Route::get('dekan/pengajuan-jadwal/detail-pengajuan-jadwal',[MenuController::class,'detailListPengajuanJadwal'])->name('dekan.detailListPengajuanJadwal');
 });
 
 // Controller Dosenwali Untuk Melindungi Pengaksesan via Link Address

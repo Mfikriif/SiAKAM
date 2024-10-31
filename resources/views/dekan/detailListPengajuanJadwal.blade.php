@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/css/app.css')
-    <title>List Mahasiswa Perwalian</title>
+    <title>List Pengajuan Jadwal Kuliah</title>
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
@@ -15,7 +15,7 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
-                    <a href="{{ route('dosenwali.dashboard') }}">
+                    <a href="{{ route('dekan.dashboard') }}">
                         <div class="flex">
                             <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
                             <h3 class="mt-1.5 ml-5 text-white">SiAKAM Undip</h3>
@@ -47,7 +47,7 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}"
+                                    <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}"
                                         alt="">
                                 </button>
                             </div>
@@ -80,11 +80,11 @@
 
     <section class="relative top-20">
         <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
-            <p class="font-bold">MAHASISWA PERWALIAN</p>
-            <a href="{{ route('dosenwali.dashboard') }}">
+            <p class="font-bold">Detail Pengajuan Jadwal</p>
+            <a href="{{ route('dekan.listPengajuanJadwal') }}">
                 <div class="flex">
                     <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Mahasiswa Perwalian</p>
+                    <p class="ml-2">Pengajuan Jadwal / Detail Pengajuan Jadwal</p>
                 </div>
             </a>
         </div>
@@ -95,76 +95,62 @@
         <div class="container-table ">
             <div id="table-list">
 
-                <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST MAHASISWA PERWALIAN</h2>
+                <h2 class="text-2xl text-center mx-auto max-w-64 ">LIST DETAIL PENGAJUAN JADWAL </h2>
 
-                <div class="flex justify-end mt-5 mr-16">
-                    <form method="GET" action="{{ route('dosenwali.mahasiswaPerwalian') }}" class="flex">
-                        <!-- Dropdown for 'Angkatan' -->
-                        <div id="dropdown">
-                            <select name="angkatan" id="angkatan"
-                                class="bg-white border-gray-300 rounded-l-xl h-8 w-40 mr-3 text-sm py-px">
-                                <option value="" disabled selected>Angkatan</option>
-                                <option value="2019" {{ request('angkatan') == '2019' ? 'selected' : '' }}>2019
-                                </option>
-                                <option value="2020" {{ request('angkatan') == '2020' ? 'selected' : '' }}>2020
-                                </option>
-                                <option value="2021" {{ request('angkatan') == '2021' ? 'selected' : '' }}>2021
-                                </option>
-                                <option value="2022" {{ request('angkatan') == '2022' ? 'selected' : '' }}>2022
-                                </option>
-                                <option value="2023" {{ request('angkatan') == '2023' ? 'selected' : '' }}>2023
-                                </option>
-                                <option value="2024" {{ request('angkatan') == '2024' ? 'selected' : '' }}>2024
-                                </option>
-                            </select>
-                        </div>
-
-                        <!-- Search input field -->
-                        <div id="input-text">
-                            <input name="search" value="{{ request('search') }}"
-                                class="bg-[#002687] text-white h-8 rounded-l-xl pl-3" placeholder="Search.."
-                                type="text">
-                        </div>
-
-                        <!-- Search button -->
-                        <div id="button-search">
-                            <button class="bg-[#002687] h-8 w-8 rounded-r-xl flex items-center justify-center"
-                                type="submit">
-                                <img src="{{ asset('searchLogo.svg') }}" alt="">
-                            </button>
-                        </div>
-                    </form>
+                <div class="flex mt-5 ml-16">
+                    <p>
+                        Jurusan:
+                    </p>
+                    <p class="font-semibold ml-px">
+                        Teknik Informatika
+                    </p>
                 </div>
 
                 <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th class="text-left pl-4">NIM</th>
-                            <th class="text-left pl-4">NAMA</th>
-                            <th>ANGKATAN</th>
+                            <th>HARI</th>
+                            <th>JAM</th>
+                            <th>KODE_RUANGAN</th>
+                            <th>NAMA_MK</th>
                             <th>SKS</th>
-                            <th>STATUS</th>
+                            <th>PENGAMPU</th>
+                            <th>KELAS</th>
                         </tr>
 
                     </thead>
                     <tbody>
-                        @foreach ($mahasiswaPerwalian as $index => $mahasiswa)
-                            <tr>
-                                <td>{{ $index + 1 }}.</td>
-                                <td class="text-left pl-4">{{ $mahasiswa->nim }}</td>
-                                <td class="text-left pl-4">{{ $mahasiswa->nama }}</td>
-                                <td>{{ $mahasiswa->angkatan }}</td>
-                                <td>{{ $mahasiswa->sks }} SKS</td>
-                                <td>
-                                    @if ($mahasiswa->status == 1)
-                                        AKTIF
-                                    @else
-                                        TIDAK AKTIF
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <td>1. </td>
+                            <td>Senin</td>
+                            <td>15.40-18.10</td>
+                            <td>E101</td>
+                            <td>SISTEM INFORMASI</td>
+                            <td>3</td>
+                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>2. </td>
+                            <td>Selasa</td>
+                            <td>7.00-9.30</td>
+                            <td>E101</td>
+                            <td>SISTEM INFORMASI</td>
+                            <td>3</td>
+                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>3. </td>
+                            <td>Selasa</td>
+                            <td>15.40-18.10</td>
+                            <td>E101</td>
+                            <td>SISTEM INFORMASI</td>
+                            <td>3</td>
+                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
+                            <td>D</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

@@ -80,11 +80,11 @@
 
     <section class="relative top-20">
         <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
-            <p class="font-bold">PENGAJUAN JADWAL</p>
+            <p class="font-bold">PENGAJUAN RUANG KULIAH</p>
             <a href="{{ route('dekan.dashboard') }}">
                 <div class="flex">
                     <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Pengajuan Jadwal</p>
+                    <p class="ml-2">Dasbor / Pengajuan Ruang Kuliah</p>
                 </div>
             </a>
         </div>
@@ -95,7 +95,7 @@
         <div class="container-table ">
             <div id="table-list">
 
-                <h2 class="text-2xl text-center mx-auto max-w-64">LIST PENGAJUAN JADWAL </h2>
+                <h2 class="text-2xl text-center mx-auto max-w-64">LIST PENGAJUAN RUANG KULIAH </h2>
 
                 <div class=" flex justify-end mt-5 mr-16">
                     <div id="input-text">
@@ -116,7 +116,7 @@
                             <th>KAPASITAS</th>
                             <th>RUANGAN</th>
                             <th>AKSI</th>
-                            <th>STAUS</th>
+                            <th>STATUS</th>
                         </tr>
 
                     </thead>

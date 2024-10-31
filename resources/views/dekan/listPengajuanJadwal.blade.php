@@ -124,7 +124,9 @@
                             <td>S1-TEKNIK INFORMATIKA</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -132,7 +134,9 @@
                             <td>S1-BIOLOGI</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -140,7 +144,9 @@
                             <td>S1-BIOTEKNOLOGI</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -148,7 +154,9 @@
                             <td>S1-FISIKA</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -156,7 +164,9 @@
                             <td>S1-MATEMATIKA</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -164,7 +174,9 @@
                             <td>S1-STATISTIKA</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -172,7 +184,9 @@
                             <td>S1-KIMIA</td>
                             <td>2024/2025</td>
                             <td>
-                                <button class="btn-detail">Detail</button>
+                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
+                                    <button class="btn-detail">Detail</button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
