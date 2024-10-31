@@ -9,6 +9,7 @@ use App\Http\Controllers\DekanController;
 use App\Http\Controllers\MenuController;
 use App\Http\Middleware\Dekan;
 use App\Http\Controllers\DosenWaliController;
+use App\Http\Controllers\JadwalController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -57,8 +58,10 @@ Route::middleware('auth', 'dosenwali')->group(function () {
 
 // Controller Kaprodi Untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'kaprodi')->group(function() {
-    Route::get('kaprodi/pembuatan-jadwal',[MenuController::class,'PengajuanJadwalKaprodi'])->name('kaprodi.listPengajuan');
-    Route::get('kaprodi/dashboard',[HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');    
+    Route::get('kaprodi/dashboard',[HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');
+    Route::get('kaprodi/pembuatan-jadwal',[JadwalController::class, 'index'])->name('kaprodi.listPengajuan');
+    Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('jadwal.store');
+    Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
 });
 
 
