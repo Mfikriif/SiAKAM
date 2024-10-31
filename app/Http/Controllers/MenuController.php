@@ -24,9 +24,15 @@ class MenuController extends Controller
     {
         return view('dekan.listPengajuanJadwal');
     }
+
     public function pengajuanRuangKuliahDekan()
     {
-        return view('dekan.listPengajuanJadwal');
+        return view('dekan.listPengajuanRuang');
+    }
+
+    public function detailListPengajuanJadwal()
+    {
+        return view('dekan.detailListPengajuanJadwal');
     }
     // End Controller Dekan
 
@@ -41,11 +47,26 @@ class MenuController extends Controller
         return view('dosenwali.listPengajuanIRS');
     }
     
+    // End Controller Dosen Wali
+
+    //Controller mahasiswa perwalian 
     public function mahasiswaPerwalian()
     {
         return view('dosenwali.listMahasiswaPerwalian');
     }
-    // End Controller Dosen Wali
+    // End Controller mahasiswa perwwalian
 
+    // Controller Akademik
+    public function listRuangKuliah()
+    {
+        return view('akademik.listRuangKuliah');
+    }
+
+    public function inputRuangKuliah()
+    {
+        return view('akademik.inputRuangKuliah');
+    }
+    // End Controller Dosen Wali
+    
 }
 ?>

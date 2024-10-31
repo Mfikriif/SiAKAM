@@ -101,25 +101,35 @@
                     <form method="GET" action="{{ route('dosenwali.mahasiswaPerwalian') }}" class="flex">
                         <!-- Dropdown for 'Angkatan' -->
                         <div id="dropdown">
-                            <select name="angkatan" id="angkatan" class="bg-white border-gray-300 rounded-l-xl h-8 w-40 mr-3 text-sm py-px">
+                            <select name="angkatan" id="angkatan"
+                                class="bg-white border-gray-300 rounded-l-xl h-8 w-40 mr-3 text-sm py-px">
                                 <option value="" disabled selected>Angkatan</option>
-                                <option value="2019" {{ request('angkatan') == '2019' ? 'selected' : '' }}>2019</option>
-                                <option value="2020" {{ request('angkatan') == '2020' ? 'selected' : '' }}>2020</option>
-                                <option value="2021" {{ request('angkatan') == '2021' ? 'selected' : '' }}>2021</option>
-                                <option value="2022" {{ request('angkatan') == '2022' ? 'selected' : '' }}>2022</option>
-                                <option value="2023" {{ request('angkatan') == '2023' ? 'selected' : '' }}>2023</option>
-                                <option value="2024" {{ request('angkatan') == '2024' ? 'selected' : '' }}>2024</option>
+                                <option value="2019" {{ request('angkatan') == '2019' ? 'selected' : '' }}>2019
+                                </option>
+                                <option value="2020" {{ request('angkatan') == '2020' ? 'selected' : '' }}>2020
+                                </option>
+                                <option value="2021" {{ request('angkatan') == '2021' ? 'selected' : '' }}>2021
+                                </option>
+                                <option value="2022" {{ request('angkatan') == '2022' ? 'selected' : '' }}>2022
+                                </option>
+                                <option value="2023" {{ request('angkatan') == '2023' ? 'selected' : '' }}>2023
+                                </option>
+                                <option value="2024" {{ request('angkatan') == '2024' ? 'selected' : '' }}>2024
+                                </option>
                             </select>
                         </div>
-                
+
                         <!-- Search input field -->
                         <div id="input-text">
-                            <input name="search" value="{{ request('search') }}" class="bg-[#002687] text-white h-8 rounded-l-xl pl-3" placeholder="Search.." type="text">
+                            <input name="search" value="{{ request('search') }}"
+                                class="bg-[#002687] text-white h-8 rounded-l-xl pl-3" placeholder="Search.."
+                                type="text">
                         </div>
-                
+
                         <!-- Search button -->
                         <div id="button-search">
-                            <button class="bg-[#002687] h-8 w-8 rounded-r-xl flex items-center justify-center" type="submit">
+                            <button class="bg-[#002687] h-8 w-8 rounded-r-xl flex items-center justify-center"
+                                type="submit">
                                 <img src="{{ asset('searchLogo.svg') }}" alt="">
                             </button>
                         </div>
@@ -140,21 +150,21 @@
                     </thead>
                     <tbody>
                         @foreach ($mahasiswaPerwalian as $index => $mahasiswa)
-                        <tr>
-                            <td>{{ $index + 1 }}.</td>
-                            <td class="text-left pl-4">{{ $mahasiswa->nim }}</td>
-                            <td class="text-left pl-4">{{ $mahasiswa->nama }}</td>
-                            <td>{{ $mahasiswa->angkatan }}</td>
-                            <td>{{ $mahasiswa->sks }} SKS</td> 
-                            <td>
-                                @if($mahasiswa->status == 1)
-                                    AKTIF
-                                @else
-                                    TIDAK AKTIF
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+                            <tr>
+                                <td>{{ $index + 1 }}.</td>
+                                <td class="text-left pl-4">{{ $mahasiswa->nim }}</td>
+                                <td class="text-left pl-4">{{ $mahasiswa->nama }}</td>
+                                <td>{{ $mahasiswa->angkatan }}</td>
+                                <td>{{ $mahasiswa->sks }} SKS</td>
+                                <td>
+                                    @if ($mahasiswa->status == 1)
+                                        AKTIF
+                                    @else
+                                        TIDAK AKTIF
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\akademikController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DekanController;
@@ -39,7 +41,9 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
 
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'akademik')->group(function() {
-    Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->middleware(['auth','akademik']);
+    Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->name('akademik.dashboard');
+    Route::get('akademik/input-ruang-kuliah',[MenuController::class,'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
+    Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
 });
 
 // Controller Dekan Untuk Melindungi Pengaksesan via Link Address
@@ -47,6 +51,7 @@ Route::middleware(['auth', 'dekan'])->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
     Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
     Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->name('dekan.dashboard');
+    Route::get('dekan/pengajuan-jadwal/detail-pengajuan-jadwal',[MenuController::class,'detailListPengajuanJadwal'])->name('dekan.detailListPengajuanJadwal');
 });
 
 // Controller Dosenwali Untuk Melindungi Pengaksesan via Link Address

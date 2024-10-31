@@ -7,29 +7,29 @@ use Illuminate\Support\Facades\DB;
 
 class RuanganSeeder extends Seeder
 {
-    public function run()
+
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        DB::table('ruangan')->insert([
+        //Data untuk tabel ruangan
+        $ruangan = [
             [
-                'kode_ruangan' => 'E101',
-                'kapasitas' => 50,
-            ],
+                'id'=> '1',
+                'jurusan'=> 'S1-INFORMATIKA',
+                'kode_ruangan'=> 'E101, E102, E103',
+                'kapasitas'=> '50',
+            ],            
             [
-                'kode_ruangan' => 'A303',
-                'kapasitas' => 30,
+                'id'=> '2',
+                'jurusan'=> 'S1-STATISTIKA',
+                'kode_ruangan'=> 'B101',
+                'kapasitas'=> '50',
             ],
-            [
-                'kode_ruangan' => 'B202',
-                'kapasitas' => 40,
-            ],
-            [
-                'kode_ruangan' => 'C404',
-                'kapasitas' => 25,
-            ],
-            [
-                'kode_ruangan' => 'D505',
-                'kapasitas' => 35,
-            ],
-        ]);
+        ];
+
+        // Insert data ke tabel kaprodi
+        DB::table('ruangan')->insert($ruangan);
     }
 }
