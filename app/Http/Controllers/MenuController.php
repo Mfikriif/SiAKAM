@@ -17,6 +17,10 @@ class MenuController extends Controller
     {
         return view('mahasiswa.khs');
     }
+    public function irs()
+    {
+        return view('mahasiswa.irs');
+    }
     // End Controller Mahasiswa
 
     // Controlle Dekan

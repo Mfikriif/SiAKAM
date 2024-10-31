@@ -1,8 +1,5 @@
 <?php
-
-
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\akademikController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
@@ -12,6 +9,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Middleware\Dekan;
 use App\Http\Controllers\DosenWaliController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\MatkulController;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -36,6 +34,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::get('mahasiswa/jadwal-kuliah',[MenuController::class,'jadwalKuliah'])->name('mahasiswa.jadwalKuliah');
     Route::get('mahasiswa/herreg',[MenuController::class,'herReg'])->name('mahasiswa.herReg');
     Route::get('mahasiswa/khs',[MenuController::class,'khs'])->name('mahasiswa.khs');
+    Route::get('mahasiswa/irs',[MatkulController::class, 'getMatkul'])->name('mahasiswa.irs');
     Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
 });
 
