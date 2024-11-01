@@ -16,15 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
-
-            // Tambahkan kolom peran dengan nilai default false
-            $table->boolean('mahasiswa')->nullable()->default(false);
-            $table->boolean('dekan')->nullable()->default(false);
-            $table->boolean('kaprodi')->nullable()->default(false);
-            $table->boolean('dosenwali')->nullable()->default(false);
-            $table->boolean('akademik')->nullable()->default(false);
+            $table->integer('role')->default(1);
         });
     }
 

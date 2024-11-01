@@ -27,36 +27,53 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = $request->user();
-        $usertype = $this->getUserRoles($user);
+        $roles = $this->getUserRoles($user->role);
 
         // Jika user memiliki lebih dari satu role, arahkan ke halaman pemilihan role
-        if (count($usertype) > 1) {
+        if (count($roles) > 1) {
             return redirect()->route('role.selection');
         }
 
-        return redirect($this->getDashboardUrl($usertype[0]));
+        return redirect($this->getDashboardUrl($roles[0]));
     }
 
-    private function getUserRoles($user)
+    private function getUserRoles(int $role): array
     {
-        $usertype = [];
-        if ($user->mahasiswa == 1) {
-            $usertype[] = 'mahasiswa';
+            // NOTES!!!!!!!
+            // Mahasiswa role = 1;
+            // Akademik role = 2;
+            // Dosen Wali role = 3;
+            // Kaprodi role = 4;
+            // Dekan role = 5;
+            // Dekan and Dosen Wali role = 6;
+            // Kaprodi and Dosen Wali role = 7;
+            // Dosen role = 9;
+        $roles = [];
+        if ($role === 1) {
+            $roles[] = 'mahasiswa';
         }
-        if ($user->dekan == 1) {
-            $usertype[] = 'dekan';
+        if ($role === 2) {
+            $roles[] = 'akademik';
         }
-        if ($user->kaprodi == 1) {
-            $usertype[] = 'kaprodi';
-        }
-        if ($user->dosenwali == 1) {
+        if ($role === 3) {
             $usertype[] = 'dosenwali';
         }
-        if ($user->akademik == 1) {
-            $usertype[] = 'akademik';
+        if ($role === 4) {
+            $roles[] = 'kaprodi';
+        }
+        if ($role === 5) {
+            $roles[] = 'dekan';
+        }
+        if ($role === 6){
+            $roles[] = 'dekan';
+            $roles[] = 'dosenwali';
+        }
+        if ($role === 7){
+            $roles[] = 'kaprodi';
+            $roles[] = 'dosenwali';
         }
 
-        return $usertype;
+        return $roles;
     }
 
     /**
@@ -85,8 +102,8 @@ class AuthenticatedSessionController extends Controller
     {
         $user = auth()->user();
 
-        $usertype = $this->getUserRoles($user);
-        return view('auth.select-role', ['roles' => $usertype]);
+        $roles = $this->getUserRoles($user->role);
+        return view('auth.select-role', ['roles' => $roles]);
     }
 
     /**
@@ -96,9 +113,9 @@ class AuthenticatedSessionController extends Controller
     {
         $role = $request->input('role');
         $user = auth()->user();
+        $roles = $this->getUserRoles($user->role);
 
-        $usertype = $this->getUserRoles($user);
-        if (!in_array($role, $usertype)) {
+        if (!in_array($role, $roles)) {
             return redirect()->route('role.selection')->withErrors('Role yang dipilih tidak valid.');
         }
 

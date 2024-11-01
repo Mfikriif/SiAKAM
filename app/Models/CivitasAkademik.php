@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kaprodi extends Model
+class CivitasAkademik extends Model
 {
     use HasFactory;
 
-    // Nama tabel dalam database
-    protected $table = 'kaprodi';
+    protected $table = 'civitas_akademik'; // Specify the table name
 
-    // Kolom yang dapat diisi
+    // Define fillable fields if needed
     protected $fillable = [
         'nama',
         'nip',
@@ -26,8 +25,5 @@ class Kaprodi extends Model
         'status',
     ];
 
-    public function user()
-    {
-        return $this->hasOne(User::class, 'kaprodi_id');
-    }
+    // Define any relationships if necessary
 }
