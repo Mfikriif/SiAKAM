@@ -1,5 +1,6 @@
 <?php 
 namespace App\Http\Controllers;
+use App\Models\JadwalMk;
 
 
 class MenuController extends Controller
@@ -36,7 +37,11 @@ class MenuController extends Controller
 
     public function detailListPengajuanJadwal()
     {
-        return view('dekan.detailListPengajuanJadwal');
+        // Ambil semua data jadwal
+        $jadwalList = JadwalMk::all();
+
+        // Kirim data ke view
+        return view('dekan.detailListPengajuanJadwal', compact('jadwalList'));
     }
     // End Controller Dekan
 

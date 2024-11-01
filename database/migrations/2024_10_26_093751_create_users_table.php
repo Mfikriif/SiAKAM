@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migrasi untuk membuat tabel `users`.
      */
     public function up(): void
     {
@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            // Tambahkan kolom peran dengan nilai default false
             $table->boolean('mahasiswa')->nullable()->default(false);
             $table->boolean('dekan')->nullable()->default(false);
             $table->boolean('kaprodi')->nullable()->default(false);
@@ -27,7 +29,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Kembalikan migrasi jika dihapus.
      */
     public function down(): void
     {

@@ -10,7 +10,7 @@
     <title>List Pengajuan Jadwal Kuliah</title>
 </head>
 
-<body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
+<body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -61,7 +61,6 @@
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                 tabindex="-1">
-                                <!-- Active: "bg-gray-100", Not Active: "" -->
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                     class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
@@ -90,81 +89,87 @@
         </div>
     </section>
 
-
-    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
-        <div class="container-table ">
+    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
+        <div class="container-table">
             <div id="table-list">
 
-                <h2 class="text-2xl text-center mx-auto max-w-64 ">LIST DETAIL PENGAJUAN JADWAL </h2>
+                <h2 class="text-2xl text-center mx-auto max-w-64">LIST DETAIL PENGAJUAN JADWAL</h2>
 
                 <div class="flex mt-5 ml-16">
-                    <p>
-                        Jurusan:
-                    </p>
-                    <p class="font-semibold ml-px">
-                        Teknik Informatika
-                    </p>
+                    <p>Jurusan:</p>
+                    <p class="font-semibold ml-px">Informatika</p>
                 </div>
 
-                <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>HARI</th>
-                            <th>JAM</th>
-                            <th>KODE_RUANGAN</th>
-                            <th>NAMA_MK</th>
-                            <th>SKS</th>
-                            <th>PENGAMPU</th>
-                            <th>KELAS</th>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1. </td>
-                            <td>Senin</td>
-                            <td>15.40-18.10</td>
-                            <td>E101</td>
-                            <td>SISTEM INFORMASI</td>
-                            <td>3</td>
-                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
-                            <td>C</td>
-                        </tr>
-                        <tr>
-                            <td>2. </td>
-                            <td>Selasa</td>
-                            <td>7.00-9.30</td>
-                            <td>E101</td>
-                            <td>SISTEM INFORMASI</td>
-                            <td>3</td>
-                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>3. </td>
-                            <td>Selasa</td>
-                            <td>15.40-18.10</td>
-                            <td>E101</td>
-                            <td>SISTEM INFORMASI</td>
-                            <td>3</td>
-                            <td>Dr.Indra Waspada S.Kom.,M.Cs</td>
-                            <td>D</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-11/12 mx-auto text-center mt-2 border-separate border-spacing-y-3 pb-8">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left border">Kode MK</th>
+                                <th class="px-4 py-2 text-middle border">Mata Kuliah</th>
+                                <th class="px-4 py-2 text-left border">Semester</th>
+                                <th class="px-4 py-2 text-left border">SKS</th>
+                                <th class="px-4 py-2 text-left border">Sifat</th>
+                                <th class="px-4 py-2 text-middle border">Pengampu</th>
+                                <th class="px-4 py-2 text-left border">Kelas</th>
+                                <th class="px-4 py-2 text-left border">Ruangan</th>
+                                <th class="px-4 py-2 text-left border">Hari</th>
+                                <th class="px-4 py-2 text-middle border">Jam</th>
+                                <th class="px-4 py-2 text-middle border">Keterangan</th>
+                                <th class="px-4 py-2 text-middle border">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($jadwalList as $jadwal)
+                                <tr class="even:bg-gray-50">
+                                    <td class="px-4 py-2 border">{{ $jadwal->kode_mk }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->nama }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->semester }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->sks }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->sifat }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->pengampu }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->kelas }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->ruangan }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->hari }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
+                                    <td class="px-4 py-2 border">
+                                        @if ($jadwal->persetujuan)
+                                            <span class="text-green-500">Disetujui</span>
+                                        @else
+                                            <span class="text-red-500">Belum Disetujui</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-2 border">
+                                        <div class="flex space-x-2">
+                                            <form action="{{ route('jadwal.approve', $jadwal->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                                                    Setujui
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('jadwal.reject', $jadwal->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('POST')
+                                                <button type="submit" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                                    Tolak
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
-    </section>
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-auto">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+        </div>
+    </footer>
 </body>
 
 </html>
