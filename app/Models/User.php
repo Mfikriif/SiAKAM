@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-// use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    // Nama tabel dalam database
     protected $table = "users";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +22,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'mahasiswa',
+        'dekan',
+        'kaprodi',
+        'dosenwali',
+        'akademik',
+        'kaprodi_id',
     ];
 
     /**
@@ -34,20 +41,21 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    // public function mahasiswa()
-    // {
-    //     return $this->hasOne(Mahasiswa::class,'user_id','id');
-    // }
+    /**
+     * Relasi ke model Kaprodi.
+     * Menghubungkan pengguna ke data Kaprodi terkait.
+     */
+    public function kaprodi()
+    {
+        return $this->belongsTo(Kaprodi::class, 'kaprodi_id');
+    }
 }

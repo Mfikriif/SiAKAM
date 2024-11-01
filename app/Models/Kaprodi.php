@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Kaprodi extends Model
 {
     use HasFactory;
+
+    // Nama tabel dalam database
     protected $table = 'kaprodi';
+
+    // Kolom yang dapat diisi
     protected $fillable = [
-        'id',
         'nama',
         'nip',
         'email',
@@ -20,5 +23,11 @@ class Kaprodi extends Model
         'jenis_kelamin',
         'alamat',
         'no_hp',
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'kaprodi_id');
+    }
 }

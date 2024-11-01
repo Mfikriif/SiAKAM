@@ -19,7 +19,7 @@ class KaprodiSeeder extends Seeder
                 'nama' => 'Syariful Setiawan',
                 'nip' => '2450034567',
                 'email' => 'syariful@gmail.com',
-                'jurusan' => 'S1 Matematika',
+                'jurusan' => 'Informatika',
                 'tempat_lahir' => 'Jakarta',
                 'tanggal_lahir' => '1935-07-10',
                 'jenis_kelamin' => 'L',
