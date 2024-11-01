@@ -110,7 +110,7 @@
                 Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).
             </p>
             <button
-                onclick="showConfirm('Anda yakin memilih status Aktif?','Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS','warning')"
+                onclick="showConfirm('Anda yakin memilih status Aktif?','Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS','warning','Dipilih!','Anda telah memilih status Aktif','success')"
                 class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
                 Pilih
             </button>
@@ -126,7 +126,7 @@
                 Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.
             </p>
             <button
-                onclick="showAlert('Anda yakin memilih status Cuti?','Anda akan menghentikan perkuliahan untuk semester ini!','warning')"
+                onclick="showAlert('Anda yakin memilih status Cuti?','Anda akan menghentikan perkuliahan untuk semester ini!','warning','Dipilih!','Anda memilih status CUTI','success')"
                 class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
                 Pilih
             </button>

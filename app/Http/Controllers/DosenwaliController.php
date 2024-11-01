@@ -5,7 +5,7 @@ use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DosenWaliController extends Controller
+class DosenwaliController extends Controller
 {
     public function MahasiswaPerwalian(Request $request)
     {
