@@ -50,12 +50,4 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Relasi ke model Kaprodi.
-     * Menghubungkan pengguna ke data Kaprodi terkait.
-     */
-    public function kaprodi()
-    {
-        return $this->belongsTo(Kaprodi::class, 'kaprodi_id');
-    }
 }
