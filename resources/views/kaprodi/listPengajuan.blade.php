@@ -49,7 +49,8 @@
                                 id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <span class="absolute -inset-1.5"></span>
                                 <span class="sr-only">Open user menu</span>
-                                <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}" alt="">
+                                <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}"
+                                    alt="">
                             </button>
                             <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
                                 x-transition:enter-start="opacity-0 scale-95"
@@ -94,30 +95,35 @@
                 <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST PENGAJUAN JADWAL PERKULIAHAN</h2>
                 <div x-data="{ isModalOpen: false }">
                     <div class="flex justify mt-5 mb-3 ml-20">
-                        <button @click="isModalOpen = true" class="h-8 w-48 flex bg-[#002687] text-white rounded-lg pt-1 pl-4 mb-4">
-                            Jadwal Perkuliahan 
+                        <button @click="isModalOpen = true"
+                            class="h-8 w-48 flex bg-[#002687] text-white rounded-lg pt-1 pl-4 mb-4">
+                            Jadwal Perkuliahan
                             <img class="w-5 h-5 mx-auto pt-1 ml-2" src="{{ asset('plus.svg') }}" alt="">
                         </button>
                     </div>
-                    <div x-show="isModalOpen" x-cloak class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+                    <div x-show="isModalOpen" x-cloak
+                        class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                         <div class="bg-white rounded-lg shadow-lg w-1/2 max-w-4xl">
                             <div class="flex justify-between items-center border-b px-4 py-2">
                                 <h3 class="text-lg font-semibold">Tambah Jadwal Perkuliahan</h3>
                                 <button @click="isModalOpen = false" class="text-gray-400 hover:text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-                            <form action="{{ route('jadwal.store') }}" method="POST" class="px-4 py-6" x-data="{ kode_mk: '', nama_mk: '', sks: '', semester: '', pengampu: '', sifat: '', mataKuliahList: {{ $mataKuliah->toJson() }} }">
+                            <form action="{{ route('jadwal.store') }}" method="POST" class="px-4 py-6"
+                                x-data="{ kode_mk: '', nama_mk: '', sks: '', semester: '', pengampu: '', sifat: '', mataKuliahList: {{ $mataKuliah->toJson() }} }">
                                 @csrf
                                 <div class="flex space-x-6">
                                     <!-- Kolom Kiri -->
                                     <div class="flex-1">
                                         <div class="mb-4">
-                                            <label for="kode_mk" class="block text-sm font-medium text-gray-700">Kode MK</label>
-                                            <select name="kode_mk" id="kode_mk" required 
-                                                x-model="kode_mk" 
+                                            <label for="kode_mk" class="block text-sm font-medium text-gray-700">Kode
+                                                MK</label>
+                                            <select name="kode_mk" id="kode_mk" required x-model="kode_mk"
                                                 @change="
                                                 nama_mk = mataKuliahList.find(mk => mk.kode_mk === kode_mk)?.nama_mk || ''; 
                                                 sks = mataKuliahList.find(mk => mk.kode_mk === kode_mk)?.sks || '';
@@ -126,42 +132,55 @@
                                                 pengampu = mataKuliahList.find(mk => mk.kode_mk === kode_mk)?.pengampu || ''"
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 <option value="">Pilih Kode Mata Kuliah</option>
-                                                @foreach($mataKuliah as $mk)
-                                                    <option value="{{ $mk->kode_mk }}">{{ $mk->kode_mk }} - {{ $mk->nama_mk }}</option>
+                                                @foreach ($mataKuliah as $mk)
+                                                    <option value="{{ $mk->kode_mk }}">{{ $mk->kode_mk }} -
+                                                        {{ $mk->nama_mk }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="mb-4">
-                                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                                            <input type="text" name="nama" id="nama" x-model="nama_mk" readonly required 
+                                            <label for="nama"
+                                                class="block text-sm font-medium text-gray-700">Nama</label>
+                                            <input type="text" name="nama" id="nama" x-model="nama_mk"
+                                                readonly required
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="mb-4">
-                                            <label for="semester" class="block text-sm font-medium text-gray-700">Semester</label>
-                                            <input type="text" name="semester" id="semester" x-model="semester" readonly required 
+                                            <label for="semester"
+                                                class="block text-sm font-medium text-gray-700">Semester</label>
+                                            <input type="text" name="semester" id="semester" x-model="semester"
+                                                readonly required
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="mb-4">
-                                            <label for="sks" class="block text-sm font-medium text-gray-700">SKS</label>
-                                            <input type="text" name="sks" id="sks" x-model="sks" readonly required 
+                                            <label for="sks"
+                                                class="block text-sm font-medium text-gray-700">SKS</label>
+                                            <input type="text" name="sks" id="sks" x-model="sks"
+                                                readonly required
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="mb-4">
-                                            <label for="sifat" class="block text-sm font-medium text-gray-700">Sifat</label>
-                                            <input type="text" name="sifat" id="sifat" x-model="sifat" readonly required 
+                                            <label for="sifat"
+                                                class="block text-sm font-medium text-gray-700">Sifat</label>
+                                            <input type="text" name="sifat" id="sifat" x-model="sifat"
+                                                readonly required
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="mb-4">
-                                            <label for="pengampu" class="block text-sm font-medium text-gray-700">Pengampu</label>
-                                            <textarea name="pengampu" id="pengampu" x-model="pengampu" readonly required 
+                                            <label for="pengampu"
+                                                class="block text-sm font-medium text-gray-700">Pengampu</label>
+                                            <textarea name="pengampu" id="pengampu" x-model="pengampu" readonly required
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
                                         </div>
                                     </div>
                                     <!-- Kolom Kanan -->
                                     <div class="flex-1">
                                         <div class="mb-4" x-data="{ customKelas: false, kelas: '', kelasCustom: '' }">
-                                            <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                                            <select name="kelas" id="kelas" x-model="kelas" @change="customKelas = (kelas === 'Other'); if (!customKelas) kelasCustom = ''" required 
+                                            <label for="kelas"
+                                                class="block text-sm font-medium text-gray-700">Kelas</label>
+                                            <select name="kelas" id="kelas" x-model="kelas"
+                                                @change="customKelas = (kelas === 'Other'); if (!customKelas) kelasCustom = ''"
+                                                required
                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 <option value="">Pilih Kelas</option>
                                                 <option value="A">A</option>
@@ -170,21 +189,29 @@
                                                 <option value="D">D</option>
                                                 <option value="Other">Lainnya</option>
                                             </select>
-                                            <input type="text" name="kelas_custom" id="kelas_custom" x-show="customKelas" x-model="kelasCustom" placeholder="Masukkan Kelas"
+                                            <input type="text" name="kelas_custom" id="kelas_custom"
+                                                x-show="customKelas" x-model="kelasCustom"
+                                                placeholder="Masukkan Kelas"
                                                 class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="mb-4">
-                                            <label for="ruangan" class="block text-sm font-medium text-gray-700">Ruangan</label>
-                                            <select name="ruangan" id="ruangan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            <label for="ruangan"
+                                                class="block text-sm font-medium text-gray-700">Ruangan</label>
+                                            <select name="ruangan" id="ruangan" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 <option value="">Pilih Ruangan</option>
-                                                @foreach($ruangan as $r)
-                                                    <option value="{{ $r->kode_ruangan }}">{{ $r->kode_ruangan }} (Kapasitas: {{ $r->kapasitas }})</option>
+                                                @foreach ($ruangan as $r)
+                                                    <option value="{{ $r->kode_ruangan }}">{{ $r->kode_ruangan }}
+                                                        (Kapasitas: {{ $r->kapasitas }})
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="mb-4">
-                                            <label for="hari" class="block text-sm font-medium text-gray-700">Hari</label>
-                                            <select name="hari" id="hari" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            <label for="hari"
+                                                class="block text-sm font-medium text-gray-700">Hari</label>
+                                            <select name="hari" id="hari" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 <option value="">Pilih Hari</option>
                                                 <option value="Senin">Senin</option>
                                                 <option value="Selasa">Selasa</option>
@@ -194,16 +221,22 @@
                                             </select>
                                         </div>
                                         <div class="mb-4">
-                                            <label for="jam_mulai" class="block text-sm font-medium text-gray-700">Jam Mulai</label>
-                                            <input type="time" name="jam_mulai" id="jam_mulai" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            <label for="jam_mulai" class="block text-sm font-medium text-gray-700">Jam
+                                                Mulai</label>
+                                            <input type="time" name="jam_mulai" id="jam_mulai" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="mb-4">
-                                            <label for="jam_selesai" class="block text-sm font-medium text-gray-700">Jam Selesai</label>
-                                            <input type="time" name="jam_selesai" id="jam_selesai" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            <label for="jam_selesai"
+                                                class="block text-sm font-medium text-gray-700">Jam Selesai</label>
+                                            <input type="time" name="jam_selesai" id="jam_selesai" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         <div class="flex justify-end">
-                                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2">Simpan</button>
-                                            <button type="button" @click="isModalOpen = false" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded-lg">Batal</button>
+                                            <button type="submit"
+                                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-2">Simpan</button>
+                                            <button type="button" @click="isModalOpen = false"
+                                                class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded-lg">Batal</button>
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +264,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($jadwalList as $jadwal)
+                        @foreach ($jadwalList as $jadwal)
                             <tr class="even:bg-gray-50">
                                 <td class="px-4 py-2 border">{{ $jadwal->kode_mk }}</td>
                                 <td class="px-4 py-2 border">{{ $jadwal->nama }}</td>
@@ -242,18 +275,24 @@
                                 <td class="px-4 py-2 border">{{ $jadwal->kelas }}</td>
                                 <td class="px-4 py-2 border">{{ $jadwal->ruangan }}</td>
                                 <td class="px-4 py-2 border">{{ $jadwal->hari }}</td>
-                                <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
+                                <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}
+                                </td>
                                 <td class="px-4 py-2 border">
-                                    @if ($jadwal->persetujuan) <!-- Memeriksa status persetujuan -->
+                                    @if ($jadwal->persetujuan)
+                                        <!-- Memeriksa status persetujuan -->
                                         <span class="text-green-500">Disetujui</span>
                                     @else
                                         <span class="text-red-500">Belum Disetujui</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 border">
-                                    @if (!$jadwal->persetujuan) <!-- Hanya tampilkan tombol jika belum disetujui -->
-                                        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Ubah</button>
-                                        <button class="mt-2 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded" onclick="confirmDelete('{{ route('jadwal.destroy', $jadwal->id) }}')">Hapus</button>
+                                    @if (!$jadwal->persetujuan)
+                                        <!-- Hanya tampilkan tombol jika belum disetujui -->
+                                        <button
+                                            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Ubah</button>
+                                        <button
+                                            class="mt-2 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+                                            onclick="confirmDelete('{{ route('jadwal.destroy', $jadwal->id) }}')">Hapus</button>
                                     @else
                                         <span class="text-gray-500">Tidak dapat diubah atau dihapus</span>
                                     @endif
@@ -265,7 +304,7 @@
             </div>
     </section>
 
-    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-auto">
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
         <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
@@ -308,22 +347,22 @@
             });
         }
     </script>
-    @if($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                html: `
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `
                     <ul style="text-align: center;">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 `,
+                });
             });
-        });
-    </script>
+        </script>
     @endif
 </body>
 

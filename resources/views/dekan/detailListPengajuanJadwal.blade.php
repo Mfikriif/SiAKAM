@@ -119,7 +119,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($jadwalList as $jadwal)
+                            @foreach ($jadwalList as $jadwal)
                                 <tr class="even:bg-gray-50">
                                     <td class="px-4 py-2 border">{{ $jadwal->kode_mk }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->nama }}</td>
@@ -130,7 +130,8 @@
                                     <td class="px-4 py-2 border">{{ $jadwal->kelas }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->ruangan }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->hari }}</td>
-                                    <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} -
+                                        {{ $jadwal->jam_selesai }}</td>
                                     <td class="px-4 py-2 border">
                                         @if ($jadwal->persetujuan)
                                             <span class="text-green-500">Disetujui</span>
@@ -140,16 +141,20 @@
                                     </td>
                                     <td class="px-4 py-2 border">
                                         <div class="flex space-x-2">
-                                            <form action="{{ route('jadwal.approve', $jadwal->id) }}" method="POST" class="inline">
+                                            <form action="{{ route('jadwal.approve', $jadwal->id) }}" method="POST"
+                                                class="inline">
                                                 @csrf
-                                                <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                                                <button type="submit"
+                                                    class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
                                                     Setujui
                                                 </button>
                                             </form>
-                                            <form action="{{ route('jadwal.reject', $jadwal->id) }}" method="POST" class="inline">
+                                            <form action="{{ route('jadwal.reject', $jadwal->id) }}" method="POST"
+                                                class="inline">
                                                 @csrf
                                                 @method('POST')
-                                                <button type="submit" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                                <button type="submit"
+                                                    class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                                                     Tolak
                                                 </button>
                                             </form>
@@ -164,7 +169,7 @@
         </div>
     </section>
 
-    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-auto">
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
         <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>

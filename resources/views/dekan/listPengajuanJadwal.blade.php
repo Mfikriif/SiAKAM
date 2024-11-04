@@ -195,14 +195,13 @@
         </div>
     </section>
 
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
-    </section>
+
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+        </div>
+    </footer>
 </body>
 
 </html>

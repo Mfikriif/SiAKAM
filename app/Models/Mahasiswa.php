@@ -10,11 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Mahasiswa extends Model
 {
     use HasFactory;
+    
     protected $table = "mahasiswa";
+
+    protected $primaryKey = "mahasiswa_id";
+
     protected $fillable = [
-        'id',
+        'mahasiswa_id',
         'nim',
         'email',
+        'semester',
         'jurusan',
         'angkatan',
         'tempat_lahir',
@@ -30,5 +35,10 @@ class Mahasiswa extends Model
     public function Dosenwali()
     {
         return $this->belongsTo(Dosenwali::class, 'pembimbing_akademik_id');
+    }
+
+    public function irs()
+    {
+        return $this->hasMany(Irs::class,'mahasiswa_id');
     }
 }

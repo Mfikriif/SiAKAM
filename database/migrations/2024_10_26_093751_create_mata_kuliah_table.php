@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_mk', 50)->nullable();
             $table->integer('sks')->nullable();
             $table->string('semester', 10)->nullable();
+            $table->string('jurusan',50);
             $table->string('pengampu', 255); 
             $table->string('sifat', 10)->nullable();
         });
