@@ -11,6 +11,7 @@
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500">
+    <!-- Navbar -->
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -36,7 +37,9 @@
                             <button type="button" @click="isOpen = !isOpen"
                                 class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                 id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}" alt="">
+                                <img class="h-8 w-8 rounded-full object-cover" 
+                                    src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                    alt="User Photo">
                             </button>
                             <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
                                 x-transition:enter-start="opacity-0 scale-95"
@@ -73,6 +76,7 @@
         </div>
     </section>
 
+    <!-- Main content -->
     <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg p-6" id="body">
         <h2 class="text-2xl text-center text-gray-800 mb-6">INPUT RUANG KULIAH</h2>
         <form action="{{ route('akademik.inputRuangKuliah') }}" method="POST" class="mx-auto max-w-lg">
@@ -110,6 +114,7 @@
         </form>
     </section>
 
+    <!-- Footer -->
     <footer class="relative top-32 bg-[#D9D9D9] bg-opacity-30 mt-20 py-4">
         <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>

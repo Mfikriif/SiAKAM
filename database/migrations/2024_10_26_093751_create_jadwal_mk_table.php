@@ -20,11 +20,14 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->integer('sks');
             $table->string('sifat', 15);
-            $table->string('pengampu', 255);
             $table->char('kelas', 1);
             $table->integer('semester');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->string('koordinator_mk', 50);
+            $table->string('pengampu_1', 50);
+            $table->string('pengampu_2', 50)->nullable();
+            $table->string('pengampu_3', 50)->nullable();
             $table->boolean('persetujuan')->default(false);
             $table->unique(['kode_mk', 'kelas']);
             $table->timestamps();

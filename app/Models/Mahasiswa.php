@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\CivitasAkademik;
 
 
 class Mahasiswa extends Model
@@ -29,6 +30,6 @@ class Mahasiswa extends Model
     //Relasi dengan Dosen Wali / Pembimbing Akademik
     public function Dosenwali()
     {
-        return $this->belongsTo(Dosenwali::class, 'pembimbing_akademik_id');
+        return $this->belongsTo(CivitasAkademik::class, 'pembimbing_akademik_id');
     }
 }

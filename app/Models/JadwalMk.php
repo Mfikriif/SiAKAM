@@ -18,13 +18,17 @@ class JadwalMk extends Model
         'semester',
         'sks',
         'sifat',
-        'pengampu',
         'kelas',
         'ruangan',
         'hari',
         'jam_mulai',
         'jam_selesai',
+        'koordinator_mk',
+        'pengampu_1',
+        'pengampu_2',
+        'pengampu_3',
     ];
+    
     public function mataKuliah()
     {
         return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');

@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -41,7 +39,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'akademik')->group(function() {
     Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->name('akademik.dashboard');
-    Route::post('akademik/input-ruang-kuliah', [MenuController::class, 'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
+    Route::get('akademik/input-ruang-kuliah', [MenuController::class, 'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
     Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
 });
 
@@ -50,9 +48,11 @@ Route::middleware(['auth', 'dekan'])->group(function() {
     Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
     Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
     Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->name('dekan.dashboard');
-    Route::get('dekan/pengajuan-jadwal/detail-pengajuan-jadwal',[MenuController::class,'detailListPengajuanJadwal'])->name('dekan.detailListPengajuanJadwal');
-    Route::post('jadwal/{id}/approve', [JadwalController::class, 'approve'])->name('jadwal.approve');
-    Route::post('jadwal/{id}/reject', [JadwalController::class, 'reject'])->name('jadwal.reject');  
+    Route::get('/jadwal/detail', [MenuController::class, 'detailListPengajuanJadwal'])->name('detailListPengajuanJadwal');
+    Route::get('/jadwal/detail/{program_studi}', [MenuController::class, 'detailListPengajuanJadwalByProgram'])->name('detailListPengajuanJadwalByProgram');
+    Route::post('/jadwal/{id}/approve', [JadwalController::class, 'approve'])->name('jadwal.approve');
+    Route::post('/jadwal/{id}/reject', [JadwalController::class, 'reject'])->name('jadwal.reject');  
+    Route::post('/jadwal/approveAll', [JadwalController::class, 'approveAll'])->name('jadwal.approveAll');
 });
 
 // Controller Dosenwali Untuk Melindungi Pengaksesan via Link Address
@@ -68,6 +68,10 @@ Route::middleware('auth', 'kaprodi')->group(function() {
     Route::get('kaprodi/pembuatan-jadwal',[JadwalController::class, 'index'])->name('kaprodi.listPengajuan');
     Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('jadwal.store');
     Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
+    Route::put('/jadwal/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
 });
 
 
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});

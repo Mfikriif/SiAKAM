@@ -1,81 +1,101 @@
-<?php 
-namespace App\Http\Controllers;
-use App\Models\JadwalMk;
+<?php
 
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Auth;
+use App\Models\JadwalMk;
 
 class MenuController extends Controller
 {
-    // Controller Mahasiswa
+    // Controller untuk Mahasiswa
     public function jadwalKuliah()
     {
-        return view('mahasiswa.jadwalKuliah');
+        $user = Auth::user();
+        return view('mahasiswa.jadwalKuliah', compact('user'));
     }
+
     public function herReg()
     {
-        return view('mahasiswa.herReg');
+        $user = Auth::user();
+        return view('mahasiswa.herReg', compact('user'));
     }
+
     public function khs()
     {
-        return view('mahasiswa.khs');
+        $user = Auth::user();
+        return view('mahasiswa.khs', compact('user'));
     }
+
     public function irs()
     {
-        return view('mahasiswa.irs');
+        $user = Auth::user();
+        return view('mahasiswa.irs', compact('user'));
     }
-    // End Controller Mahasiswa
 
-    // Controlle Dekan
+    // Controller untuk Dekan
     public function pengajuanJadwalDekan()
     {
-        return view('dekan.listPengajuanJadwal');
+        $user = Auth::user();
+        return view('dekan.listPengajuanJadwal', compact('user'));
     }
 
     public function pengajuanRuangKuliahDekan()
     {
-        return view('dekan.listPengajuanRuang');
+        $user = Auth::user();
+        return view('dekan.listPengajuanRuang', compact('user'));
     }
 
     public function detailListPengajuanJadwal()
     {
-        // Ambil semua data jadwal
-        $jadwalList = JadwalMk::all();
-
-        // Kirim data ke view
-        return view('dekan.detailListPengajuanJadwal', compact('jadwalList'));
-    }
-    // End Controller Dekan
-
-    // Controller Kaprodi
-    public function pengajuanJadwalKaprodi(){
-        return view('kaprodi.listPengajuan');
-    }
-
-    // Controller Dosen Wali
-    public function pengajuanIrsMahasiswa()
-    {
-        return view('dosenwali.listPengajuanIRS');
+        $user = Auth::user();
+        $jadwalList = JadwalMk::all(); // Mengambil semua jadwal
+        return view('dekan.detailListPengajuanJadwal', compact('user', 'jadwalList'));
     }
     
-    // End Controller Dosen Wali
+    public function detailListPengajuanJadwalByProgram($program_studi)
+    {
+        // Mendapatkan pengguna yang terautentikasi
+        $user = Auth::user();
 
-    //Controller mahasiswa perwalian 
+        // Menentukan jadwal berdasarkan program studi
+        if ($program_studi === 'Informatika') {
+            $jadwalPengajuan = JadwalMk::where('kode_mk', 'like', 'PAIK%')->get();
+        } elseif ($program_studi === 'Bioteknologi') {
+            $jadwalPengajuan = JadwalMk::where(function($query) {
+                $query->where('kode_mk', 'like', 'LAB%')
+                      ->orWhere('kode_mk', 'like', 'PAB%'); // Ambil jadwal untuk Bioteknologi
+            })->get();
+        } else {
+            $jadwalPengajuan = collect();
+        }
+
+        // Mengirim data pengguna, jadwalPengajuan, dan program_studi ke tampilan
+        return view('dekan.detailListPengajuanJadwal', compact('jadwalPengajuan', 'user', 'program_studi'));
+    }
+
+    // Controller untuk Dosen Wali
+    public function pengajuanIrsMahasiswa()
+    {
+        $user = Auth::user();
+        return view('dosenwali.listPengajuanIRS', compact('user'));
+    }
+
     public function mahasiswaPerwalian()
     {
-        return view('dosenwali.listMahasiswaPerwalian');
+        $user = Auth::user();
+        return view('dosenwali.listMahasiswaPerwalian', compact('user'));
     }
-    // End Controller mahasiswa perwwalian
 
-    // Controller Akademik
+    // Controller untuk Akademik
     public function listRuangKuliah()
     {
-        return view('akademik.listRuangKuliah');
+        $user = Auth::user();
+        return view('akademik.listRuangKuliah', compact('user'));
     }
 
     public function inputRuangKuliah()
     {
-        return view('akademik.inputRuangKuliah');
+        $user = Auth::user();
+        return view('akademik.inputRuangKuliah', compact('user'));
     }
-    // End Controller Dosen Wali
-    
 }
-?>
