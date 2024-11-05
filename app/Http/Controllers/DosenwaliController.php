@@ -10,7 +10,6 @@ class DosenwaliController extends Controller
     public function MahasiswaPerwalian(Request $request)
     {
         $dosenWaliId = Auth::user()->id;
-    
         // Ambil data mahasiswa berdasarkan pembimbing akademik
         $query = Mahasiswa::where('pembimbing_akademik_id', $dosenWaliId);
     
@@ -29,8 +28,8 @@ class DosenwaliController extends Controller
     
         // Dapatkan data mahasiswa setelah filter dan pencarian
         $mahasiswaPerwalian = $query->get();
-        
+        $user = Auth::user();
         // Kembalikan ke view dengan data mahasiswa perwalian
-        return view('dosenwali.listMahasiswaPerwalian', compact('mahasiswaPerwalian'));
+        return view('dosenwali.listMahasiswaPerwalian', compact('user','mahasiswaPerwalian'));
     }
 }

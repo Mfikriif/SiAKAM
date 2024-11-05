@@ -10,7 +10,7 @@
     <title>List Pengajuan Jadwal Kuliah</title>
 </head>
 
-<body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
+<body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -47,8 +47,9 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}"
-                                        alt="">
+                                    <img class="h-8 w-8 rounded-full object-cover" 
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                        alt="User Photo">
                                 </button>
                             </div>
 
@@ -90,111 +91,98 @@
         </div>
     </section>
 
-
-    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
-        <div class="container-table ">
-            <div id="table-list">
-
-                <h2 class="text-2xl text-center mx-auto max-w-64 ">LIST PENGAJUAN JADWAL </h2>
-
-                <div class=" flex justify-end mt-5 mr-16">
-                    <div id="input-text">
-                        <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" placeholder="Search"
-                            type="text">
-                    </div>
-                    <div id="button-search">
-                        <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2 "><img src="{{ asset('searchLogo.svg') }}"
-                                alt=""></button>
-                    </div>
+    <main class="flex-1">
+        <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5" id="body">
+            <div class="container-table">
+                <div id="table-list">
+    
+                    <h2 class="text-2xl text-center mx-auto max-w-64">LIST PENGAJUAN JADWAL</h2>    
+                    <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>PROGRAM STUDI</th>
+                                <th>TAHUN AKADEMIK</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.</td>
+                                <td>S1-INFORMATIKA</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwalByProgram', ['program_studi' => 'Informatika']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>S1-BIOTEKNOLOGI</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwalByProgram', ['program_studi' => 'Bioteknologi']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>S1-BIOLOGI</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-BIOLOGI']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4.</td>
+                                <td>S1-FISIKA</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-FISIKA']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5.</td>
+                                <td>S1-MATEMATIKA</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-MATEMATIKA']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6.</td>
+                                <td>S1-STATISTIKA</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-STATISTIKA']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7.</td>
+                                <td>S1-KIMIA</td>
+                                <td>2024/2025</td>
+                                <td>
+                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-KIMIA']) }}">
+                                        <button class="btn-detail">Detail</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>PROGRAM STUDI</th>
-                            <th>TAHUN AKADEMIK</th>
-                            <th>AKSI</th>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1. </td>
-                            <td>S1-TEKNIK INFORMATIKA</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td>S1-BIOLOGI</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3.</td>
-                            <td>S1-BIOTEKNOLOGI</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4.</td>
-                            <td>S1-FISIKA</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5.</td>
-                            <td>S1-MATEMATIKA</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6.</td>
-                            <td>S1-STATISTIKA</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7.</td>
-                            <td>S1-KIMIA</td>
-                            <td>2024/2025</td>
-                            <td>
-                                <a href="{{ route('dekan.detailListPengajuanJadwal') }}">
-                                    <button class="btn-detail">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-        </div>
-    </section>
-
+        </section>
+    </main>
 
     <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
         <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">

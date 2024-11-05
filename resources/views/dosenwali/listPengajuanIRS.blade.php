@@ -10,7 +10,7 @@
     <title>List Pengajuan IRS Mahasiswa</title>
 </head>
 
-<body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500 ">
+<body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -47,8 +47,9 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src="{{ asset('profilPembimbing.png') }}"
-                                        alt="">
+                                    <img class="h-8 w-8 rounded-full object-cover" 
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                        alt="User Photo">
                                 </button>
                             </div>
 
@@ -90,183 +91,184 @@
         </div>
     </section>
 
-
-    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
-        <div class="container-table ">
-            <div id="table-list">
-
-                <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST PENGAJUAN IRS MAHASISWA</h2>
-
-                <div class=" flex justify-end mt-5 mr-16">
-                    <div id="dropdown">
-                        <select name="angkatan" id="angkatan"
-                            class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
-                            <option value="" disabled selected>Angkatan</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
+    <main class="flex-1">
+        <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
+            <div class="container-table ">
+                <div id="table-list">
+    
+                    <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST PENGAJUAN IRS MAHASISWA</h2>
+    
+                    <div class=" flex justify-end mt-5 mr-16">
+                        <div id="dropdown">
+                            <select name="angkatan" id="angkatan"
+                                class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
+                                <option value="" disabled selected>Angkatan</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                        <div id="input-text">
+                            <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" placeholder="Search"
+                                type="text">
+                        </div>
+                        <div id="button-search">
+                            <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2 "><img src="{{ asset('searchLogo.svg') }}"
+                                    alt=""></button>
+                        </div>
                     </div>
-                    <div id="input-text">
-                        <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" placeholder="Search"
-                            type="text">
-                    </div>
-                    <div id="button-search">
-                        <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2 "><img src="{{ asset('searchLogo.svg') }}"
-                                alt=""></button>
-                    </div>
+    
+                    <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th class="text-left pl-4">NIM</th>
+                                <th class="text-left pl-4">NAMA</th>
+                                <th>SEMESTER</th>
+                                <th>SKS</th>
+                                <th>AKSI</th>
+                            </tr>
+    
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. </td>
+                                <td class="text-left pl-4">24060122140118</td>
+                                <td class="text-left pl-4">Leslie Alexander</td>
+                                <td>5</td>
+                                <td>24 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td class="text-left pl-4">24060122140120</td>
+                                <td class="text-left pl-4">Guy Hawkins</td>
+                                <td>5</td>
+                                <td>22 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td class="text-left pl-4">24060122140124</td>
+                                <td class="text-left pl-4">Bessie Cooper</td>
+                                <td>5</td>
+                                <td>22 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4.</td>
+                                <td class="text-left pl-4">24060122140128</td>
+                                <td class="text-left pl-4">Denis Rexmen</td>
+                                <td>5</td>
+                                <td>19 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5.</td>
+                                <td class="text-left pl-4">24060122140130</td>
+                                <td class="text-left pl-4">Theresa Webb</td>
+                                <td>5</td>
+                                <td>24 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6.</td>
+                                <td class="text-left pl-4">24060122140132</td>
+                                <td class="text-left pl-4">Thomas Beta</td>
+                                <td>5</td>
+                                <td>22 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7.</td>
+                                <td class="text-left pl-4">24060122140134</td>
+                                <td class="text-left pl-4">Jeremy Teddy</td>
+                                <td>5</td>
+                                <td>24 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8.</td>
+                                <td class="text-left pl-4">24060122140135</td>
+                                <td class="text-left pl-4">Jenny Wilson</td>
+                                <td>5</td>
+                                <td>24 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9.</td>
+                                <td class="text-left pl-4">24060122140138</td>
+                                <td class="text-left pl-4">Jacob Jones</td>
+                                <td>5</td>
+                                <td>21 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10.</td>
+                                <td class="text-left pl-4">24060122140139</td>
+                                <td class="text-left pl-4">Kristin Digg</td>
+                                <td>5</td>
+                                <td>19 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11.</td>
+                                <td class="text-left pl-4">24060122140142</td>
+                                <td class="text-left pl-4">Anna Ladiana</td>
+                                <td>5</td>
+                                <td>22 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12.</td>
+                                <td class="text-left pl-4">24060122140144</td>
+                                <td class="text-left pl-4">Jackson Mandela</td>
+                                <td>5</td>
+                                <td>19 SKS</td>
+                                <td>
+                                    <button class="btn-detail">Detail</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th class="text-left pl-4">NIM</th>
-                            <th class="text-left pl-4">NAMA</th>
-                            <th>SEMESTER</th>
-                            <th>SKS</th>
-                            <th>AKSI</th>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1. </td>
-                            <td class="text-left pl-4">24060122140118</td>
-                            <td class="text-left pl-4">Leslie Alexander</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td class="text-left pl-4">24060122140120</td>
-                            <td class="text-left pl-4">Guy Hawkins</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3.</td>
-                            <td class="text-left pl-4">24060122140124</td>
-                            <td class="text-left pl-4">Bessie Cooper</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4.</td>
-                            <td class="text-left pl-4">24060122140128</td>
-                            <td class="text-left pl-4">Denis Rexmen</td>
-                            <td>5</td>
-                            <td>19 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5.</td>
-                            <td class="text-left pl-4">24060122140130</td>
-                            <td class="text-left pl-4">Theresa Webb</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6.</td>
-                            <td class="text-left pl-4">24060122140132</td>
-                            <td class="text-left pl-4">Thomas Beta</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7.</td>
-                            <td class="text-left pl-4">24060122140134</td>
-                            <td class="text-left pl-4">Jeremy Teddy</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>8.</td>
-                            <td class="text-left pl-4">24060122140135</td>
-                            <td class="text-left pl-4">Jenny Wilson</td>
-                            <td>5</td>
-                            <td>24 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>9.</td>
-                            <td class="text-left pl-4">24060122140138</td>
-                            <td class="text-left pl-4">Jacob Jones</td>
-                            <td>5</td>
-                            <td>21 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>10.</td>
-                            <td class="text-left pl-4">24060122140139</td>
-                            <td class="text-left pl-4">Kristin Digg</td>
-                            <td>5</td>
-                            <td>19 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>11.</td>
-                            <td class="text-left pl-4">24060122140142</td>
-                            <td class="text-left pl-4">Anna Ladiana</td>
-                            <td>5</td>
-                            <td>22 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>12.</td>
-                            <td class="text-left pl-4">24060122140144</td>
-                            <td class="text-left pl-4">Jackson Mandela</td>
-                            <td>5</td>
-                            <td>19 SKS</td>
-                            <td>
-                                <button class="btn-detail">Detail</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
+        </section>
+    </main>
+    
+
+    <!-- Footer -->
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>
-    </section>
-
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
-    </section>
+    </footer>
 </body>
 
 </html>

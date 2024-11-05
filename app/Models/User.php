@@ -22,11 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'mahasiswa',
-        'dekan',
-        'kaprodi',
-        'dosenwali',
-        'akademik',
+        'role',
+        'profile_photo',
         'kaprodi_id',
     ];
 
@@ -50,4 +47,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
+    public function civitasAkademik()
+    {
+        return $this->hasOne(CivitasAkademik::class, 'id', 'id');
+    }
 }

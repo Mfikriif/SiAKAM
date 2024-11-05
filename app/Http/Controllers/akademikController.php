@@ -10,9 +10,10 @@ class akademikController extends Controller
     public function Ruangan(Request $request)
     {
         //
+        $user = Auth::user();
         $ruangan = Ruangan::all();
         
         // Kembalikan ke view dengan data mahasiswa perwalian
-        return view('akademik.listRuangKuliah', compact('ruangan'));
+        return view('akademik.listRuangKuliah', compact('user','ruangan'));
     }
 }

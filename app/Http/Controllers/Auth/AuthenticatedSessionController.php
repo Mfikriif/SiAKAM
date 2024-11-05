@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -11,7 +12,7 @@ use Illuminate\View\View;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Menampilkan tampilan login.
      */
     public function create(): View
     {
@@ -19,65 +20,74 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Menangani permintaan autentikasi yang masuk.
      */
     public function store(LoginRequest $request)
     {
-        $request->authenticate();
-        $request->session()->regenerate();
+        $request->authenticate(); // Melakukan autentikasi pengguna
+        $request->session()->regenerate(); // Menghasilkan ulang sesi untuk mencegah serangan session fixation
 
         $user = $request->user();
-        $roles = $this->getUserRoles($user->role);
+        $roles = $this->getUserRoles($user->role); // Mendapatkan peran pengguna
 
-        // Jika user memiliki lebih dari satu role, arahkan ke halaman pemilihan role
+        // Jika pengguna memiliki lebih dari satu peran, arahkan ke halaman pemilihan peran
         if (count($roles) > 1) {
             return redirect()->route('role.selection');
         }
-
+        
+        // Arahkan pengguna ke dashboard sesuai dengan peran mereka
         return redirect($this->getDashboardUrl($roles[0]));
     }
 
+    /**
+     * Mengambil peran pengguna berdasarkan ID peran.
+     */
     private function getUserRoles(int $role): array
     {
-            // NOTES!!!!!!!
-            // Mahasiswa role = 1;
-            // Akademik role = 2;
-            // Dosen Wali role = 3;
-            // Kaprodi role = 4;
-            // Dekan role = 5;
-            // Dekan and Dosen Wali role = 6;
-            // Kaprodi and Dosen Wali role = 7;
-            // Dosen role = 9;
+        // Catatan peran:
+        // Mahasiswa role = 1
+        // Akademik role = 2
+        // Dosen Wali role = 3
+        // Kaprodi role = 4
+        // Dekan role = 5
+        // Dekan dan Dosen Wali role = 6
+        // Kaprodi dan Dosen Wali role = 7
+        // Dosen role = 8
+        
         $roles = [];
-        if ($role === 1) {
-            $roles[] = 'mahasiswa';
-        }
-        if ($role === 2) {
-            $roles[] = 'akademik';
-        }
-        if ($role === 3) {
-            $usertype[] = 'dosenwali';
-        }
-        if ($role === 4) {
-            $roles[] = 'kaprodi';
-        }
-        if ($role === 5) {
-            $roles[] = 'dekan';
-        }
-        if ($role === 6){
-            $roles[] = 'dekan';
-            $roles[] = 'dosenwali';
-        }
-        if ($role === 7){
-            $roles[] = 'kaprodi';
-            $roles[] = 'dosenwali';
+        
+        // Menentukan peran berdasarkan ID
+        switch ($role) {
+            case 1:
+                $roles[] = 'mahasiswa';
+                break;
+            case 2:
+                $roles[] = 'akademik';
+                break;
+            case 3:
+                $roles[] = 'dosenwali';
+                break;
+            case 4:
+                $roles[] = 'kaprodi';
+                break;
+            case 5:
+                $roles[] = 'dekan';
+                break;
+            case 6:
+                $roles[] = 'dekan';
+                $roles[] = 'dosenwali';
+                break;
+            case 7:
+                $roles[] = 'kaprodi';
+                $roles[] = 'dosenwali';
+                break;
         }
 
         return $roles;
     }
 
     /**
-     * Helper function to return the correct dashboard URL based on the selected role.
+     * Fungsi pembantu untuk mengembalikan URL dashboard yang benar berdasarkan peran yang dipilih.
      */
     private function getDashboardUrl($role)
     {
@@ -96,44 +106,42 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Display the role selection page for users with multiple roles.
+     * Menampilkan halaman pemilihan peran bagi pengguna dengan beberapa peran.
      */
     public function showRoleSelection()
     {
-        $user = auth()->user();
+        $user = auth()->user(); // Mengambil pengguna yang terautentikasi
 
-        $roles = $this->getUserRoles($user->role);
-        return view('auth.select-role', ['roles' => $roles]);
+        $roles = $this->getUserRoles($user->role); // Mengambil peran pengguna
+        return view('auth.select-role', ['roles' => $roles]); // Mengembalikan tampilan pemilihan peran
     }
 
     /**
-     * Handle the role selection after user chooses a role.
+     * Menangani pemilihan peran setelah pengguna memilih peran.
      */
     public function selectRole(Request $request)
     {
-        $role = $request->input('role');
+        $role = $request->input('role'); // Mengambil peran yang dipilih dari permintaan
         $user = auth()->user();
-        $roles = $this->getUserRoles($user->role);
+        $roles = $this->getUserRoles($user->role); // Mengambil peran pengguna
 
+        // Memastikan peran yang dipilih valid
         if (!in_array($role, $roles)) {
-            return redirect()->route('role.selection')->withErrors('Role yang dipilih tidak valid.');
+            return redirect()->route('role.selection')->withErrors('Role yang dipilih tidak valid.'); // Kembali jika tidak valid
         }
 
-        session(['user_role' => $role]);
-        return redirect($this->getDashboardUrl($role));
+        session(['user_role' => $role]); // Menyimpan peran pengguna dalam sesi
+        return redirect($this->getDashboardUrl($role)); // Arahkan ke dashboard sesuai peran
     }
 
     /**
-     * Destroy an authenticated session.
+     * Menghancurkan sesi yang terautentikasi.
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        Auth::guard('web')->logout(); // Melakukan logout pengguna
+        $request->session()->invalidate(); // Menghapus sesi
+        $request->session()->regenerateToken(); // Menghasilkan ulang token sesi
+        return redirect('/'); // Arahkan ke halaman utama
     }
 }

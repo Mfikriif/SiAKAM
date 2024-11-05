@@ -47,8 +47,9 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}"
-                                        alt="">
+                                    <img class="h-8 w-8 rounded-full object-cover" 
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                        alt="User Photo">
                                 </button>
                             </div>
 

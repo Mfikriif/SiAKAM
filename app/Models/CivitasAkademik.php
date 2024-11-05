@@ -9,7 +9,7 @@ class CivitasAkademik extends Model
 {
     use HasFactory;
 
-    protected $table = 'civitas_akademik'; // Specify the table name
+    protected $table = 'civitas_akademik';
 
     // Define fillable fields if needed
     protected $fillable = [
@@ -25,5 +25,9 @@ class CivitasAkademik extends Model
         'status',
     ];
 
-    // Define any relationships if necessary
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'id');
+    }
 }

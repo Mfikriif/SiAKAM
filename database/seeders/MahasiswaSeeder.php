@@ -77,7 +77,24 @@ class MahasiswaSeeder extends Seeder
                 'angkatan' => '2022',
                 'status' => 1,
                 'pembimbing_akademik_id' => '5',
-            ]
+            ],
+            [
+                'id'=> '11',
+                'nama' => 'Tasrari Qolbi Nur Kholis',
+                'nim' => '24020222130090',
+                'email' => 'tasrari@gmail.com',
+                'jurusan' => 'S1 Bioteknologi',
+                'tempat_lahir' => 'Semarang',
+                'tanggal_lahir' => '2004-09-24',
+                'jenis_kelamin' => 'L',
+                'alamat' => 'Sumurbroto, Semarang',
+                'no_hp' => '08112712818',
+                'angkatan' => '2022',
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'pembimbing_akademik_id' => '10',
+            ],
         ];
 
         // Insert data ke tabel mahasiswa
