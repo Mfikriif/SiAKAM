@@ -26,10 +26,10 @@ class IrsController extends Controller
         // Ambil semua data jadwal mata kuliah
         $jadwal_MK = JadwalMK::where('semester',$semesterMHS)->get();
 
-        $statusIrs = Irs::where('mahasiswa_id',$mahasiswa->mahasiswa_id)->first()->status;
+        // $statusIrs = Irs::where('id',$mahasiswa->id)->first()->status;
 
         // Kirim data ke tampilan
-        return view('mahasiswa.irs', compact('jadwal_MK','statusIrs'));
+        return view('mahasiswa.irs', compact('jadwal_MK','user'));
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class IrsController extends Controller
         ]);
 
         $irs = Irs::create([
-            'mahasiswa_id' => $mahasiswa->mahasiswa_id,
+            'id' => $mahasiswa->id,
             'semester' => $request->semester,
             'tanggal_pengajuan' => now()
         ]);

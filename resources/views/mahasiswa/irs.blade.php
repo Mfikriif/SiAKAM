@@ -105,7 +105,7 @@
                         <div id="irs-status" class="flex">
                             <div
                                 class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-sm text-center font-semibold">
-                                {{ $statusIrs }}</div>
+                                Belum</div>
                         </div>
                     </div>
                     <div class="flex">

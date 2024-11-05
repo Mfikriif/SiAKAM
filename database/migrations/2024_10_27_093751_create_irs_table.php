@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('irs', function (Blueprint $table) {
             $table->id('irs_id');
-            $table->unsignedBigInteger('mahasiswa_id');
+            $table->unsignedBigInteger('id');
             $table->integer('semester');
             $table->string('status')->default('Belum disetujui');
             $table->date('tanggal_pengajuan');
             $table->date('tanggal_persetujuan')->nullable();
 
-            $table->foreign('mahasiswa_id')->references('mahasiswa_id')->on('mahasiswa')->onDelete('cascade');
+            $table->foreign('id')->references('id')->on('mahasiswa')->onDelete('cascade');
         });
     }
 

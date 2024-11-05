@@ -90,74 +90,73 @@
         </div>
     </section>
 
-
     <main class="flex-1">
         <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
             <div class="container-table">
-                <div id="table-list">
-                    <h2 class="text-2xl text-center mx-auto max-w-64">LIST DETAIL PENGAJUAN JADWAL</h2>
-    
-                    <div class="flex mt-4 ml-20">
-                        <p>Jurusan :</p>
-                        <p class="font-semibold ml-px"> Informatika</p>
-                    </div>
-    
-                    <!-- Tombol Setujui Semua -->
-                    <div class="text-right mt-4 mb-2 mr-20">
-                        <form action="{{ route('jadwal.approveAll') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="program_studi" value="{{ $program_studi }}"> <!-- Add this line -->
-                            <label for="semester">Pilih Semester:</label>
-                            <select name="semester" id="semester" onchange="filterTable()">
-                                <option value="">-- Pilih Semester --</option>
-                                <option value="1">Semester 1</option>
-                                <option value="2">Semester 2</option>
-                                <option value="3">Semester 3</option>
-                                <option value="4">Semester 4</option>
-                                <option value="5">Semester 5</option>
-                                <option value="6">Semester 6</option>
-                                <option value="7">Semester 7</option>
-                                <option value="8">Semester 8</option>
-                            </select>
-                            <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-                                Setujui Semua
-                            </button>
-                        </form>
-                    </div>
-    
-                    <div class="overflow-x-auto">
-                        <table class="w-11/12 mx-auto text-center mt-2 border-separate border-spacing-y-3 pb-8">
-                            <thead class="bg-gray-100 text-gray-700">
-                                <tr>
-                                    <th class="px-4 py-2 text-left border">Kode MK</th>
-                                    <th class="px-4 py-2 text-middle border">Mata Kuliah</th>
-                                    <th class="px-4 py-2 text-left border">Semester</th>
-                                    <th class="px-4 py-2 text-left border">SKS</th>
-                                    <th class="px-4 py-2 text-middle border">Sifat</th>
-                                    <th class="px-4 py-2 text-middle border">Koordinator MK</th>
-                                    <th class="px-4 py-2 text-middle border">Pengampu</th>
-                                    <th class="px-4 py-2 text-left border">Kelas</th>
-                                    <th class="px-4 py-2 text-left border">Ruangan</th>
-                                    <th class="px-4 py-2 text-left border">Hari</th>
-                                    <th class="px-4 py-2 text-middle border">Jam</th>
-                                    <th class="px-4 py-2 text-middle border">Keterangan</th>
-                                    <th class="px-4 py-2 text-middle border">Aksi</th>
-                              </tr>
+                <h2 class="text-2xl text-center mx-auto max-w-64">LIST DETAIL PENGAJUAN JADWAL</h2>
+
+                <div class="flex mt-4 ml-20">
+                    <p>Jurusan :</p>
+                    <p class="font-semibold ml-1"> Informatika</p>
+                </div>
+
+                <div class="text-right mt-4 mb-2 mr-20">
+                    <form action="{{ route('jadwal.approveAll') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="program_studi" value="{{ $program_studi }}">
+                        <label for="semester">Pilih Semester:</label>
+                        <select name="semester" id="semester" onchange="filterTable()">
+                            <option value="">-- Pilih Semester --</option>
+                            @for ($i = 1; $i <= 8; $i++)
+                                <option value="{{ $i }}">Semester {{ $i }}</option>
+                            @endfor
+                        </select>
+                        <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                            Setujui Semua
+                        </button>
+                    </form>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-11/12 mx-auto text-center mt-2 border-separate border-spacing-y-3 pb-8">
+                        <thead class="bg-gray-100 text-gray-700">
+                            <tr>
+                                <th class="px-4 py-2 border">Kode MK</th>
+                                <th class="px-4 py-2 border">Mata Kuliah</th>
+                                <th class="px-4 py-2 border">Semester</th>
+                                <th class="px-4 py-2 border">SKS</th>
+                                <th class="px-4 py-2 border">Sifat</th>
+                                <th class="px-4 py-2 border">Koordinator MK</th>
+                                <th class="px-4 py-2 border">Pengampu</th>
+                                <th class="px-4 py-2 border">Kelas</th>
+                                <th class="px-4 py-2 border">Ruangan</th>
+                                <th class="px-4 py-2 border">Hari</th>
+                                <th class="px-4 py-2 border">Jam</th>
+                                <th class="px-4 py-2 border">Keterangan</th>
+                                <th class="px-4 py-2 border">Aksi</th>
+                            </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($jadwalList as $jadwal)
-                                <tr class="even:bg-gray-50">
+                        <tbody id="jadwal-tbody">
+                            @foreach($jadwalPengajuan as $jadwal)
+                                <tr class="even:bg-gray-50 hover:bg-gray-100 transition duration-200" data-semester="{{ $jadwal->semester }}">
                                     <td class="px-4 py-2 border">{{ $jadwal->kode_mk }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->nama }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->semester }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->sks }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->sifat }}</td>
-                                    <td class="px-4 py-2 border">{{ $jadwal->pengampu }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->koordinator_mk }}</td>
+                                    <td class="px-4 py-2 border">
+                                        @php
+                                            $pengampu = collect([$jadwal->pengampu_1, $jadwal->pengampu_2, $jadwal->pengampu_3])
+                                                        ->filter()
+                                                        ->implode(', ');
+                                        @endphp
+                                        {{ $pengampu ?: 'Tidak ada pengampu' }}
+                                    </td>
                                     <td class="px-4 py-2 border">{{ $jadwal->kelas }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->ruangan }}</td>
                                     <td class="px-4 py-2 border">{{ $jadwal->hari }}</td>
-                                    <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} -
-                                        {{ $jadwal->jam_selesai }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
                                     <td class="px-4 py-2 border">
                                         @if ($jadwal->persetujuan)
                                             <span class="text-green-500">Disetujui</span>
@@ -167,88 +166,35 @@
                                     </td>
                                     <td class="px-4 py-2 border">
                                         <div class="flex space-x-2">
-                                            <form action="{{ route('jadwal.approve', $jadwal->id) }}" method="POST"
-                                                class="inline">
+                                            <form action="{{ route('jadwal.approve', $jadwal->id) }}" method="POST" class="inline">
                                                 @csrf
-                                                <button type="submit"
-                                                    class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                                                <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
                                                     Setujui
                                                 </button>
                                             </form>
-                                            <form action="{{ route('jadwal.reject', $jadwal->id) }}" method="POST"
-                                                class="inline">
+                                            <form action="{{ route('jadwal.reject', $jadwal->id) }}" method="POST" class="inline">
                                                 @csrf
                                                 @method('POST')
-                                                <button type="submit"
-                                                    class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                                <button type="submit" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                                                     Tolak
                                                 </button>
                                             </form>
                                         </div>
                                     </td>
                                 </tr>
-                            </thead>
-                            <tbody id="jadwal-tbody">
-                                @foreach($jadwalPengajuan as $jadwal)
-                                    <tr class="even:bg-gray-50 hover:bg-gray-100 transition duration-200" data-semester="{{ $jadwal->semester }}">
-                                        <td class="px-4 py-2 border">{{ $jadwal->kode_mk }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->nama }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->semester }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->sks }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->sifat }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->koordinator_mk }}</td>
-                                        <td class="px-4 py-2 border">
-                                            <!-- Concatenate Pengampu Values -->
-                                            @php
-                                                $pengampu = collect([$jadwal->pengampu_1, $jadwal->pengampu_2, $jadwal->pengampu_3])
-                                                            ->filter()
-                                                            ->implode(', ');
-                                            @endphp
-                                            {{ $pengampu ?: 'Tidak ada pengampu' }} <!-- Display a message if no pengampu is found -->
-                                        </td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->kelas }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->ruangan }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->hari }}</td>
-                                        <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
-                                        <td class="px-4 py-2 border">
-                                            @if ($jadwal->persetujuan)
-                                                <span class="text-green-500">Disetujui</span>
-                                            @else
-                                                <span class="text-red-500">Belum Disetujui</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-4 py-2 border">
-                                            <div class="flex space-x-2">
-                                                <form action="{{ route('jadwal.approve', $jadwal->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-                                                        Setujui
-                                                    </button>
-                                                </form>
-                                                <form action="{{ route('jadwal.reject', $jadwal->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('POST')
-                                                    <button type="submit" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
-                                                        Tolak
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
     </main>
-    
+
     <script>
         function filterTable() {
             var semester = document.getElementById("semester").value;
-            var rows = document.querySelectorAll(".jadwal-row");
-    
+            var rows = document.querySelectorAll("[data-semester]");
+
             rows.forEach(function(row) {
                 if (semester === "" || row.getAttribute("data-semester") === semester) {
                     row.style.display = "";
@@ -258,7 +204,6 @@
             });
         }
     </script>
-
 
     <!-- Footer -->
     <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
