@@ -49,8 +49,10 @@
                                 tabindex="-1">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1">Logout</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                    tabindex="-1">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
                             </div>
@@ -75,43 +77,52 @@
 
     <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg p-6" id="body">
         <h2 class="text-2xl text-center text-gray-800 mb-6">INPUT RUANG KULIAH</h2>
-        <form action="{{ route('Ruangan.store') }}" method="POST" class="mx-auto max-w-lg">
+        <form action="{{ route('Ruangan.store') }}" method="POST" class="w-full">
             @csrf
-            <div class="mb-4">
-                <label for="jurusan" class="block text-gray-700">Program Studi:</label>
-                <select id="jurusan" name="jurusan" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                    <option value="" disabled selected>-- Pilih Prodi --</option>
-                    <option value="Informatika">Informatika</option>
-                    <option value="Matematika">Matematika</option>
-                    <option value="Biologi">Biologi</option>
-                    <option value="Statistika">Statistika</option>
-                    <option value="Bioteknologi">Bioteknologi</option>
-                    <option value="Fisika">Fisika</option>
-                    <option value="Kimia">Kimia</option>
-                </select>
-            </div>
+            <div class="flex justify-between w-101 mx-auto">
+                <div id="input-prodi-kapasitas">
+                    <div class="mb-4 w-80">
+                        <label for="jurusan" class="block text-gray-700">Program Studi:</label>
+                        <select id="jurusan" name="jurusan"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="" disabled selected>-- Pilih Prodi --</option>
+                            <option value="Informatika">Informatika</option>
+                            <option value="Matematika">Matematika</option>
+                            <option value="Biologi">Biologi</option>
+                            <option value="Statistika">Statistika</option>
+                            <option value="Bioteknologi">Bioteknologi</option>
+                            <option value="Fisika">Fisika</option>
+                            <option value="Kimia">Kimia</option>
+                        </select>
+                    </div>
 
-            <div class="mb-4">
-                <label for="kapasitas" class="block text-gray-700">Kapasitas:</label>
-                <input type="number" id="kapasitas" name="kapasitas" placeholder="Masukkan kapasitas" min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-            </div>
+                    <div class="mb-4">
+                        <label for="kapasitas" class="block text-gray-700">Kapasitas:</label>
+                        <input type="number" id="kapasitas" name="kapasitas" placeholder="Masukkan kapasitas"
+                            min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700">Ruangan:</label>
-                <div class="grid grid-cols-4 gap-2">
-                    @foreach(['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B201', 'B202', 'C101', 'C102', 'C103', 'C201', 'C202', 'C203', 'D101', 'D102', 'D103', 'D201', 'D202', 'D203'] as $ruang)
-                        <div class="flex items-center">
-                            <input type="checkbox" id="{{ $ruang }}" name="kode_ruangan[]" value="{{ $ruang }}" class="mr-2">
-                            <label for="{{ $ruang }}" class="text-gray-700">{{ $ruang }}</label>
-                            
-                        </div>
-                    @endforeach
+                <div class="mb-4">
+                    <label class="block text-gray-700">Ruangan:</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        @foreach (['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B201', 'B202', 'C101', 'C102', 'C103', 'C201', 'C202', 'C203', 'D101', 'D102', 'D103', 'D201', 'D202', 'D203'] as $ruang)
+                            <div class="flex items-center">
+                                <input type="checkbox" id="{{ $ruang }}" name="kode_ruangan[]"
+                                    value="{{ $ruang }}" class="mr-2">
+                                <label for="{{ $ruang }}" class="text-gray-700">{{ $ruang }}</label>
+
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
             <div class="flex justify-center mt-6">
-                <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2">Simpan</button>
-                <button type="reset" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Batalkan</button>
+                <button type="submit"
+                    class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2">Simpan</button>
+                <button type="reset"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Batalkan</button>
             </div>
         </form>
     </section>
