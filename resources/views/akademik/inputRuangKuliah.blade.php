@@ -11,7 +11,6 @@
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500">
-    <!-- Navbar -->
     <nav class="bg-black" x-data="{ isOpen: false }">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -37,9 +36,7 @@
                             <button type="button" @click="isOpen = !isOpen"
                                 class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                 id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full object-cover" 
-                                    src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
-                                    alt="User Photo">
+                                <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}" alt="">
                             </button>
                             <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
                                 x-transition:enter-start="opacity-0 scale-95"
@@ -76,32 +73,37 @@
         </div>
     </section>
 
-    <!-- Main content -->
     <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg p-6" id="body">
         <h2 class="text-2xl text-center text-gray-800 mb-6">INPUT RUANG KULIAH</h2>
-        <form action="{{ route('akademik.inputRuangKuliah') }}" method="POST" class="mx-auto max-w-lg">
+        <form action="{{ route('Ruangan.store') }}" method="POST" class="mx-auto max-w-lg">
             @csrf
             <div class="mb-4">
-                <label for="program_studi" class="block text-gray-700">Program Studi:</label>
-                <select id="program_studi" name="program_studi" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                <label for="jurusan" class="block text-gray-700">Program Studi:</label>
+                <select id="jurusan" name="jurusan" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
                     <option value="" disabled selected>-- Pilih Prodi --</option>
-                    <option value="informatika">S1-INFORMATIKA</option>
-                    <option value="matematika">S1-MATEMATIKA</option>
-                    <option value="biologi">S1-BIOLOGI</option>
-                    <option value="statistika">S1-STATISTIKA</option>
-                    <option value="bioteknologi">S1-BIOTEKNOLOGI</option>
-                    <option value="fisika">S1-FISIKA</option>
-                    <option value="kimia">S1-KIMIA</option>
+                    <option value="Informatika">Informatika</option>
+                    <option value="Matematika">Matematika</option>
+                    <option value="Biologi">Biologi</option>
+                    <option value="Statistika">Statistika</option>
+                    <option value="Bioteknologi">Bioteknologi</option>
+                    <option value="Fisika">Fisika</option>
+                    <option value="Kimia">Kimia</option>
                 </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="kapasitas" class="block text-gray-700">Kapasitas:</label>
+                <input type="number" id="kapasitas" name="kapasitas" placeholder="Masukkan kapasitas" min="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700">Ruangan:</label>
                 <div class="grid grid-cols-4 gap-2">
-                    @foreach(['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B201', 'B202'] as $ruang)
+                    @foreach(['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B201', 'B202', 'C101', 'C102', 'C103', 'C201', 'C202', 'C203', 'D101', 'D102', 'D103', 'D201', 'D202', 'D203'] as $ruang)
                         <div class="flex items-center">
-                            <input type="checkbox" id="{{ $ruang }}" name="ruangs[]" value="{{ $ruang }}" class="mr-2">
+                            <input type="checkbox" id="{{ $ruang }}" name="kode_ruangan[]" value="{{ $ruang }}" class="mr-2">
                             <label for="{{ $ruang }}" class="text-gray-700">{{ $ruang }}</label>
+                            
                         </div>
                     @endforeach
                 </div>
@@ -114,9 +116,8 @@
         </form>
     </section>
 
-    <!-- Footer -->
-    <footer class="relative top-32 bg-[#D9D9D9] bg-opacity-30 mt-20 py-4">
-        <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white">
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>

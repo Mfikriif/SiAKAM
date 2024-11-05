@@ -40,8 +40,10 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'akademik')->group(function() {
     Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->name('akademik.dashboard');
-    Route::get('akademik/input-ruang-kuliah', [MenuController::class, 'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
+    Route::post('/Ruangan/store', [akademikController::class, 'store'])->name('Ruangan.store');
+    Route::get('akademik/input-ruang-kuliah', [akademikController::class, 'index'])->name('akademik.inputRuangKuliah');
     Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
+    Route::put('/akademik/updateRuangKuliah/${currentData.id}', [JadwalController::class, 'update'])->name('ruang.update');
 });
 
 // Controller Dekan Untuk Melindungi Pengaksesan via Link Address

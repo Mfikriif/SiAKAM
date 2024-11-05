@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             NewUser::class,
             MahasiswaSeeder::class,
             CivitasAkademikSeeder::class,
-            RuanganSeeder::class,
             MataKuliahSeeder::class,
         ]);
     }
