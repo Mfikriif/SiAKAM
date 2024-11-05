@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('kapasitas');
             $table->string('jurusan');
             $table->string('kode_ruangan', 255);
-            $table->enum('status', ['Disetujui', 'Tidak Disetujui'])->default('Tidak Disetujui');
+            $table->boolean('persetujuan')->default(false);
         });
     }
 

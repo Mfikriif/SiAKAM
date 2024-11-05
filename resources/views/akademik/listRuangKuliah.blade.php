@@ -16,7 +16,7 @@
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
                     <div class="flex">
-                        <a href="{{ route('akademik.dashboard') }}" class="flex items-center">
+                        <a href="{{ route('kaprodi.dashboard') }}" class="flex items-center">
                             <img class="h-9 w-8" src="{{ asset('undipLogo.png') }}" alt="Your Company">
                             <h3 class="ml-2 text-white">SiAKAM Undip</h3>
                         </a>
@@ -47,9 +47,8 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full object-cover" 
-                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
-                                        alt="User Photo">
+                                    <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}"
+                                        alt="">
                                 </button>
                             </div>
 
@@ -79,26 +78,15 @@
         </div>
     </nav>
 
-    <section class="relative top-20">
-        <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
-            <p class="font-bold">Ruang Kuliah</p>
-            <a href="{{ route('akademik.dashboard') }}">
-                <div class="flex">
-                    <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Ruang Kuliah</p>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-6" id="body">
+    <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-6" id="body" x-data="{ openModal: false, currentData: {} }">
         <div class="container-table ">
             <div id="table-list">
-
                 <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST RUANG KULIAH</h2>
 
+                <!-- Tombol Atur Ruang dan Search -->
                 <div class="flex justify-between items-center w-11/12 mx-auto mt-5 mb-3">
-                    <a href="{{ route('akademik.inputRuangKuliah') }}"class="h-8 w-32 inline-flex bg-[#002687] text-white rounded-lg pt-1 pl-2">Atur Ruang
+                    <a href="{{ route('akademik.inputRuangKuliah') }}" class="h-8 w-32 inline-flex bg-[#002687] text-white rounded-lg pt-1 pl-2">
+                        Atur Ruang
                         <img class="w-5 h-5 pt-1 ml-2" src="{{ asset('plus.svg') }}" alt="">
                     </a>
                     <div class="flex items-center">
@@ -109,51 +97,95 @@
                     </div>
                 </div>
 
+                <!-- Tabel Ruang Kuliah -->
                 <div class="flex flex-col">
-        <div class=" overflow-x-auto pb-4">
-            <div class="min-w-full inline-block align-middle">
-                <div class="overflow-hidden  border rounded-lg border-gray-300 w-11/12 mx-auto">
-                    <table class="table-auto min-w-full rounded-xl">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th scope="col" class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> NO </th>
-                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> PROGRAM STUDI </th>
-                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> RUANGAN </th>
-                                <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> AKSI </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-300">
-                            @foreach ( $ruangan as $index => $ruangan )
-                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">{{$index + 1}}</td>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $ruangan->jurusan }} </td>
-                                <div grid grid-cols-4 gap-2>
-                                <td class="break-all p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{$ruangan->kode_ruangan}}</td>
-                                </div>
-                                <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{ $ruangan->status }}</td>
-                                <td>
-                                    <a href="{{ route('akademik.listRuangKuliah') }}"class="h-6 w-16 inline-flex items-center justify-center text-white btn-detail rounded-lg">Edit</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class=" overflow-x-auto pb-4">
+                        <div class="min-w-full inline-block align-middle">
+                            <div class="overflow-hidden border rounded-lg border-gray-300 w-11/12 mx-auto">
+                                <table class="table-auto min-w-full rounded-xl">
+                                    <thead>
+                                        <tr class="bg-gray-50">
+                                            <th class="p-5 text-center whitespace-nowrap text-sm font-semibold text-gray-900 capitalize">NO</th>
+                                            <th class="p-5 text-left whitespace-nowrap text-sm font-semibold text-gray-900 capitalize">PROGRAM STUDI</th>
+                                            <th class="p-5 text-left whitespace-nowrap text-sm font-semibold text-gray-900 capitalize">RUANGAN</th>
+                                            <th class="p-5 text-left whitespace-nowrap text-sm font-semibold text-gray-900 capitalize">KETERANGAN</th>
+                                            <th class="p-5 text-left whitespace-nowrap text-sm font-semibold text-gray-900 capitalize">AKSI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-300">
+                                        @foreach ($ruangan as $index => $room)
+                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
+                                            <td class="p-5 text-center text-sm font-medium text-gray-900">{{ $index + 1 }}</td>
+                                            <td class="p-5 text-sm font-medium text-gray-900">{{ $room->jurusan }}</td>
+                                            <td class="p-5 text-sm font-medium text-gray-900">{{ $room->kode_ruangan }}</td>
+                                            <td class="p-5 text-sm font-medium text-gray-900">
+                                                <span class="{{ $room->persetujuan ? 'text-green-500' : 'text-red-500' }}">
+                                                    {{ $room->persetujuan ? 'Disetujui' : 'Belum Disetujui' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button @click="openModal = true; currentData = { id: '{{ $room->id }}', jurusan: '{{ $room->jurusan }}', kapasitas: '{{ $room->kapasitas }}', kode_ruangan: '{{ $room->kode_ruangan }}' }"
+                                                    class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg">Edit</button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
+
+        <!-- Modal Edit -->
+        <template x-if="openModal">
+            <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="bg-white w-1/2 p-6 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-semibold text-center mb-4">Edit Ruang Kuliah</h2>
+                    <form :action="`/akademik/updateRuangKuliah/${currentData.id}`" method="POST" class="mx-auto max-w-lg">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="mb-4">
+                            <label for="jurusan" class="block text-gray-700">Program Studi:</label>
+                            <select id="jurusan" name="jurusan" x-model="currentData.jurusan" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                <option value="Informatika">Informatika</option>
+                                <option value="Matematika">Matematika</option>
+                                <option value="Biologi">Biologi</option>
+                                <option value="Statistika">Statistika</option>
+                                <option value="Bioteknologi">Bioteknologi</option>
+                                <option value="Fisika">Fisika</option>
+                                <option value="Kimia">Kimia</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="kapasitas" class="block text-gray-700">Kapasitas:</label>
+                            <input type="number" id="kapasitas" name="kapasitas" x-model="currentData.kapasitas" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="kode_ruangan" class="block text-gray-700">Kode Ruangan:</label>
+                            <input type="text" id="kode_ruangan" name="kode_ruangan" x-model="currentData.kode_ruangan" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+
+                        <div class="flex justify-center mt-6">
+                            <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg mr-2">Simpan</button>
+                            <button type="button" @click="openModal = false" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Batalkan</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </template>
     </section>
 
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
-    </section>
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+        </div>
+    </footer>
 </body>
 
 </html>
