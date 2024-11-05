@@ -15,7 +15,7 @@ class CivitasAkademikSeeder extends Seeder
         // Data for civitas_akademik table
         $civitas_akademik = [
             [
-                'id' => '5',
+                'id' => 5,
                 'nama' => 'Fajri Nur Iman',
                 'nip' => '2450045678',
                 'email' => 'fajrinur@gmail.com',
@@ -30,7 +30,7 @@ class CivitasAkademikSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => '6',
+                'id' => 6,
                 'nama' => 'Syariful Setiawan',
                 'nip' => '2450034567',
                 'email' => 'syariful@gmail.com',
@@ -45,7 +45,7 @@ class CivitasAkademikSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => '7',
+                'id' => 7,
                 'nama' => 'Nadhya Kaheitna',
                 'nip' => '2450023456',
                 'email' => 'nadhya@gmail.com',
@@ -60,7 +60,7 @@ class CivitasAkademikSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => '8',
+                'id' => 8,
                 'nama' => 'Benny Rahman Surtanto',
                 'nip' => '2450012345',
                 'email' => 'bennyrahman@gmail.com',
@@ -75,7 +75,7 @@ class CivitasAkademikSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => '9',
+                'id' => 9,
                 'nama' => 'Wiradrana Genuk',
                 'nip' => '2450042345',
                 'email' => 'wira@gmail.com',
@@ -90,7 +90,7 @@ class CivitasAkademikSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => '10',
+                'id' => 10,
                 'nama' => 'Budi Setiawan',
                 'nip' => '2450222345',
                 'email' => 'budi@gmail.com',

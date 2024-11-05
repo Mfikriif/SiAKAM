@@ -14,10 +14,10 @@ class Mahasiswa extends Model
     
     protected $table = "mahasiswa";
 
-    protected $primaryKey = "mahasiswa_id";
+    protected $primaryKey = "id";
 
     protected $fillable = [
-        'mahasiswa_id',
+        'id',
         'nim',
         'email',
         'semester',
@@ -40,6 +40,6 @@ class Mahasiswa extends Model
 
     public function irs()
     {
-        return $this->hasMany(Irs::class,'mahasiswa_id');
+        return $this->hasMany(Irs::class,'id');
     }
 }

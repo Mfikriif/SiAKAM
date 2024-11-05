@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->unsignedBigInteger('mahasiswa_id')->primary(); // Primary key as unsignedBigInteger
+            $table->unsignedBigInteger('id')->primary(); // Primary key as unsignedBigInteger
             $table->string('nama');
             $table->char('nim', 14)->unique();
             $table->string('email')->unique();
