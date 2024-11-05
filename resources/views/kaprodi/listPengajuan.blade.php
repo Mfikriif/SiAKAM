@@ -49,6 +49,7 @@
                                 id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <span class="absolute -inset-1.5"></span>
                                 <span class="sr-only">Open user menu</span>
+
                                 <img class="h-8 w-8 rounded-full object-cover" 
                                     src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
                                     alt="User Photo">
@@ -89,7 +90,7 @@
             </a>
         </div>
     </section>
-
+    
     <!-- Main content -->
     <main class="flex-1">
         <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
@@ -550,22 +551,22 @@
             });
         }
     </script>
-    @if($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                html: `
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `
                     <ul style="text-align: center;">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 `,
+                });
             });
-        });
-    </script>
+        </script>
     @endif
     <script>
         document.addEventListener('DOMContentLoaded', function () {

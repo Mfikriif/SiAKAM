@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('irs', function (Blueprint $table) {
-            $table->integer('id_irs', true);
+            $table->id('irs_id');
+            $table->unsignedBigInteger('mahasiswa_id');
             $table->integer('semester');
-            $table->string('status', 10);
-            $table->unsignedBigInteger('mahasiswa_id')->nullable()->index('mahasiswa_id');
-            $table->string('id_jadwal', 10)->nullable()->index('id_jadwal');
+            $table->string('status')->default('Belum disetujui');
+            $table->date('tanggal_pengajuan');
+            $table->date('tanggal_persetujuan')->nullable();
+
+            $table->foreign('mahasiswa_id')->references('mahasiswa_id')->on('mahasiswa')->onDelete('cascade');
         });
     }
 

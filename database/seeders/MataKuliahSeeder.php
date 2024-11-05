@@ -10,6 +10,7 @@ class MataKuliahSeeder extends Seeder
     public function run()
     {
         DB::table('mata_kuliah')->insert([
+
             // Informatika Semester 5
             ['kode_mk' => 'PAIK6501', 'nama_mk' => 'Pengembangan Berbasis Platform', 'semester' => '5', 'sks' => 4, 'sifat' => 'WAJIB'],
             ['kode_mk' => 'PAIK6702', 'nama_mk' => 'Teori Bahasa dan Otomata', 'semester' => '5', 'sks' => 3, 'sifat' => 'WAJIB'],

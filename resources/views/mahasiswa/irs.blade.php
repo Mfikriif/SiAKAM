@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite('resources/js/app.js')
     @vite('resources/css/app.css')
     <title>IRS Mahasiswa</title>
 </head>
@@ -102,7 +103,9 @@
                     <div class="flex-col items-center">
                         <p class="text-xs mb-1">STATUS IRS</p>
                         <div id="irs-status" class="flex">
-                            <div class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-sm text-center font-semibold">DISETUJUI</div>
+                            <div
+                                class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-sm text-center font-semibold">
+                                {{ $statusIrs }}</div>
                         </div>
                     </div>
                     <div class="flex">
@@ -123,17 +126,22 @@
                         <div class="flex-col items-center">
                             <p class="mr-3 text-xs mb-1">MAKSIMUM SKS</p>
                             <div id="sks-maksimum">
-                                <div class="bg-[#002687] rounded-xl w-20 h-8 ml-1 pt-1.5 text-white text-sm text-center font-semibold">24 SKS</div>
+                                <div
+                                    class="bg-[#002687] rounded-xl w-20 h-8 ml-1 pt-1.5 text-white text-sm text-center font-semibold">
+                                    24 SKS</div>
                             </div>
                         </div>
                         <div class="flex-col items-center">
                             <p class="text-xs mb-1">SKS YANG DIAMBIL</p>
                             <div id="sks-diambil">
-                                <div class="bg-[#002687] rounded-xl w-20 h-8 ml-2 pt-1.5 text-white text-sm text-center font-semibold">18 SKS</div>
+                                <div
+                                    class="bg-[#002687] rounded-xl w-20 h-8 ml-2 pt-1.5 text-white text-sm text-center font-semibold">
+                                    18 SKS</div>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="flex flex-col">
                     <div class=" overflow-x-auto pb-4">
@@ -142,42 +150,98 @@
                                 <table class="table-auto min-w-full rounded-xl">
                                     <thead>
                                         <tr class="bg-gray-50">
-                                            <th scope="col" class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> No </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Kode MK </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize min-w-[150px]"> Nama </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Semester </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> SKS </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Sifat </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Kelas </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Ruangan </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Hari </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Jam </th>
-                                            <th scope="col" class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"> Aksi </th>
+                                            <th scope="col"
+                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                No </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Kode MK </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize min-w-[150px]">
+                                                Nama </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Semester </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                SKS </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Sifat </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Kelas </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Ruangan </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Hari </th>
+                                            <th scope="col"
+                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Jam </th>
+                                            <th scope="col"
+                                                class="text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                Aksi </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-300 ">
-                                        @foreach ($jadwal_MK as $index)
-                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center"> {{ $loop->iteration }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->kode_mk }} </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">{{ $index->nama_mk }}</p>
+                                        @foreach ($jadwal_MK as $mk)
+                                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
+                                                    {{ $loop->iteration }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->kode_mk }} </td>
+                                                <td class=" px-5 py-3">
+                                                    <div class="w-48 flex items-center gap-3">
+                                                        <div class="data">
+                                                            <p class="font-normal text-sm text-gray-900">
+                                                                {{ $mk->nama }}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->semester }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->sks }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->sifat }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->kelas }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->kode_ruangan }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->hari }} </td>
-                                            <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{ $index->semester }} </td>
-                                            <td class="flex p-5 items-center gap-0.5">
-                                                <button class="bg-[#2EC060] rounded-xl w-20 h-8 text-white">Pilih</button>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->semester }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->sks }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->sifat }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->kelas }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->ruangan }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->hari }} </td>
+                                                <td
+                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    {{ $mk->jam_mulai }} - {{ $mk->jam_selesai }} </td>
+                                                <td class="flex items-center gap-0.5">
+                                                    <form action="{{ route('irs.store') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="semester"
+                                                            value="{{ $mk->semester }}">
+                                                        <input type="hidden" name="kode_mk"
+                                                            value="{{ $mk->kode_mk }}">
+                                                        <div
+                                                            class="bg-[#2EC060] text-white w-20 h-8 text-center pt-px rounded-lg mt-4">
+                                                            <button class="pilih-matkul"
+                                                                kode_mk="{{ $mk->kode_mk }}"
+                                                                nama_mk="{{ $mk->nama }}"
+                                                                sks="{{ $mk->sks }}" type="submit">
+                                                                Ambil
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -186,7 +250,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <section class="relative top-32">
