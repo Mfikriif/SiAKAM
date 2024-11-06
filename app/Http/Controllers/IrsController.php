@@ -11,7 +11,7 @@ use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Irs;
-use App\Models\irs_detail;
+use App\Models\khs;
 
 class IrsController extends Controller
 {
@@ -29,7 +29,7 @@ class IrsController extends Controller
         // $statusIrs = Irs::where('id',$mahasiswa->id)->first()->status;
 
         // Kirim data ke tampilan
-        return view('mahasiswa.irs', compact('jadwal_MK','user'));
+        return view('mahasiswa.irs', compact('jadwal_MK','user',));
     }
 
     public function store(Request $request)
@@ -42,18 +42,29 @@ class IrsController extends Controller
 
         $request->validate([
             'kode_mk' => 'required',
+            'nama_mk' => 'required',
             'semester' => 'required|integer',
+            'sks' => 'required',
         ]);
 
         $irs = Irs::create([
-            'id' => $mahasiswa->id,
+            'mahasiswa_id' => $mahasiswa->id,
+            'nama' => $mahasiswa->nama,
+            'program_studi' => $mahasiswa->jurusan,
             'semester' => $request->semester,
+            'kode_mk' => $request->kode_mk,
+            'nama_mk' => $request->nama_mk,
+            'sks' => $request->sks,
             'tanggal_pengajuan' => now()
         ]);
 
-        irs_detail::create([
-            'irs_id' => $irs->irs_id,
-            'kode_mk' => $request->kode_mk
+        khs::create([
+            'nama' => $irs->nama,
+            'program_studi' => $irs->program_studi,
+            'semester' => $irs->semester,
+            'kode_mk' => $irs->kode_mk,
+            'nama_mk' => $irs->nama_mk,
+            'sks' => $irs->sks,
         ]);
 
         return redirect()->route('mahasiswa.irs')->with('success','Pengambila IRS Berhasil');

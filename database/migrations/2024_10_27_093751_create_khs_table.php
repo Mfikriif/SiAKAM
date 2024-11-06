@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::create('khs', function (Blueprint $table) {
             $table->integer('id_khs', true);
-            $table->integer('semester');
-            $table->integer('nilai_angka');
-            $table->char('nilai_huruf', 1);
-            $table->unsignedBigInteger('mahasiswa_id')->nullable()->index('mahasiswa_id');
+            $table->char('nama');
+            $table->char('program_studi');
+            $table->string('semester');
+            $table->string('kode_mk',10);
+            $table->string('nama_mk');
+            $table->string('sks');
+            $table->integer('nilai_angka')->nullable();
+            $table->char('nilai_huruf', 2)->nullable();
+            $table->decimal('ip_semester', 3, 2)->nullable();
+            $table->decimal('ip_kumulatif', 3, 2)->nullable();
+
         });
     }
 

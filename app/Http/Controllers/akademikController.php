@@ -53,10 +53,9 @@ class akademikController extends Controller
         return redirect()->route('akademik.listRuangKuliah')->with('success', 'Rooms have been successfully added!');
     }
 
-    public function index()
+    public function inputRuangKuliah()
     {
         // Ambil data mata nama dari database
-        $pj_ruangan = User::where('role', 2)->get();
 
         // Kirim data ke view
         return view('akademik.inputRuangKuliah');
@@ -84,7 +83,7 @@ class akademikController extends Controller
         }
 
     
-        // Memperbarui data jadwal
+        // Memperbarui data jadwal  
         $ruangan = Ruangan::findOrFail($id);
         $ruangan->update($request->all());
     

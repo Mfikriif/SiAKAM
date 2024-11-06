@@ -41,7 +41,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
 Route::middleware('auth', 'akademik')->group(function() {
     Route::get('akademik/dashboard',[HomeController::class,'dashboardAkademik'])->name('akademik.dashboard');
     Route::post('/Ruangan/store', [akademikController::class, 'store'])->name('Ruangan.store');
-    Route::get('akademik/input-ruang-kuliah', [akademikController::class, 'index'])->name('akademik.inputRuangKuliah');
+    Route::get('akademik/input-ruang-kuliah', [akademikController::class, 'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
     Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
     Route::put('/akademik/updateRuangKuliah/${currentData.id}', [JadwalController::class, 'update'])->name('ruang.update');
 });

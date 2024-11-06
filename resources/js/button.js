@@ -1,16 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll(".pilih-checkbox");
+function ambilMatkul(event, kodeMk) {
+    event.preventDefault();
 
-    checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", function () {
-            const id = this.id.split("-").pop();
-            const label = document.getElementById(`pilihLabel-${id}`);
+    const button = event.target;
 
-            if (this.checked) {
-                label.textContent = "Dipilih";
-            } else {
-                label.textContent = "Pilih";
-            }
-        });
-    });
-});
+    if (button.innerText === "Ambil") {
+        button.innerText = "Batalkan";
+        button.classList.replace("bg[#22E606]", "bg-red-600");
+
+        const row = document.getElementById("row-" + kodeMk);
+        row.classList.add("bg-gray-700", "text-white");
+    } else {
+        button.innerText = "Ambil";
+        button.classList.replace("bg-red-600", "bg-[#22E606]");
+
+        const row = document.getElementById("row-" + kodeMk);
+        row.classList, remove("bg-gray-700", "text-white");
+    }
+}

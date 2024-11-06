@@ -48,9 +48,8 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full object-cover" 
-                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
-                                        alt="User Photo">
+                                    <img class="h-8 w-8 rounded-full" src="{{ asset('profileMhs.png') }}"
+                                        alt="">
                                 </button>
                             </div>
 
@@ -93,7 +92,7 @@
     </section>
 
 
-    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-10" id="body">
+    <section class="w-10/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-10" id="body">
         <div class="container-table ">
             <div id="table-list">
 
@@ -104,8 +103,8 @@
                         <p class="text-xs mb-1">STATUS IRS</p>
                         <div id="irs-status" class="flex">
                             <div
-                                class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-sm text-center font-semibold">
-                                Belum</div>
+                                class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-xs text-center font-semibold">
+                                belum distujui</div>
                         </div>
                     </div>
                     <div class="flex">
@@ -187,7 +186,8 @@
                                     </thead>
                                     <tbody class="divide-y divide-gray-300 ">
                                         @foreach ($jadwal_MK as $mk)
-                                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
+                                            <tr class="bg-white transition-all duration-500 hover:bg-gray-50 "
+                                                class="row-mk" id="row-{{ $mk->kode_mk }}">
                                                 <td
                                                     class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
                                                     {{ $loop->iteration }} </td>
@@ -230,11 +230,15 @@
                                                             value="{{ $mk->semester }}">
                                                         <input type="hidden" name="kode_mk"
                                                             value="{{ $mk->kode_mk }}">
+                                                        <input type="hidden" name="nama_mk"
+                                                            value="{{ $mk->nama }}">
+                                                        <input type="hidden" name="sks"
+                                                            value="{{ $mk->sks }}">
                                                         <div
                                                             class="bg-[#2EC060] text-white w-20 h-8 text-center pt-px rounded-lg mt-4">
                                                             <button class="pilih-matkul"
                                                                 kode_mk="{{ $mk->kode_mk }}"
-                                                                nama_mk="{{ $mk->nama }}"
+                                                                nama_mk="{{ $mk->nama }}" onclick="ambilMatkul()"
                                                                 sks="{{ $mk->sks }}" type="submit">
                                                                 Ambil
                                                             </button>

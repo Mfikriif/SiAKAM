@@ -13,13 +13,20 @@ return new class extends Migration
     {
         Schema::create('irs', function (Blueprint $table) {
             $table->id('irs_id');
-            $table->unsignedBigInteger('id');
-            $table->integer('semester');
-            $table->string('status')->default('Belum disetujui');
+            $table->unsignedBigInteger('mahasiswa_id');
+            $table->string('nama');
+            $table->string('program_studi');
+            $table->string('semester');            
+            $table->string('tahun_akademik')->default('2024/2025');
+            $table->string('kode_mk');
+            $table->string('nama_mk');
+            $table->integer('sks');
+            $table->unsignedBigInteger('total_sks')->nullable();
+            $table->boolean('status')->default(false);
             $table->date('tanggal_pengajuan');
             $table->date('tanggal_persetujuan')->nullable();
 
-            $table->foreign('id')->references('id')->on('mahasiswa')->onDelete('cascade');
+            $table->foreign('mahasiswa_id')->references('id')->on('mahasiswa')->onDelete('cascade');
         });
     }
 

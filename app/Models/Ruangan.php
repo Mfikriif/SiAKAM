@@ -11,14 +11,14 @@ class Ruangan extends Model
 
     protected $table = 'ruangan';
     
-
+    public $timestamps = false;
     
     protected $fillable = 
     [
         'id',
         'kapasitas',
         'jurusan',
-        'kode_ruangan',
+        'kode_ruangan',         
         'penanggung_jawab',
     ];
 }
