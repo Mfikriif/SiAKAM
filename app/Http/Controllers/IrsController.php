@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\DB;
+// use App\Http\Controllers\DB;
 use App\Models\JadwalMk;
 use App\Models\MataKuliah;
 use App\Models\Ruangan;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Irs;
 use App\Models\khs;
 
@@ -28,8 +29,14 @@ class IrsController extends Controller
 
         // $statusIrs = Irs::where('id',$mahasiswa->id)->first()->status;
 
+        $irsDiambil = DB::table('irs')
+        ->where('mahasiswa_id', $mahasiswa->id)
+        ->pluck('kode_mk')
+        ->toArray();
+
+        // dd($irsDiambil);
         // Kirim data ke tampilan
-        return view('mahasiswa.irs', compact('jadwal_MK','user',));
+        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa'));
     }
 
     public function store(Request $request)
@@ -67,7 +74,30 @@ class IrsController extends Controller
             'sks' => $irs->sks,
         ]);
 
-        return redirect()->route('mahasiswa.irs')->with('success','Pengambila IRS Berhasil');
+        return redirect()->route('mahasiswa.irs')->with('success','Pengambilan IRS Berhasil');
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            
+            // Hapus dari tabel IRS
+            $irs = Irs::where('kode_mk', $request->kode_mk)->first();
+            if ($irs) {
+                $irs->delete();
+            }
+
+            khs::where('kode_mk', $request->kode_mk)
+                ->where('nama', $request->nama_mhs)
+                ->delete();
+            
+            return redirect()->route('mahasiswa.irs')
+                        ->with('success', 'Mata kuliah telah berhasil dihapus dari IRS dan KHS');
+                        
+        } catch (\Exception $e) {
+            return redirect()->route('mahasiswa.irs')
+                        ->with('error', 'Gagal menghapus mata kuliah: ' . $e->getMessage());
+        }
     }
 
 }

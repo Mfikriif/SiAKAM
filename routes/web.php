@@ -35,6 +35,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
     Route::get('mahasiswa/irs',[IrsController::class, 'index'])->name('mahasiswa.irs');
     Route::post('mahasiswa/irs',[irsController::class,'store'])->name('irs.store');
+    Route::delete('mahasiswa/irs/delete',[irsController::class,'delete'])->name('irs.delete');
 });
 
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address

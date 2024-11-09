@@ -224,26 +224,52 @@
                                                     class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                     {{ $mk->jam_mulai }} - {{ $mk->jam_selesai }} </td>
                                                 <td class="flex items-center gap-0.5">
-                                                    <form action="{{ route('irs.store') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="semester"
-                                                            value="{{ $mk->semester }}">
-                                                        <input type="hidden" name="kode_mk"
-                                                            value="{{ $mk->kode_mk }}">
-                                                        <input type="hidden" name="nama_mk"
-                                                            value="{{ $mk->nama }}">
-                                                        <input type="hidden" name="sks"
-                                                            value="{{ $mk->sks }}">
-                                                        <div
-                                                            class="bg-[#2EC060] text-white w-20 h-8 text-center pt-px rounded-lg mt-4">
-                                                            <button class="pilih-matkul"
+                                                    <div class="flex justify-between ">
+                                                        <form action="{{ route('irs.store') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="semester"
+                                                                value="{{ $mk->semester }}">
+                                                            <input type="hidden" name="kode_mk"
+                                                                value="{{ $mk->kode_mk }}">
+                                                            <input type="hidden" name="nama_mk"
+                                                                value="{{ $mk->nama }}">
+                                                            <input type="hidden" name="sks"
+                                                                value="{{ $mk->sks }}">
+                                                            <button
+                                                                class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4
+                                                                <?php
+                                                                $sudah_diambil = false;
+                                                                for ($i = 0; $i < count($irsDiambil); $i++) {
+                                                                    if ($irsDiambil[$i] == $mk->kode_mk) {
+                                                                        $sudah_diambil = true;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                echo $sudah_diambil ? 'bg-gray-500 text-white' : 'bg-[#2EC060] text-white';
+                                                                ?>"
                                                                 kode_mk="{{ $mk->kode_mk }}"
-                                                                nama_mk="{{ $mk->nama }}" onclick="ambilMatkul()"
+                                                                nama_mk="{{ $mk->nama }}"
                                                                 sks="{{ $mk->sks }}" type="submit">
-                                                                Ambil
+                                                                <?php echo $sudah_diambil ? 'Dipilih' : 'Pilih'; ?>
                                                             </button>
-                                                        </div>
-                                                    </form>
+
+                                                        </form>
+                                                        <form action="{{ route('irs.delete') }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <input type="hidden" name="kode_mk"
+                                                                value="{{ $mk->kode_mk }}">
+                                                            <input type="hidden" name="nama_mhs"
+                                                                value="{{ $mahasiswa->nama }}">
+                                                            <button
+                                                                class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-red-600 text-white"
+                                                                kode_mk="{{ $mk->kode_mk }}"
+                                                                nama_mk="{{ $mk->nama }}"
+                                                                sks="{{ $mk->sks }}" type="submit">
+                                                                Batal
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
