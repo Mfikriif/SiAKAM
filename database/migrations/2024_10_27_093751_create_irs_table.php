@@ -16,12 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('mahasiswa_id');
             $table->string('nama');
             $table->string('program_studi');
-            $table->string('semester');            
+            $table->integer('semester');            
             $table->string('tahun_akademik')->default('2024/2025');
             $table->string('kode_mk');
             $table->string('nama_mk');
             $table->integer('sks');
-            $table->unsignedBigInteger('total_sks')->nullable();
             $table->boolean('status')->default(false);
             $table->date('tanggal_pengajuan');
             $table->date('tanggal_persetujuan')->nullable();

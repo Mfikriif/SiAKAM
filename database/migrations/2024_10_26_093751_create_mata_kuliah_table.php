@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('kode_mk', 10)->primary();
             $table->string('nama_mk', 50)->nullable();
             $table->integer('sks')->nullable();
-            $table->string('semester', 10)->nullable();
+            $table->integer('semester')->nullable();
             $table->string('sifat', 10)->nullable();
         });
     }
