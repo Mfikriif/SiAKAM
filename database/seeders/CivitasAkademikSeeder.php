@@ -49,7 +49,7 @@ class CivitasAkademikSeeder extends Seeder
                 'nama' => 'Nadhya Kaheitna',
                 'nip' => '2450023456',
                 'email' => 'nadhya@gmail.com',
-                'jurusan' => 'Kimia',
+                'jurusan' => 'Bioteknologi',
                 'tempat_lahir' => 'Jakarta',
                 'tanggal_lahir' => '1965-07-10',
                 'jenis_kelamin' => 'P',

@@ -18,61 +18,75 @@ class Dekan
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $selectedRole = session('user_role');
+        // Retrieve the user's roles from session or determine it if not set
+        $selectedRoles = session('user_role') ?? $this->getUserRoles(Auth::user()->role);
 
-        // Jika role belum ada di session, cek dari user yang login
-        if (!$selectedRole) {
-            $user = Auth::user();
-
-            if ($user->dekan == 1) {
-                $selectedRole = 'dekan';
-            } else {
-                $selectedRole = $this->getUserPrimaryRole($user);
-            }
+        // Ensure $selectedRoles is an array
+        if (!is_array($selectedRoles)) {
+            $selectedRoles = [$selectedRoles];
         }
 
-        // Jika role yang dipilih bukan dekan, redirect sesuai role lain
-        if ($selectedRole !== 'dekan') {
-            return $this->redirectBasedOnRole($selectedRole);
+        // If the selected role does not include 'dekan', redirect to their primary role's dashboard
+        if (!in_array('dekan', $selectedRoles)) {
+            return $this->redirectBasedOnRole($selectedRoles[0]);
         }
 
         return $next($request);
     }
 
-    private function getUserPrimaryRole($user)
+    /**
+     * Mengambil peran pengguna berdasarkan ID peran.
+     */
+    private function getUserRoles(int $role): array
     {
-        if ($user->kaprodi == 1) {
-            return 'kaprodi';
-        }
-        if ($user->dosenwali == 1) {
-            return 'dosenwali';
-        }
-        if ($user->mahasiswa == 1) {
-            return 'mahasiswa';
-        }
-        if ($user->akademik == 1) {
-            return 'akademik';
+        $roles = [];
+
+        // Menentukan peran berdasarkan ID
+        switch ($role) {
+            case 1:
+                $roles[] = 'mahasiswa';
+                break;
+            case 2:
+                $roles[] = 'akademik';
+                break;
+            case 3:
+                $roles[] = 'dosenwali';
+                break;
+            case 4:
+                $roles[] = 'kaprodi';
+                break;
+            case 5:
+                $roles[] = 'dekan';
+                break;
+            case 6:
+                $roles[] = 'dekan';
+                $roles[] = 'dosenwali';
+                break;
+            case 7:
+                $roles[] = 'kaprodi';
+                $roles[] = 'dosenwali';
+                break;
         }
 
-        return 'dekan';
+        return $roles;
     }
 
     /**
-     * Redirect berdasarkan role yang dipilih atau default role
+     * Redirect based on the user's primary role.
      */
-    private function redirectBasedOnRole($role)
+    private function redirectBasedOnRole(string $role)
     {
         switch ($role) {
             case 'kaprodi':
-                return redirect('kaprodi/dashboard');
+                return redirect()->route('kaprodi.dashboard');
             case 'dosenwali':
-                return redirect('dosenwali/dashboard');
+                return redirect()->route('dosenwali.dashboard');
             case 'mahasiswa':
-                return redirect('mahasiswa/dashboard');
+                return redirect()->route('mahasiswa.dashboard');
             case 'akademik':
-                return redirect('akademik/dashboard');
+                return redirect()->route('akademik.dashboard');
             default:
-                return redirect('login')->with('error', 'Unauthorized access.');
+                return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary(); // Primary key as unsignedBigInteger
+            $table->unsignedBigInteger('id')->primary();
             $table->string('nama');
             $table->char('nim', 14)->unique();
             $table->string('email')->unique();
@@ -26,13 +26,16 @@ return new class extends Migration
             $table->text('alamat')->nullable();
             $table->string('no_hp')->nullable();
             $table->boolean('status')->default(true);
-            $table->unsignedBigInteger('pembimbing_akademik_id')->nullable(); // Foreign key as unsignedBigInteger
+            $table->unsignedBigInteger('pembimbing_akademik_id')->nullable();
 
-            // Define the foreign key constraint
+            $table->foreign('id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->foreign('pembimbing_akademik_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('set null'); // Ensure users table exists first
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
         });
     }
 

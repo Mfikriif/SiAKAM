@@ -38,6 +38,11 @@ class Mahasiswa extends Model
         return $this->belongsTo(CivitasAkademik::class, 'pembimbing_akademik_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'id');
+    }
+
     public function irs()
     {
         return $this->hasMany(Irs::class,'id');

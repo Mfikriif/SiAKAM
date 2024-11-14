@@ -92,7 +92,7 @@ class MahasiswaSeeder extends Seeder
                 'no_hp' => '08112712818',
                 'angkatan' => 2022,
                 'status' => 1,
-                'pembimbing_akademik_id' => 10,
+                'pembimbing_akademik_id' => 7,
             ],
         ];
 

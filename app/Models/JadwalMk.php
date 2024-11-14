@@ -27,6 +27,7 @@ class JadwalMk extends Model
         'pengampu_1',
         'pengampu_2',
         'pengampu_3',
+        'reason_for_rejection'
     ];
     
     public function mataKuliah()

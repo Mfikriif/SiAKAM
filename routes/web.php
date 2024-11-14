@@ -10,9 +10,11 @@ use App\Http\Middleware\Dekan;
 use App\Http\Controllers\DosenWaliController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\IrsController;
+use App\Http\Controllers\MatkulController;
 
-Route::get('/', function () {
-    return view('auth/login');
+Route::middleware('guest')->group(function () {
+    Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/', [AuthenticatedSessionController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -48,14 +50,18 @@ Route::middleware('auth', 'akademik')->group(function() {
 
 // Controller Dekan Untuk Melindungi Pengaksesan via Link Address
 Route::middleware(['auth', 'dekan'])->group(function() {
-    Route::get('dekan/pengajuan-jadwal',[MenuController::class,'PengajuanJadwalDekan'])->name('dekan.listPengajuanJadwal');
-    Route::get('dekan/pengajuan-ruang-kuliah',[MenuController::class,'PengajuanRuangKuliahDekan'])->name('dekan.listPengajuanRuang');
-    Route::get('dekan/dashboard',[HomeController::class,'dashboardDekan'])->name('dekan.dashboard');
-    Route::get('/jadwal/detail', [MenuController::class, 'detailListPengajuanJadwal'])->name('detailListPengajuanJadwal');
-    Route::get('/jadwal/detail/{program_studi}', [MenuController::class, 'detailListPengajuanJadwalByProgram'])->name('detailListPengajuanJadwalByProgram');
-    Route::post('/jadwal/{id}/approve', [JadwalController::class, 'approve'])->name('jadwal.approve');
-    Route::post('/jadwal/{id}/reject', [JadwalController::class, 'reject'])->name('jadwal.reject');  
-    Route::post('/jadwal/approveAll', [JadwalController::class, 'approveAll'])->name('jadwal.approveAll');
+    Route::get('dekan/pengajuan-jadwal',[DekanController::class,'listPengajuanJadwal'])->name('dekan.listPengajuanJadwal');
+    Route::get('/dekan/list-pengajuan-ruang', [DekanController::class, 'listPengajuanRuang'])->name('dekan.listPengajuanRuang');
+    Route::post('/dekan/list-pengajuan-ruang/approve-all', [DekanController::class, 'approveAll'])->name('dekan.approveAll');
+    Route::post('/dekan/approve-ruang/{id}', [DekanController::class, 'approve'])->name('approve.ruang');
+    Route::post('/dekan/reject-ruang/{id}', [DekanController::class, 'reject'])->name('reject.ruang');
+    Route::post('/dekan/cancel-reject-ruang/{id}', [DekanController::class, 'cancelReject'])->name('dekan.cancelReject');
+    Route::post('/dekan/change-status-ruang/{id}', [DekanController::class, 'changeStatus'])->name('change.status.ruang');
+    Route::get('dekan/dashboard',[DekanController::class,'dashboardDekan'])->name('dekan.dashboard');
+    Route::post('/jadwal/approve/{id}', [JadwalController::class, 'approveJadwal'])->name('jadwal.approve');
+    Route::post('/jadwal/reject/{id}', [JadwalController::class, 'rejectJadwal'])->name('jadwal.reject');
+    Route::post('/jadwal/approve-all', [JadwalController::class, 'approveAll'])->name('jadwal.approveAll');
+    Route::post('/jadwal/cancel/{id}', [JadwalController::class, 'cancelApproval'])->name('jadwal.cancel');
 });
 
 // Controller Dosenwali Untuk Melindungi Pengaksesan via Link Address
@@ -69,9 +75,13 @@ Route::middleware('auth', 'dosenwali')->group(function () {
 Route::middleware('auth', 'kaprodi')->group(function() {
     Route::get('kaprodi/dashboard',[HomeController::class, 'DashboardKaprodi'])->name('kaprodi.dashboard');
     Route::get('kaprodi/pembuatan-jadwal',[JadwalController::class, 'index'])->name('kaprodi.listPengajuan');
+    Route::get('kaprodi/pembuatan-mk',[MatkulController::class, 'index'])->name('kaprodi.pembuatanMk');
+    Route::post('/matkul/store', [MatkulController::class, 'store'])->name('matkul.store');
+    Route::put('/matkul/update/{kode_mk}', [MatkulController::class, 'update'])->name('matkul.update');
+    Route::delete('/matkul/{kode_mk}', [MatkulController::class, 'destroy'])->name('matkul.destroy');
     Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('jadwal.store');
     Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
-    Route::put('/jadwal/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
+    Route::put('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
 });
 
 

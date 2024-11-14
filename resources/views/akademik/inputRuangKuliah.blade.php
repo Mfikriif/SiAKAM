@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite('resources/css/app.css')
     <title>Input Ruang Kuliah</title>
+    @vite('resources/css/app.css')
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500">
@@ -36,7 +36,9 @@
                             <button type="button" @click="isOpen = !isOpen"
                                 class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                 id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <img class="h-8 w-8 rounded-full" src="{{ asset('firmanUtina.png') }}" alt="">
+                                <img class="h-8 w-8 rounded-full object-cover" 
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                        alt="User Photo">
                             </button>
                             <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
                                 x-transition:enter-start="opacity-0 scale-95"

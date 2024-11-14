@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(CivitasAkademik::class, 'id', 'id');
     }
+
+    public function Mahasiswa()
+    {
+        return $this->hasOne(Mahasiswa::class, 'id', 'id');
+    }
 }

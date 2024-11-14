@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite('resources/css/app.css')
     <title>List Pengajuan IRS Mahasiswa</title>
+    @vite('resources/css/app.css')
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
 <body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
@@ -80,12 +80,12 @@
     </nav>
 
     <section class="relative top-20">
-        <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
+        <div class="w-2/3 mx-auto flex justify-between text-lg text-white">
             <p class="font-bold">IRS MAHASISWA</p>
             <a href="{{ route('dosenwali.dashboard') }}">
-                <div class="flex">
-                    <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / IRS Mahasiswa</p>
+                <div class="flex items-center">
+                    <img src="{{ asset('arrow-left.png') }}" alt="" class="w-8 h-8 mr-1">
+                    <p>Dasbor / IRS Mahasiswa</p>
                 </div>
             </a>
         </div>

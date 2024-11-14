@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
     <title>Dasbor Dekan</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    @vite('resources/css/app.css')
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite('resources/js/app.js')
 </head>
 
 <body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
@@ -82,13 +82,13 @@
     <main class="flex-1">
         <section>
             <div class=" w-2/3 mx-auto">
-                <div class="text-white flex justify-between mt-10 text-sm">
+                <div class="text-white flex justify-between mt-20 text-lg">
                     <p class="">Dasbor</p>
                     <p class="">Beranda / Dasbor</p>
                 </div>
                 <h1 class="text-white text-5xl text-start mt-16">Selamat Datang,</h1>
-                <h1 class="text-white text-5xl text-start mt-2 leading-normal typing-effect">
-                    <span id="typing-text">{{ $userName }}</span>!
+                <h1 class="text-white text-5xl text-start mt-2 leading-normal">
+                    <span id="typing-text"></span>!
                 </h1>
                 <div class="bg-white rounded-lg mt-10">
                     <div class="p-7">
@@ -127,7 +127,7 @@
                                         </div>
                                         <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
                                             <p class="pt-2 text-xs text-gray-500">Total Dosen</p>
-                                            <p class="pt-2 font-semibold text-lg">1989</p>
+                                            <p class="pt-2 font-semibold text-lg">{{ $totalDosen }}</p>
                                         </div>
                                         <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
                                             <p class="pt-2 text-xs text-gray-500">Rerata IPK</p>
@@ -172,6 +172,21 @@
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>
     </footer>
+
+    <script>
+        const text = "{{ $userName }}";
+        const typingText = document.getElementById("typing-text");
+        let index = 0;
+    
+        function typeEffect() {
+            if (index < text.length) {
+                typingText.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeEffect, 75);
+            }
+        }
+        window.onload = typeEffect;
+    </script>
 </body>
 
 </html>
