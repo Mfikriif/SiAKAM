@@ -5,8 +5,8 @@ function getCsrfToken() {
 }
 
 // SweetAlert untuk opsi Aktif
-async function showConfirm(title, text, icon, confirm, confirmText, status) {
-    const result = await Swal.fire({
+function showConfirm(title, text, icon, confirm, confirmText, status) {
+    Swal.fire({
         title: title,
         text: text,
         icon: icon,
@@ -16,7 +16,7 @@ async function showConfirm(title, text, icon, confirm, confirmText, status) {
         confirmButtonText: "Ya, Pilih!",
     });
     if (result.isConfirmed) {
-        await Swal.fire({
+        Swal.fire({
             title: confirm,
             text: confirmText,
             icon: status,
@@ -28,7 +28,7 @@ async function showConfirm(title, text, icon, confirm, confirmText, status) {
 window.showConfirm = showConfirm;
 
 // SweetAlert untuk opsi Cuti
-async function showAlert(title, text, icon, confirm, confirmText, status) {
+function showAlert(title, text, icon, confirm, confirmText, status) {
     Swal.fire({
         title: title,
         text: text,
@@ -115,3 +115,26 @@ function showErrorAlert(title, text) {
 // Expose these functions globally
 window.showSuccessAlert = showSuccessAlert;
 window.showErrorAlert = showErrorAlert;
+
+async function deleteIrs(event, title, text, icon, confirmText, status) {
+    event.preventDefault(); // Mencegah form dari melakukan submit secara otomatis
+
+    const result = await Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: confirmText,
+    });
+
+    if (result.isConfirmed) {
+        Swal.fire("Confirmed!", "Your action has been confirmed.", status);
+        // Jika perlu, submit form secara manual di sini atau lakukan aksi lain
+        // Misal, submit form:
+        event.target.form.submit();
+    }
+}
+
+window.deleteIrs = deleteIrs;

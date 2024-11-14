@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSRF Token for AJAX requests -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
+    <!-- Tambahkan SweetAlert2 CSS dan JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>IRS Mahasiswa</title>
 </head>
 
@@ -111,14 +116,12 @@
                         <div class="flex-col items-center mt-5">
                             <div id="dropdown">
                                 <select name="matakuliah" id="matakuliah"
-                                    class="bg-white border-gray-300 rounded-xl h-8 w-52 mr-5 text-sm py-px">
+                                    class="bg-white rounded-xl h-8 w-64 mc-5 text-sm py-px">
                                     <option value="" disabled selected>Cari mata kuliah</option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
-                                    <option value=""></option>
+                                    @foreach ($listMK as $mk)
+                                        <option value="{{ $mk->kode_mk }}">{{ $mk->kode_mk . '-' . $mk->nama }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -135,7 +138,7 @@
                             <div id="sks-diambil">
                                 <div
                                     class="bg-[#002687] rounded-xl w-20 h-8 ml-2 pt-1.5 text-white text-sm text-center font-semibold">
-                                    18 SKS</div>
+                                    {{ $totalSks }} sks</div>
                             </div>
                         </div>
                     </div>
@@ -184,7 +187,7 @@
                                                 Aksi </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-gray-300 ">
+                                    <tbody class="divide-y divide-gray-300 " id="courseList">
                                         @foreach ($jadwal_MK as $mk)
                                             <tr class="bg-white transition-all duration-500 hover:bg-gray-50 "
                                                 class="row-mk" id="row-{{ $mk->kode_mk }}">
@@ -224,26 +227,54 @@
                                                     class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                     {{ $mk->jam_mulai }} - {{ $mk->jam_selesai }} </td>
                                                 <td class="flex items-center gap-0.5">
-                                                    <form action="{{ route('irs.store') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="semester"
-                                                            value="{{ $mk->semester }}">
-                                                        <input type="hidden" name="kode_mk"
-                                                            value="{{ $mk->kode_mk }}">
-                                                        <input type="hidden" name="nama_mk"
-                                                            value="{{ $mk->nama }}">
-                                                        <input type="hidden" name="sks"
-                                                            value="{{ $mk->sks }}">
-                                                        <div
-                                                            class="bg-[#2EC060] text-white w-20 h-8 text-center pt-px rounded-lg mt-4">
-                                                            <button class="pilih-matkul"
+                                                    <div class="flex justify-between ">
+                                                        <form action="{{ route('irs.store') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="semester"
+                                                                value="{{ $mk->semester }}">
+                                                            <input type="hidden" name="kode_mk"
+                                                                value="{{ $mk->kode_mk }}">
+                                                            <input type="hidden" name="nama_mk"
+                                                                value="{{ $mk->nama }}">
+                                                            <input type="hidden" name="sks"
+                                                                value="{{ $mk->sks }}">
+                                                            <button
+                                                                class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4
+                                                                <?php
+                                                                $sudah_diambil = false;
+                                                                for ($i = 0; $i < count($irsDiambil); $i++) {
+                                                                    if ($irsDiambil[$i] == $mk->kode_mk) {
+                                                                        $sudah_diambil = true;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                echo $sudah_diambil ? 'bg-gray-500 text-white' : 'bg-[#2EC060] text-white';
+                                                                ?>"
                                                                 kode_mk="{{ $mk->kode_mk }}"
-                                                                nama_mk="{{ $mk->nama }}" onclick="ambilMatkul()"
+                                                                nama_mk="{{ $mk->nama }}"
                                                                 sks="{{ $mk->sks }}" type="submit">
-                                                                Ambil
+                                                                <?php echo $sudah_diambil ? 'Dipilih' : 'Pilih'; ?>
                                                             </button>
-                                                        </div>
-                                                    </form>
+
+                                                        </form>
+                                                        <form action="{{ route('irs.delete') }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <input type="hidden" name="kode_mk"
+                                                                value="{{ $mk->kode_mk }}">
+                                                            <input type="hidden" name="nama_mhs"
+                                                                value="{{ $mahasiswa->nama }}">
+                                                            <button
+                                                                class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-red-600 text-white"
+                                                                onclick="deleteIrs(event, 'Konfirmasi', 'Apakah Anda yakin?', 'warning', 'Ya, batalkan!', 'success')"
+                                                                kode_mk="{{ $mk->kode_mk }}"
+                                                                nama_mk="{{ $mk->nama }}"
+                                                                sks="{{ $mk->sks }}" id="delete-irs"
+                                                                type="submit">
+                                                                Batal
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

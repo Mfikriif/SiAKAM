@@ -15,10 +15,10 @@ return new class extends Migration
             $table->integer('id_khs', true);
             $table->char('nama');
             $table->char('program_studi');
-            $table->string('semester');
+            $table->integer('semester');
             $table->string('kode_mk',10);
             $table->string('nama_mk');
-            $table->string('sks');
+            $table->integer('sks');
             $table->integer('nilai_angka')->nullable();
             $table->char('nilai_huruf', 2)->nullable();
             $table->decimal('ip_semester', 3, 2)->nullable();

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Http\Controllers\DB;
 use App\Models\JadwalMk;
 use App\Models\MataKuliah;
 use App\Models\Ruangan;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Irs;
 use App\Models\khs;
 
@@ -26,49 +27,105 @@ class IrsController extends Controller
         // Ambil semua data jadwal mata kuliah
         $jadwal_MK = JadwalMK::where('semester',$semesterMHS)->get();
 
-        // $statusIrs = Irs::where('id',$mahasiswa->id)->first()->status;
+        // Ambil total sks yang telah di ambil
+        $totalSks = irs::where('mahasiswa_id',$mahasiswa->id)->get()->sum('sks');
 
-        // Kirim data ke tampilan
-        return view('mahasiswa.irs', compact('jadwal_MK','user',));
+        $irsDiambil = DB::table('irs')
+        ->where('mahasiswa_id', $mahasiswa->id)
+        ->pluck('kode_mk')
+        ->toArray();
+
+        $listMK = JadwalMK::where('semester','<>',$semesterMHS)->get();
+        // dd($listMk);
+        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSks','listMK'));
     }
 
     public function store(Request $request)
-    {
-        $user = Auth::user();
+    {   
+        try {
+            
+            $user = Auth::user();
+            $mahasiswa = Mahasiswa::where('email', $user->email)->first();
+            
+            if (!$mahasiswa) {
+                return response()->json(['success' => false, 'message' => 'Mahasiswa not found.'], 404);
+            }
 
-        $mahasiswa = Mahasiswa::where('email',$user->email)->first();
+            $request->validate([
+                'kode_mk' => 'required',
+                'nama_mk' => 'required',
+                'semester' => 'required|integer',
+                'sks' => 'required',
+            ]);
 
-        $semesterMHS = $mahasiswa->semester;
+            $irs = Irs::create([
+                'mahasiswa_id' => $mahasiswa->id,
+                'nama' => $mahasiswa->nama,
+                'program_studi' => $mahasiswa->jurusan,
+                'semester' => $request->semester,
+                'kode_mk' => $request->kode_mk,
+                'nama_mk' => $request->nama_mk,
+                'sks' => $request->sks,
+                'tanggal_pengajuan' => now()
+            ]);
 
-        $request->validate([
-            'kode_mk' => 'required',
-            'nama_mk' => 'required',
-            'semester' => 'required|integer',
-            'sks' => 'required',
-        ]);
+            khs::create([
+                'nama' => $irs->nama,
+                'program_studi' => $irs->program_studi,
+                'semester' => $irs->semester,
+                'kode_mk' => $irs->kode_mk,
+                'nama_mk' => $irs->nama_mk,
+                'sks' => $irs->sks,
+            ]);
 
-        $irs = Irs::create([
-            'mahasiswa_id' => $mahasiswa->id,
-            'nama' => $mahasiswa->nama,
-            'program_studi' => $mahasiswa->jurusan,
-            'semester' => $request->semester,
-            'kode_mk' => $request->kode_mk,
-            'nama_mk' => $request->nama_mk,
-            'sks' => $request->sks,
-            'tanggal_pengajuan' => now()
-        ]);
-
-        khs::create([
-            'nama' => $irs->nama,
-            'program_studi' => $irs->program_studi,
-            'semester' => $irs->semester,
-            'kode_mk' => $irs->kode_mk,
-            'nama_mk' => $irs->nama_mk,
-            'sks' => $irs->sks,
-        ]);
-
-        return redirect()->route('mahasiswa.irs')->with('success','Pengambila IRS Berhasil');
+            return response()->json(['success' => true, 'message' => 'Pengambilan IRS berhasil.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal mengambil IRS: ' . $e->getMessage()], 500);
+        }
     }
+
+
+    public function delete(Request $request)
+    {
+        $validated = $request->validate([
+            'kode_mk' => 'required',
+            'nama_mhs' => 'required',
+        ]);
+    
+        try {
+            $irs = Irs::where('kode_mk', $validated['kode_mk'])
+                      ->where('nama', $validated['nama_mhs'])
+                      ->first();
+            
+            if ($irs) {
+                $irs->delete();
+            }
+    
+            khs::where('kode_mk', $validated['kode_mk'])
+                ->where('nama', $validated['nama_mhs'])
+                ->delete();
+    
+            // Make sure to return a success message even if no records are found
+            return response()->json(['success' => true, 'message' => 'Mata kuliah berhasil dihapus']);
+    
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus mata kuliah: ' . $e->getMessage()], 500);
+        }
+    }
+    
+
+public function getMatakuliahDetail($kodeMK) {
+    // Fetch all classes (A, B, C, etc.) for the selected course
+    $matakuliah = JadwalMK::where('kode_mk', $kodeMK)->get();
+    
+    Log::info('Fetched matakuliah:', ['data' => $matakuliah]); // Log data for debugging
+
+    if ($matakuliah->isEmpty()) {
+        return response()->json(['error' => 'Mata kuliah tidak ditemukan'], 404);
+    }
+
+    return response()->json($matakuliah);
+}
 
 }
 
