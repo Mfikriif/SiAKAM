@@ -11,13 +11,14 @@ class akademikController extends Controller
 {
     public function Ruangan(Request $request)
     {
+        $user = Auth::user();
         // Retrieve all rooms from the database
         $ruangan = Ruangan::select('jurusan', DB::raw('GROUP_CONCAT(kode_ruangan SEPARATOR ", ") as kode_ruangan'), 'kapasitas')
         ->groupBy('jurusan', 'kapasitas')
         ->get();
         
         // Return the view with the room data
-        return view('akademik.listRuangKuliah', compact('ruangan'));
+        return view('akademik.listRuangKuliah', compact('user','ruangan'));
     }
 
     public function store(Request $request) 
@@ -56,9 +57,10 @@ class akademikController extends Controller
     public function inputRuangKuliah()
     {
         // Ambil data mata nama dari database
+        $user = Auth::user();
 
         // Kirim data ke view
-        return view('akademik.inputRuangKuliah');
+        return view('akademik.inputRuangKuliah', compact('user'));
     }
 
     // Memperbarui data ruangan

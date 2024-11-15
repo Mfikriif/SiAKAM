@@ -29,8 +29,14 @@ return new class extends Migration
             $table->string('pengampu_2', 50)->nullable();
             $table->string('pengampu_3', 50)->nullable();
             $table->boolean('persetujuan')->default(false);
+            $table->text('reason_for_rejection')->nullable();
             $table->unique(['kode_mk', 'kelas']);
             $table->timestamps();
+
+            $table->foreign('kode_mk')
+                ->references('kode_mk')
+                ->on('mata_kuliah')
+                ->onDelete('cascade');
         });
     }
 

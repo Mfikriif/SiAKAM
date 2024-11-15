@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite('resources/css/app.css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>List Pengajuan Jadwal Kuliah</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    @vite('resources/css/app.css')
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite('resources/js/app.js')
 </head>
 
 <body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
@@ -24,51 +29,18 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
-                        <button type="button"
-                            class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span class="absolute -inset-1.5"></span>
-                            <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                        </button>
-
-                        <div>
-                            <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
-                        </div>
-
-                        <!-- Profile dropdown -->
+                        <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
                         <div class="relative ml-3">
-                            <div>
-                                <button type="button" @click="isOpen = !isOpen"
-                                    class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                    <span class="absolute -inset-1.5"></span>
-                                    <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full object-cover" 
-                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
-                                        alt="User Photo">
-                                </button>
-                            </div>
-
-                            <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
-                                x-transition:enter-start="opacity-0 scale-95"
-                                x-transition:enter-end="opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75 transform"
-                                x-transition:leave-start="opacity-100 scale-100"
-                                x-transition:leave-end="opacity-0 scale-95"
-                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
-                                tabindex="-1">
-                                <!-- Active: "bg-gray-100", Not Active: "" -->
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                                    id="user-menu-item-2">Logout</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
+                            <button type="button" @click="isOpen = !isOpen"
+                                class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                <img class="h-8 w-8 rounded-full object-cover" 
+                                    src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                    alt="User Photo">
+                            </button>
+                            <div x-show="isOpen" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm text-gray-700">Logout</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
                             </div>
@@ -80,103 +52,104 @@
     </nav>
 
     <section class="relative top-20">
-        <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
+        <div class="w-2/3 mx-auto flex justify-between text-lg text-white">
             <p class="font-bold">PENGAJUAN JADWAL</p>
             <a href="{{ route('dekan.dashboard') }}">
-                <div class="flex">
-                    <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Pengajuan Jadwal</p>
+                <div class="flex items-center">
+                    <img src="{{ asset('arrow-left.png') }}" alt="" class="w-8 h-8 mr-1">
+                    <p>Dasbor / Pengajuan Jadwal</p>
                 </div>
             </a>
         </div>
     </section>
 
+    <!-- Main Content -->
     <main class="flex-1">
-        <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5" id="body">
+        <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6">
             <div class="container-table">
-                <div id="table-list">
-    
-                    <h2 class="text-2xl text-center mx-auto max-w-64">LIST PENGAJUAN JADWAL</h2>    
-                    <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
-                        <thead>
+                <h2 class="text-2xl text-center mx-auto mt-8 max-w-64">LIST DETAIL PENGAJUAN JADWAL</h2>
+
+                <div class="flex items-center justify-end mt-8 mb-2 mr-20 space-x-4">
+                    <div class="flex items-center">
+                        <label for="semester" class="mr-2">Pilih Semester:</label>
+                        <select name="semester" id="semester" onchange="filterTable()" class="border rounded px-4 py-1 w-52">
+                            <option value="">-- Pilih Semester --</option>
+                            @for ($i = 1; $i <= 8; $i++)
+                                <option value="{{ $i }}">Semester {{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <label for="jurusan" class="mr-2">Pilih Jurusan:</label>
+                        <select name="jurusan" id="jurusan" onchange="filterTable()" class="border rounded px-4 py-1 w-52">
+                            <option value="">-- Pilih Jurusan --</option>
+                            <option value="informatika">Informatika</option>
+                            <option value="bioteknologi">Bioteknologi</option>
+                        </select>
+                    </div>
+                    <button onclick="approveAllJadwal()" class="bg-green-600 text-white font-semibold px-4 py-1 rounded transition duration-200 hover:bg-white hover:text-green-600 border border-green-600">
+                        Setujui Semua
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-11/12 mx-auto text-center mt-2 border-separate border-spacing-y-3 pb-8">
+                        <thead class="bg-gray-100 text-gray-700">
                             <tr>
-                                <th>No</th>
-                                <th>PROGRAM STUDI</th>
-                                <th>TAHUN AKADEMIK</th>
-                                <th>AKSI</th>
+                                <th class="px-4 py-2 border">Kode MK</th>
+                                <th class="px-4 py-2 border">Mata Kuliah</th>
+                                <th class="px-4 py-2 border">Semester</th>
+                                <th class="px-4 py-2 border">SKS</th>
+                                <th class="px-4 py-2 border">Sifat</th>
+                                <th class="px-4 py-2 border">Koordinator</th>
+                                <th class="px-4 py-2 border">Pengampu</th>
+                                <th class="px-4 py-2 border">Kelas</th>
+                                <th class="px-4 py-2 border">Ruangan</th>
+                                <th class="px-4 py-2 border">Hari</th>
+                                <th class="px-4 py-2 border">Jam</th>
+                                <th class="px-4 py-2 border">Aksi</th>
+                                <th class="px-4 py-2 border">Keterangan</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1.</td>
-                                <td>S1-INFORMATIKA</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwalByProgram', ['program_studi' => 'Informatika']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2.</td>
-                                <td>S1-BIOTEKNOLOGI</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwalByProgram', ['program_studi' => 'Bioteknologi']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3.</td>
-                                <td>S1-BIOLOGI</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-BIOLOGI']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4.</td>
-                                <td>S1-FISIKA</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-FISIKA']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5.</td>
-                                <td>S1-MATEMATIKA</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-MATEMATIKA']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6.</td>
-                                <td>S1-STATISTIKA</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-STATISTIKA']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>7.</td>
-                                <td>S1-KIMIA</td>
-                                <td>2024/2025</td>
-                                <td>
-                                    <a href="{{ route('detailListPengajuanJadwal', ['program_studi' => 'S1-KIMIA']) }}">
-                                        <button class="btn-detail">Detail</button>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tbody id="jadwal-tbody">
+                            @foreach($jadwalList as $jadwal)
+                                <tr class="even:bg-gray-50 hover:bg-gray-100 transition duration-200" data-semester="{{ $jadwal->semester }}">
+                                    <td class="px-4 py-7 border">{{ $jadwal->kode_mk }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->nama }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->semester }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->sks }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->sifat }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->koordinator_mk }}</td>
+                                    <td class="px-4 py-2 border">
+                                        {{ implode(', ', array_filter([$jadwal->pengampu_1, $jadwal->pengampu_2, $jadwal->pengampu_3])) ?: 'Tidak ada pengampu' }}
+                                    </td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->kelas }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->ruangan }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->hari }}</td>
+                                    <td class="px-4 py-2 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
+                                    <td class="px-4 py-2 border w-44" id="aksi-{{ $jadwal->id }}">
+                                        <div class="flex justify-center space-x-2">
+                                            @if ($jadwal->persetujuan === 0)
+                                                <button onclick="approveRejectJadwal({{ $jadwal->id }}, 'approve')" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-2 border border-green-500 hover:border-transparent rounded">Setujui</button>
+                                                <button onclick="approveRejectJadwal({{ $jadwal->id }}, 'reject')" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">Tolak</button>
+                                            @elseif ($jadwal->persetujuan === 1)
+                                                <button onclick="approveRejectJadwal({{ $jadwal->id }}, 'cancel')" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Batalkan Persetujuan</button>
+                                            @elseif ($jadwal->persetujuan === -1)
+                                                <button onclick="approveRejectJadwal({{ $jadwal->id }}, 'cancel')" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">Batalkan Penolakan</button>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-2 border" id="status-{{ $jadwal->id }}">
+                                        @if ($jadwal->persetujuan === 1)
+                                            <span class="text-green-500">Disetujui</span>
+                                        @elseif ($jadwal->persetujuan === -1)
+                                            <span class="text-red-500">Ditolak: {{ $jadwal->reason_for_rejection }}</span>
+                                        @else
+                                            <span class="text-gray-500">Belum Disetujui</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -184,6 +157,7 @@
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
         <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>

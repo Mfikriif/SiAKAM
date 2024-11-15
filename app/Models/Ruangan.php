@@ -18,7 +18,7 @@ class Ruangan extends Model
         'id',
         'kapasitas',
         'jurusan',
-        'kode_ruangan',         
-        'penanggung_jawab',
+        'kode_ruangan',
+        'persetujuan',
     ];
 }
