@@ -11,26 +11,40 @@ class akademikController extends Controller
 {
     public function Ruangan(Request $request)
     {
-        $user = Auth::user();
-        // Retrieve all rooms from the database
-        $ruangan = Ruangan::select('jurusan', DB::raw('GROUP_CONCAT(kode_ruangan SEPARATOR ", ") as kode_ruangan'), 'kapasitas')
-        ->groupBy('jurusan', 'kapasitas')
+        // Ambil input pencarian
+        $search = $request->input('search'); 
+
+        // Ambil ruangan dari database
+        $ruangan = Ruangan::select('jurusan')
+        ->when($search, function ($query, $search) {
+            return $query->where('jurusan', 'LIKE', "%{$search}%");
+        })
+        ->groupBy('jurusan')
         ->get();
-        
-        // Return the view with the room data
-        return view('akademik.listRuangKuliah', compact('user','ruangan'));
+
+        foreach($ruangan as $prodi){
+            $prodi->ruang = Ruangan::where('jurusan', $prodi->jurusan)->get();
+
+        }
+
+        // Ambil kode_ruangan yang sudah dipilih
+        $kodeRuanganSelected = Ruangan::pluck('kode_ruangan')->toArray();
+
+
+        // Return the view with data ruangan
+        return view('akademik.listRuangKuliah', compact('ruangan', 'kodeRuanganSelected'));
     }
 
     public function store(Request $request) 
     {
-        // Validate input
+        // Validasi input
         $request->validate([
             'jurusan' => 'required|string',
             'kapasitas' => 'required|integer',
             'kode_ruangan' => 'required',
         ]);    
         
-        // Check for conflicts with each selected room
+        // Pengecekan Konflik
         foreach ($request->kode_ruangan as $kode) {
             $conflict = DB::table('ruangan')
                 ->where('kode_ruangan', $kode)
@@ -38,7 +52,7 @@ class akademikController extends Controller
                 ->exists();
 
             if ($conflict) {
-                return redirect()->back()->withErrors(['conflict' => "Conflict! Room $kode is already in use by another department."]);
+                return redirect()->back()->withErrors(['conflict' => "Ruangan bentrok! Ruangan $kode sudah digunakan prodi lain."]);
             }
         }
 
@@ -51,7 +65,7 @@ class akademikController extends Controller
             ]);
         }
 
-        return redirect()->route('akademik.listRuangKuliah')->with('success', 'Rooms have been successfully added!');
+        return redirect()->route('akademik.listRuangKuliah')->with('success', 'Ruangan have been successfully added!');
     }
 
     public function inputRuangKuliah()
@@ -63,33 +77,20 @@ class akademikController extends Controller
         return view('akademik.inputRuangKuliah', compact('user'));
     }
 
-    // Memperbarui data ruangan
-    public function update(Request $request, $id)
-    {
-        // Validasi data yang dikirim
-        $request->validate([
-            'jurusan' => 'required|string',
-            'kapasitas' => 'required|integer',
-            'kode_ruangan' => 'required',
-        ]);   
-
-        // Pengecekan untuk mencegah duplikasi ruangan
-        $exists = Ruangan::where('id', '!=', $id) // Mengecualikan ruangan yang sedang diperbarui
-            ->where('kode_ruangan', $request->kode_mk)
-            ->where('jurusan', $request->kelas)
-            ->exists();
-
-        // Jika ruangan dengan kode ruangan dan jurusan yang sama sudah ada, kembalikan dengan pesan kesalahan
-        if ($exists) {
-            return redirect()->back()->withErrors(['conflict' => 'Ruangan dengan Kode Ruangan dan Jurusan ini sudah ada.']);
-        }
-
-    
-        // Memperbarui data jadwal  
+    // Ruangan Ditolak
+    public function rejectRuangan($id, Request $request){
         $ruangan = Ruangan::findOrFail($id);
-        $ruangan->update($request->all());
+        $ruangan->persetujuan = -1; // Rejected
+        $ruangan->save();
+
+        return response()->json(['success' => true, 'reason' => $ruangan->reason_for_rejection]);
+    }
     
-        // Redirect ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', 'Ruangan berhasil diperbarui!');
+    // Hapus Ruangan
+    public function destroy($id)
+    {
+        $ruangan = Ruangan::findOrFail($id);
+        $ruangan->delete();
+        return redirect()->route('akademik.listRuangKuliah')->with('success', 'Data berhasil dihapus.');
     }
 }
