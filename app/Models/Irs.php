@@ -40,4 +40,9 @@ class Irs extends Model
     {
         return $this->hasMany(khs::class,'irs_id');
     }
+
+    public function jadwalMk()
+    {
+        return $this->belongsTo(JadwalMk::class, 'kode_mk', 'kode_mk');
+    }
 }
