@@ -40,7 +40,7 @@ class DekanController extends Controller
     {
         // Retrieve all room requests, regardless of 'persetujuan' status
         $user = Auth::user();
-        $jadwalList = jadwalMK::all();
+        $jadwalList = jadwalMK::paginate(10);
     
         return view('dekan.listPengajuanJadwal', compact('user','jadwalList'));
     }
@@ -49,7 +49,7 @@ class DekanController extends Controller
     {
         // Retrieve all room requests, regardless of 'persetujuan' status
         $user = Auth::user();
-        $ruanganList = Ruangan::all();
+        $ruanganList = Ruangan::paginate(10);
     
         return view('dekan.listPengajuanRuang', compact('user','ruanganList'));
     }

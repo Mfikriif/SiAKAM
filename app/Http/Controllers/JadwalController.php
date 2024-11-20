@@ -52,7 +52,7 @@ class JadwalController extends Controller
                 $query->where('kode_mk', 'like', 'LAB%')
                         ->orWhere('kode_mk', 'like', 'PAB%');
             }
-        })->paginate(5);
+        })->paginate(10);
 
         // Filter ruangan berdasarkan jurusan dan persetujuan
         $ruangan = Ruangan::where('jurusan', $user->civitasAkademik->jurusan)
@@ -76,6 +76,7 @@ class JadwalController extends Controller
             'sks' => 'required|integer',
             'sifat' => 'required',
             'kelas' => 'required',
+            'kuota_kelas' => 'required|integer',
             'ruangan' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -151,6 +152,7 @@ class JadwalController extends Controller
             'sks' => $request->sks,
             'sifat' => $request->sifat,
             'kelas' => $request->kelas,
+            'kuota_kelas' => $request->kuota_kelas,
             'ruangan' => $request->ruangan,
             'hari' => $request->hari,
             'jam_mulai' => $request->jam_mulai,
@@ -255,6 +257,7 @@ class JadwalController extends Controller
             'pengampu_2' => 'nullable|string',
             'pengampu_3' => 'nullable|string',
             'kelas' => 'required',
+            'kuota_kelas' => 'required|integer',
             'ruangan' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -334,6 +337,7 @@ class JadwalController extends Controller
         $jadwal->pengampu_2 = $request->pengampu_2;
         $jadwal->pengampu_3 = $request->pengampu_3;
         $jadwal->kelas = $request->kelas;
+        $jadwal->kuota_kelas = $request->kuota_kelas;
         $jadwal->ruangan = $request->ruangan;
         $jadwal->hari = $request->hari;
         $jadwal->jam_mulai = $request->jam_mulai;

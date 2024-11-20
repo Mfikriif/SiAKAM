@@ -93,55 +93,56 @@
                 </div>
             </a>
         </div>
-        <div class="flex flex-col container mx-auto mt-24">
+        <div class="flex flex-col container mx-auto mt-28">
             <p class="text-white text-center font-bold text-3xl"> Pilih Status Akademik </p>
             <p class="text-white text-center font-normal text-xl mt-3"> Silahkan Pilih Salah Satu Status Akademik
                 Berikut Untuk Semester Ini</p>
         </div>
     </section>
 
-    <div class="flex justify-center space-x-10 mt-32">
-        <!-- Container Aktif -->
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
-            <img src="{{ asset('aktif.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">
-            <div class="text-4xl font-bold mb-2">
-                Aktif
+    <section class="w-10/12 mx-auto relative top-36 rounded-lg pt-5 pb-10" id="body">
+        <div class="flex justify-center space-x-10 mt-auto">
+            <!-- Container Aktif -->
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
+                <img src="{{ asset('aktif.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">
+                <div class="text-4xl font-bold mb-2">
+                    Aktif
+                </div>
+                <p class="text-gray-700 mb-4">
+                    Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).
+                </p>
+                <button
+                    onclick="showConfirm('Anda yakin memilih status Aktif?','Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS','warning','Dipilih!','Anda telah memilih status Aktif','success')"
+                    class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
+                    Pilih
+                </button>
             </div>
-            <p class="text-gray-700 mb-4">
-                Anda akan mengikuti kegiatan perkuliahan pada semester ini serta mengisi Isian Rencana Studi (IRS).
-            </p>
-            <button
-                onclick="showConfirm('Anda yakin memilih status Aktif?','Anda akan mengikuti kegiatan perkuliahan dan mengisi IRS','warning','Dipilih!','Anda telah memilih status Aktif','success')"
-                class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
-                Pilih
-            </button>
+    
+            <!-- Container Cuti -->
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
+                <img src="{{ asset('cuti.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">
+                <div class="text-4xl font-bold mb-2">
+                    Cuti
+                </div>
+                <p class="text-gray-700 mb-4">
+                    Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.
+                </p>
+                <button
+                    onclick="showAlert('Anda yakin memilih status Cuti?','Anda akan menghentikan perkuliahan untuk semester ini!','warning','Dipilih!','Anda memilih status CUTI','success')"
+                    class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
+                    Pilih
+                </button>
+            </div>
         </div>
-
-        <!-- Container Cuti -->
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-1/3">
-            <img src="{{ asset('cuti.svg') }}" alt="" class="mx-auto mb-4 w-16 h-16">
-            <div class="text-4xl font-bold mb-2">
-                Cuti
-            </div>
-            <p class="text-gray-700 mb-4">
-                Menghentikan kuliah sementara untuk semester ini tanpa kehilangan status sebagai mahasiswa Undip.
-            </p>
-            <button
-                onclick="showAlert('Anda yakin memilih status Cuti?','Anda akan menghentikan perkuliahan untuk semester ini!','warning','Dipilih!','Anda memilih status CUTI','success')"
-                class="bg-blue-900 text-white font-normal py-2 px-6 rounded-lg">
-                Pilih
-            </button>
-        </div>
-    </div>
-
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
     </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-96">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+        </div>
+    </footer>
 </body>
 
 </html>

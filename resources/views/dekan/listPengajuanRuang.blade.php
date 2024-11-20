@@ -135,6 +135,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="flex justify-center">
+                            {{ $ruanganList->links() }}
+                        </div>
                     </div>
                 </div>
             </section>

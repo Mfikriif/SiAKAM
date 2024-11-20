@@ -152,6 +152,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="flex justify-center">
+                    {{ $jadwalList->links() }}
+                    </div>
                 </div>
             </div>
         </section>

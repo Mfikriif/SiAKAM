@@ -244,6 +244,13 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+
+                                            <!-- Kuota Kelas -->
+                                            <div>
+                                                <label for="kuota_kelas" class="block text-sm font-medium text-gray-600">Kuota Kelas</label>
+                                                <input type="text" name="kuota_kelas" id="kuota_kelas"
+                                                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition">
+                                            </div>  
                                             
                                             <!-- Hari -->
                                             <div>
@@ -298,6 +305,7 @@
                                 <th class="px-2 py-4 border-b">Pengampu</th>
                                 <th class="px-2 py-4 border-b">Kelas</th>
                                 <th class="px-2 py-4 border-b">Ruangan</th>
+                                <th class="px-2 py-4 border-b">Kuota Kelas</th>
                                 <th class="px-2 py-4 border-b">Hari</th>
                                 <th class="px-2 py-4 border-b">Jam</th>
                                 <th class="px-2 py-4 border-b w-52">Aksi</th>
@@ -323,6 +331,7 @@
                                     </td>
                                     <td class="px-2 py-4 border">{{ $jadwal->kelas }}</td>
                                     <td class="px-2 py-4 border">{{ $jadwal->ruangan }}</td>
+                                    <td class="px-2 py-4 border">{{ $jadwal->kuota_kelas }}</td>
                                     <td class="px-2 py-4 border">{{ $jadwal->hari }}</td>
                                     <td class="px-2 py-4 border">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
                                     <td class="px-2 py-4 border">
@@ -468,6 +477,13 @@
                                                                                 <option value="{{ $r->kode_ruangan }}">{{ $r->kode_ruangan }} (Kapasitas: {{ $r->kapasitas }})</option>
                                                                             @endforeach
                                                                         </select>
+                                                                    </div>
+
+                                                                    <!-- Semester -->
+                                                                    <div>
+                                                                        <label for="kuota_kelas" class="block text-sm font-medium text-gray-600">Kuota Kelas</label>
+                                                                        <input type="text" name="kuota_kelas" id="semester" x-model="selectedJadwal.kuota_kelas" readonly required
+                                                                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition">
                                                                     </div>
                                     
                                                                     <!-- Hari -->

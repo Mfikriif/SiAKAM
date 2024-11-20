@@ -11,6 +11,8 @@ class JadwalMk extends Model
 
     protected $table = 'jadwal_mk';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'kode_mk',
@@ -20,6 +22,7 @@ class JadwalMk extends Model
         'sifat',
         'kelas',
         'ruangan',
+        'kuota_kelas',
         'hari',
         'jam_mulai',
         'jam_selesai',
