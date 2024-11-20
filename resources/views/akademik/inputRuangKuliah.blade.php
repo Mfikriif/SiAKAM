@@ -68,10 +68,10 @@
     <section class="relative top-20">
         <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
             <p class="font-bold">Input Ruang Kuliah</p>
-            <a href="{{ route('akademik.dashboard') }}">
+            <a href="{{ route('akademik.listRuangKuliah') }}">
                 <div class="flex">
-                    <img src="{{ asset('home-outline.svg') }}" alt="">
-                    <p class="ml-2">Dasbor / Input Ruang Kuliah</p>
+                    <img src="{{ asset('arrow-left.png') }}" alt="">
+                    <p class="ml-2">Kembali / Input Ruang Kuliah</p>
                 </div>
             </a>
         </div>
@@ -108,12 +108,11 @@
                 <div class="mb-4">
                     <label class="block text-gray-700">Ruangan:</label>
                     <div class="grid grid-cols-4 gap-2">
-                        @foreach (['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B201', 'B202', 'C101', 'C102', 'C103', 'C201', 'C202', 'C203', 'D101', 'D102', 'D103', 'D201', 'D202', 'D203'] as $ruang)
+                        @foreach (['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B103', 'B104', 'B201', 'B202', 'B203', 'B204', 'C101', 'C102', 'C103', 'C104', 'C201', 'C202', 'C203', 'C204', 'D101', 'D102', 'D103', 'D104', 'D201', 'D202', 'D203', 'D204'] as $ruang)
                             <div class="flex items-center">
                                 <input type="checkbox" id="{{ $ruang }}" name="kode_ruangan[]"
                                     value="{{ $ruang }}" class="mr-2">
                                 <label for="{{ $ruang }}" class="text-gray-700">{{ $ruang }}</label>
-
                             </div>
                         @endforeach
                     </div>
@@ -135,6 +134,21 @@
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>
     </footer>
+
+    @if ($errors->has('conflict'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Waduh...',
+                text: '{{ $errors->first('conflict') }}',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+@endif
+
 </body>
 
 </html>

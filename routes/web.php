@@ -49,7 +49,9 @@ Route::middleware('auth', 'akademik')->group(function() {
     Route::post('/Ruangan/store', [akademikController::class, 'store'])->name('Ruangan.store');
     Route::get('akademik/input-ruang-kuliah', [akademikController::class, 'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
     Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
-    Route::put('/akademik/updateRuangKuliah/${currentData.id}', [JadwalController::class, 'update'])->name('ruang.update');
+    // Route::put('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
+    Route::delete('/Ruangan/{id}', [akademikController::class, 'destroy'])->name('Ruangan.destroy');
+    Route::put('/Ruangan/{id}', [akademikController::class, 'update'])->name('Ruangan.update');
 });
 
 // Controller Dekan Untuk Melindungi Pengaksesan via Link Address
