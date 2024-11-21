@@ -21,8 +21,6 @@ return new class extends Migration
             $table->integer('sks');
             $table->integer('nilai_angka')->nullable();
             $table->char('nilai_huruf', 2)->nullable();
-            $table->decimal('ip_semester', 3, 2)->nullable();
-            $table->decimal('ip_kumulatif', 3, 2)->nullable();
 
         });
     }

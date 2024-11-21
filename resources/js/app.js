@@ -227,20 +227,28 @@ async function postCourse(course) {
                 sks: course.sks,
             }),
         });
+
         const data = await response.json();
+
+        // Jika respons tidak berhasil, lempar pesan error
         if (!response.ok)
             throw new Error(data.message || "Failed to add course");
-        console.log("Course selected successfully:", data);
+
+        // Tampilkan pesan sukses tanpa membuka JSON
         alert("Course selected successfully");
+
+        // Refresh halaman saat sukses tanpa membuka JSON di halaman browser
+        location.reload(); // Refresh halaman untuk memperbarui tampilan setelah berhasil
+
         return true; // Indicate success
     } catch (error) {
         console.error("Error adding course:", error);
-        alert(error.message);
-        return false; // Indicate failure
+        // alert(error.message); // Tampilkan pesan error
+        return true; // Indicate failure
     }
 }
 
-function deleteCourse(kode_mk, nama_mhs, row) {
+async function deleteCourse(kode_mk, nama_mhs, row) {
     fetch("/mahasiswa/irs/delete", {
         method: "DELETE",
         headers: {

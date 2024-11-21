@@ -43,21 +43,20 @@ class IrsController extends Controller
     public function store(Request $request)
     {   
         try {
-            
             $user = Auth::user();
             $mahasiswa = Mahasiswa::where('email', $user->email)->first();
             
             if (!$mahasiswa) {
-                return response()->json(['success' => false, 'message' => 'Mahasiswa not found.'], 404);
+                return redirect()->back()->withErrors(['message' => 'Mahasiswa not found.']);
             }
-
+    
             $request->validate([
                 'kode_mk' => 'required',
                 'nama_mk' => 'required',
                 'semester' => 'required|integer',
                 'sks' => 'required',
             ]);
-
+    
             $irs = Irs::create([
                 'mahasiswa_id' => $mahasiswa->id,
                 'nama' => $mahasiswa->nama,
@@ -68,7 +67,7 @@ class IrsController extends Controller
                 'sks' => $request->sks,
                 'tanggal_pengajuan' => now()
             ]);
-
+    
             khs::create([
                 'nama' => $irs->nama,
                 'program_studi' => $irs->program_studi,
@@ -77,12 +76,13 @@ class IrsController extends Controller
                 'nama_mk' => $irs->nama_mk,
                 'sks' => $irs->sks,
             ]);
-
-            return response()->json(['success' => true, 'message' => 'Pengambilan IRS berhasil.']);
+    
+            return redirect()->back()->with('success', 'Pengambilan IRS berhasil.');
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal mengambil IRS: ' . $e->getMessage()], 500);
+            return redirect()->back()->withErrors(['message' => 'Gagal mengambil IRS: ' . $e->getMessage()],500);
         }
     }
+    
 
 
     public function delete(Request $request)
@@ -106,26 +106,30 @@ class IrsController extends Controller
                 ->delete();
     
             // Make sure to return a success message even if no records are found
-            return response()->json(['success' => true, 'message' => 'Mata kuliah berhasil dihapus']);
+            return redirect()->back()->with('success', 'Penghapusan IRS berhasil.');
     
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal menghapus mata kuliah: ' . $e->getMessage()], 500);
+            return redirect()->back()->withErrors(['message' => 'Gagal mengambil IRS: ' . $e->getMessage()],500);
+
         }
     }
     
 
-public function getMatakuliahDetail($kodeMK) {
-    // Fetch all classes (A, B, C, etc.) for the selected course
-    $matakuliah = JadwalMK::where('kode_mk', $kodeMK)->get();
-    
-    Log::info('Fetched matakuliah:', ['data' => $matakuliah]); // Log data for debugging
+    public function getMatakuliahDetail($kodeMK) {
+        // Fetch all classes (A, B, C, etc.) for the selected course
+        $matakuliah = JadwalMK::where('kode_mk', $kodeMK)->get();
+        
+        if ($matakuliah->isEmpty()) {
+            return response()->json(['error' => 'Mata kuliah tidak ditemukan'], 404);
+        }
 
-    if ($matakuliah->isEmpty()) {
-        return response()->json(['error' => 'Mata kuliah tidak ditemukan'], 404);
+        return response()->json($matakuliah);
     }
 
-    return response()->json($matakuliah);
-}
+    public function getKhs(){
+
+            
+    }
 
 }
 
