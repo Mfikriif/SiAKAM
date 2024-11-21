@@ -68,7 +68,7 @@ class HomeController extends Controller
     $user = Auth::user();
     $kaprodi = CivitasAkademik::where('email', $user->email)->firstOrFail();
     $totalMahasiswa = Mahasiswa::where('jurusan', 'like', '%' . $kaprodi->jurusan . '%')->count();
-    $totalDosen = 1989;
+    $totalDosen = User::where('role', '6' or '3')->count();
     $rerataIPK = 3.51;
 
     return view('kaprodi.dashboard', [

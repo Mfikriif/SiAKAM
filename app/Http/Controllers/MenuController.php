@@ -45,34 +45,6 @@ class MenuController extends Controller
         return view('dekan.listPengajuanRuang', compact('user'));
     }
 
-    public function detailListPengajuanJadwal()
-    {
-        $user = Auth::user();
-        $jadwalList = JadwalMk::all(); // Mengambil semua jadwal
-        return view('dekan.detailListPengajuanJadwal', compact('user', 'jadwalList'));
-    }
-    
-    public function detailListPengajuanJadwalByProgram($program_studi)
-    {
-        // Mendapatkan pengguna yang terautentikasi
-        $user = Auth::user();
-
-        // Menentukan jadwal berdasarkan program studi
-        if ($program_studi === 'Informatika') {
-            $jadwalPengajuan = JadwalMk::where('kode_mk', 'like', 'PAIK%')->get();
-        } elseif ($program_studi === 'Bioteknologi') {
-            $jadwalPengajuan = JadwalMk::where(function($query) {
-                $query->where('kode_mk', 'like', 'LAB%')
-                      ->orWhere('kode_mk', 'like', 'PAB%'); // Ambil jadwal untuk Bioteknologi
-            })->get();
-        } else {
-            $jadwalPengajuan = collect();
-        }
-
-        // Mengirim data pengguna, jadwalPengajuan, dan program_studi ke tampilan
-        return view('dekan.detailListPengajuanJadwal', compact('jadwalPengajuan', 'user', 'program_studi'));
-    }
-
     // Controller untuk Dosen Wali
     public function pengajuanIrsMahasiswa()
     {

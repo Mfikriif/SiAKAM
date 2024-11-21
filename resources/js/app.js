@@ -1,94 +1,50 @@
 import "./bootstrap";
-
 import "./sweetalertHelper";
+import {
+    filterTable,
+    approveAll as approveAllJadwal,
+    approveRejectJadwal,
+    calculateJamSelesai,
+    showErrors,
+    updateOptions,
+    setupOptionListeners,
+} from "./jadwal";
+import {
+    filterRuangan,
+    approveAll as approveAllRuangan,
+    approveReject,
+    changeStatus,
+} from "./ruangan";
 
 import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
-
 Alpine.start();
 
-function approveJadwal(id) {
-    if (confirm("Apakah Anda yakin ingin menyetujui jadwal ini?")) {
-        $.ajax({
-            url: `/jadwal/approve/${id}`,
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-            success: function (response) {
-                alert(response.message);
-                location.reload(); // Reload to see the updated status
-            },
-            error: function (xhr) {
-                alert("Terjadi kesalahan: " + xhr.responseJSON.message);
-            },
-        });
+// Expose jadwal functions globally so they can be accessed in the HTML
+window.filterTable = filterTable;
+window.approveAllJadwal = approveAllJadwal;
+window.approveRejectJadwal = approveRejectJadwal;
+window.calculateJamSelesai = calculateJamSelesai;
+window.showErrors = showErrors;
+window.updateOptions = updateOptions;
+window.setupOptionListeners = setupOptionListeners;
+
+// Expose ruangan functions globally
+window.filterRuangan = filterRuangan;
+window.approveAllRuangan = approveAllRuangan;
+window.approveReject = approveReject;
+window.changeStatus = changeStatus;
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Memulai event listeners
+    setupOptionListeners();
+
+    const jurusanSelect = document.getElementById("jurusanFilter");
+    if (jurusanSelect) {
+        jurusanSelect.addEventListener("change", filterRuangan);
     }
-}
-
-function rejectJadwal(id) {
-    if (confirm("Apakah Anda yakin ingin menolak jadwal ini?")) {
-        $.ajax({
-            url: `/jadwal/reject/${id}`,
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-            success: function (response) {
-                alert(response.message);
-                location.reload(); // Reload to see the updated status
-            },
-            error: function (xhr) {
-                alert("Terjadi kesalahan: " + xhr.responseJSON.message);
-            },
-        });
-    }
-}
-
-function approveAllJadwal() {
-    const semester = $("#semester").val();
-    const programStudi = $('input[name="program_studi"]').val();
-
-    $.ajax({
-        url: "/jadwal/approveAll",
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-        data: {
-            semester: semester,
-            program_studi: programStudi,
-        },
-        success: function (response) {
-            alert(response.message);
-            location.reload(); // Reload to see the updated status
-        },
-        error: function (xhr) {
-            alert("Terjadi kesalahan: " + xhr.responseJSON.message);
-        },
-    });
-}
-
-// Function to toggle password visibility
-function togglePassword() {
-    const passwordInput = document.getElementById("password");
-    const eyeIcon = document.getElementById("eye-icon");
-    const eyeOpen = eyeIcon.querySelector("#eye-open");
-    const eyeClosed = eyeIcon.querySelector("#eye-closed");
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeOpen.classList.add("hidden");
-        eyeClosed.classList.remove("hidden");
-    } else {
-        passwordInput.type = "password";
-        eyeOpen.classList.remove("hidden");
-        eyeClosed.classList.add("hidden");
-    }
-}
-window.togglePassword = togglePassword;
-
+});
 // document.addEventListener("DOMContentLoaded", function () {
 //     const textElement = document.getElementById("typing-text");
 //     const text = textElement.textContent;

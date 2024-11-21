@@ -16,10 +16,9 @@ class JadwalController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $mataKuliah = MataKuliah::all(); // Ambil semua mata kuliah
-        $civitasAkademik = CivitasAkademik::all(); // Ambil semua civitas akademik
-        $ruangan = Ruangan::all(); // Ambil semua ruangan
-        $jadwalList = JadwalMk::all(); // Ambil semua jadwal
+        $mataKuliah = MataKuliah::all();
+        $civitasAkademik = CivitasAkademik::all();
+        $jadwalList = JadwalMk::all();
 
         // Menentukan jurusan pengguna
         $isInformatika = $user->civitasAkademik && $user->civitasAkademik->jurusan === 'Informatika';
@@ -32,7 +31,7 @@ class JadwalController extends Controller
             } elseif ($isBioteknologi) {
                 return str_starts_with($mk->kode_mk, 'LAB') || str_starts_with($mk->kode_mk, 'PAB');
             }
-            return true; // Jika bukan Informatika atau Bioteknologi, tampilkan semua
+            return true;
         });
 
         // Filter civitas akademik berdasarkan jurusan
@@ -42,21 +41,28 @@ class JadwalController extends Controller
             } elseif ($isBioteknologi) {
                 return $civitas->jurusan === 'Bioteknologi';
             }
-            return false; // Tidak tampilkan civitas akademik lain
+            return false;
         });
 
         // Filter jadwal berdasarkan jurusan
-        $filteredJadwalList = $jadwalList->filter(function($jadwal) use ($isInformatika, $isBioteknologi) {
+        $filteredJadwalList = JadwalMk::where(function($query) use ($isInformatika, $isBioteknologi) {
             if ($isInformatika) {
-                return str_starts_with($jadwal->kode_mk, 'PAIK');
+                $query->where('kode_mk', 'like', 'PAIK%');
             } elseif ($isBioteknologi) {
-                return str_starts_with($jadwal->kode_mk, 'LAB') || str_starts_with($jadwal->kode_mk, 'PAB');
+                $query->where('kode_mk', 'like', 'LAB%')
+                        ->orWhere('kode_mk', 'like', 'PAB%');
             }
-            return false; // Tidak tampilkan jadwal lain
-        });
+        })->paginate(10);
+
+        // Filter ruangan berdasarkan jurusan dan persetujuan
+        $ruangan = Ruangan::where('jurusan', $user->civitasAkademik->jurusan)
+                        ->where('persetujuan', 1)
+                        ->get();
 
         // Kirim data ke view
-        return view('kaprodi.listPengajuan', compact('user', 'mataKuliah', 'filteredMataKuliah', 'filteredPengampu', 'ruangan', 'filteredJadwalList'));
+        return view('kaprodi.listPengajuan', compact(
+            'user', 'mataKuliah', 'filteredMataKuliah', 'filteredPengampu', 'ruangan', 'filteredJadwalList'
+        ));
     }
 
     // Fungsi untuk menyimpan jadwal baru
@@ -70,6 +76,7 @@ class JadwalController extends Controller
             'sks' => 'required|integer',
             'sifat' => 'required',
             'kelas' => 'required',
+            'kuota_kelas' => 'required|integer',
             'ruangan' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -81,16 +88,21 @@ class JadwalController extends Controller
         ]);
 
         // Logika khusus: Membatasi waktu pengajaran (misalnya, tidak boleh di luar jam kerja)
-        $jamKerjaMulai = '06:00:00';
+        $jamKerjaMulai = '05:59:59';
         $jamKerjaBerakhir = '18:15:01';
 
         // Memvalidasi jam mulai dan jam selesai
-        if ($request->jam_mulai < $jamKerjaMulai || $request->jam_selesai > $jamKerjaBerakhir) {
+        if (
+            strtotime($request->jam_mulai) < strtotime($jamKerjaMulai) || 
+            strtotime($request->jam_mulai) >= strtotime($jamKerjaBerakhir) ||
+            strtotime($request->jam_selesai) <= strtotime($jamKerjaMulai) || 
+            strtotime($request->jam_selesai) > strtotime($jamKerjaBerakhir)
+        ) {
             return redirect()->back()->withErrors(['time' => 'Jadwal harus berada di antara jam kerja (06:00 - 18:15).']);
         }
 
-        // Pengecekan konflik jadwal
-        $conflict = DB::table('jadwal_mk')
+        // Pengecekan konflik ruangan
+        $ruangan = DB::table('jadwal_mk')
             ->where('ruangan', $request->ruangan)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
@@ -102,9 +114,7 @@ class JadwalController extends Controller
                     });
             })
             ->exists();
-
-        // Jika terdapat konflik, kembalikan dengan pesan kesalahan
-        if ($conflict) {
+        if ($ruangan) {
             return redirect()->back()->withErrors(['conflict' => 'Jadwal bentrok! Ruangan sudah terpakai pada waktu tersebut.']);
         }
 
@@ -112,10 +122,26 @@ class JadwalController extends Controller
         $exists = JadwalMk::where('kode_mk', $request->kode_mk)
             ->where('kelas', $request->kelas)
             ->exists();
-
         // Jika jadwal dengan kode MK dan kelas yang sama sudah ada, kembalikan dengan pesan kesalahan
         if ($exists) {
             return redirect()->back()->withErrors(['conflict' => 'Jadwal dengan Kode MK dan Kelas ini sudah ada.']);
+        }
+
+        // Pengecekan untuk mencegah irisan jadwal matakuliah wajib
+        $irisan = JadwalMk::where('semester', $request->semester)
+            ->where('kelas', $request->kelas)
+            ->where('hari', $request->hari)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhere(function ($subQuery) use ($request) {
+                        $subQuery->where('jam_mulai', '<=', $request->jam_mulai)
+                            ->where('jam_selesai', '>=', $request->jam_selesai);
+                    });
+            })
+            ->exists();
+        if ($irisan) {
+            return redirect()->back()->withErrors(['conflict' => 'Jadwal bentrok dengan Mata Kuliah Wajib yang lain! ']);
         }
 
         // Simpan data ke tabel jadwal_mk
@@ -126,6 +152,7 @@ class JadwalController extends Controller
             'sks' => $request->sks,
             'sifat' => $request->sifat,
             'kelas' => $request->kelas,
+            'kuota_kelas' => $request->kuota_kelas,
             'ruangan' => $request->ruangan,
             'hari' => $request->hari,
             'jam_mulai' => $request->jam_mulai,
@@ -136,7 +163,6 @@ class JadwalController extends Controller
             'pengampu_3' => $request->pengampu_3,
         ]);
 
-        // Redirect dengan pesan sukses
         return redirect()->back()->with('success', 'Jadwal berhasil ditambahkan!');
     }
 
@@ -145,59 +171,77 @@ class JadwalController extends Controller
     {
         $jadwal = JadwalMk::findOrFail($id);
         $jadwal->delete();
+
         return redirect()->route('kaprodi.listPengajuan')->with('success', 'Data berhasil dihapus.');
     }
 
     // Menyetujui jadwal
-    public function approve($id)
+    public function approveJadwal($id)
     {
         $jadwal = JadwalMk::findOrFail($id);
-        $jadwal->persetujuan = true;
+        $jadwal->persetujuan = 1;
+        $jadwal->reason_for_rejection = null;
         $jadwal->save();
-        return redirect()->back()->with('success', 'Jadwal berhasil disetujui!');
+
+        return response()->json(['success' => true, 'message' => 'Jadwal telah disetujui.']);
     }
 
     // Menolak jadwal
-    public function reject($id)
+    public function rejectJadwal($id, Request $request)
     {
         $jadwal = JadwalMk::findOrFail($id);
-        $jadwal->persetujuan = false;
+        $jadwal->persetujuan = -1;
+        $jadwal->reason_for_rejection = $request->input('reason');
         $jadwal->save();
-        return redirect()->back()->with('success', 'Jadwal ditolak.');
+    
+        return response()->json(['success' => true, 'reason' => $jadwal->reason_for_rejection]);
+    }
+
+    // Membatalkan persetujuan
+    public function cancelApproval($id, Request $request)
+    {
+        $jadwal = JadwalMk::findOrFail($id);
+        $jadwal->persetujuan = 0;
+        $jadwal->reason_for_rejection = null;
+        $jadwal->save();
+
+        return response()->json(['success' => true, 'message' => 'Persetujuan telah dibatalkan.']);
     }
 
     // Menyetujui semua jadwal
     public function approveAll(Request $request)
     {
-        // Mengambil semester yang dipilih dari permintaan
-        $semester = $request->input('semester');
+        try {
+            $semester = $request->input('semester');
+            $jurusan = strtolower($request->input('jurusan'));
 
-        // Mengambil program studi dari input tersembunyi
-        $program_studi = $request->input('program_studi'); 
+            // Query Persetujuan
+            $query = JadwalMK::where('persetujuan', 0);
+            if ($semester) {
+                $query->where('semester', $semester);
+            }
 
-        // Menyiapkan query untuk jadwal yang belum disetujui
-        $query = JadwalMk::where('persetujuan', false); // Hanya memperbarui yang belum disetujui
+            if ($jurusan) {
+                if ($jurusan === 'informatika') {
+                    $query->where('kode_mk', 'like', 'PAIK%');
+                } elseif ($jurusan === 'bioteknologi') {
+                    $query->where(function($subQuery) {
+                        $subQuery->where('kode_mk', 'like', 'LAB%')
+                                ->orWhere('kode_mk', 'like', 'PAB%');
+                    });
+                }
+            }
+            $updatedRows = $query->update(['persetujuan' => 1]);
 
-        // Menerapkan filter program studi berdasarkan nilai program_studi
-        if ($program_studi === 'S1-INFORMATIKA') {
-            $query->where('kode_mk', 'like', 'PAIK%');
-        } elseif ($program_studi === 'S1-BIOTEKNOLOGI') {
-            $query->where(function($subQuery) {
-                $subQuery->where('kode_mk', 'like', 'LAB%')
-                            ->orWhere('kode_mk', 'like', 'PAB%');
-            });
+            return response()->json([
+                'success' => true,
+                'message' => "Approved all requests for $jurusan, semester $semester.",
+                'updated_count' => $updatedRows,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error in approveAll: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Server error.']);
         }
-
-        // Jika semester dipilih, tambahkan kondisi semester ke query
-        if ($semester) {
-            $query->where('semester', $semester);
-        }
-
-        // Eksekusi pembaruan
-        $query->update(['persetujuan' => true]);
-
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Jadwal berhasil disetujui.');
     }
 
     // Memperbarui data jadwal
@@ -205,31 +249,31 @@ class JadwalController extends Controller
     {
         // Validasi data yang dikirim
         $request->validate([
+            'semester' => 'required|integer',
             'kode_mk' => 'required',
             'nama' => 'required',
             'koordinator_mk' => 'required|string',
-            'pengampu_1' => 'required',
-            'pengampu_2' => 'nullable',
-            'pengampu_3' => 'nullable',
+            'pengampu_1' => 'required|string',
+            'pengampu_2' => 'nullable|string',
+            'pengampu_3' => 'nullable|string',
             'kelas' => 'required',
+            'kuota_kelas' => 'required|integer',
             'ruangan' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required|after:jam_mulai',
         ]);
-
+    
         // Logika khusus: Membatasi waktu pengajaran (tidak boleh di luar jam kerja)
         $jamKerjaMulai = '06:00:00';
-        $jamKerjaBerakhir = '18:15:01';
-
-        // Memvalidasi jam mulai dan jam selesai
+        $jamKerjaBerakhir = '18:15:00';
         if ($request->jam_mulai < $jamKerjaMulai || $request->jam_selesai > $jamKerjaBerakhir) {
             return redirect()->back()->withErrors(['time' => 'Jadwal harus berada di antara jam kerja (06:00 - 18:15).']);
         }
-
+    
         // Pengecekan konflik jadwal
         $conflict = DB::table('jadwal_mk')
-            ->where('id', '!=', $id) // Mengecualikan jadwal yang sedang diperbarui
+            ->where('id', '!=', $id)
             ->where('ruangan', $request->ruangan)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
@@ -237,25 +281,39 @@ class JadwalController extends Controller
                     ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
                     ->orWhere(function ($subQuery) use ($request) {
                         $subQuery->where('jam_mulai', '<=', $request->jam_mulai)
-                                    ->where('jam_selesai', '>=', $request->jam_selesai);
+                                ->where('jam_selesai', '>=', $request->jam_selesai);
                     });
             })
             ->exists();
-
-        // Jika terdapat konflik, kembalikan dengan pesan kesalahan
         if ($conflict) {
             return redirect()->back()->withErrors(['conflict' => 'Jadwal bentrok! Ruangan sudah terpakai pada waktu tersebut.']);
         }
-
+    
         // Pengecekan untuk mencegah duplikasi jadwal
         $exists = JadwalMk::where('id', '!=', $id) // Mengecualikan jadwal yang sedang diperbarui
             ->where('kode_mk', $request->kode_mk)
             ->where('kelas', $request->kelas)
             ->exists();
-
-        // Jika jadwal dengan kode MK dan kelas yang sama sudah ada, kembalikan dengan pesan kesalahan
         if ($exists) {
             return redirect()->back()->withErrors(['conflict' => 'Jadwal dengan Kode MK dan Kelas ini sudah ada.']);
+        }
+        
+        // Pengecekan untuk mencegah irisan jadwal matakuliah wajib
+        $irisan = JadwalMk::where('id', '!=', $id)
+            ->where('semester', $request->semester)
+            ->where('kelas', $request->kelas)
+            ->where('hari', $request->hari)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
+                    ->orWhere(function ($subQuery) use ($request) {
+                        $subQuery->where('jam_mulai', '<=', $request->jam_mulai)
+                            ->where('jam_selesai', '>=', $request->jam_selesai);
+                    });
+            })
+            ->exists();
+        if ($irisan) {
+            return redirect()->back()->withErrors(['conflict' => 'Jadwal bentrok dengan Mata Kuliah Wajib yang lain! ']);
         }
 
         // Pengecekan untuk mencegah duplikasi pengampu
@@ -263,18 +321,30 @@ class JadwalController extends Controller
             $request->pengampu_1,
             $request->pengampu_2,
             $request->pengampu_3,
-        ]); // Menghapus nilai yang tidak diisi (null)
-
-        // Memeriksa apakah ada duplikasi dalam pengampu
+        ]);
         if (count($pengampu) !== count(array_unique($pengampu))) {
             return redirect()->back()->withErrors(['conflict' => 'Pengampu tidak boleh duplikat.']);
         }
     
-        // Memperbarui data jadwal
+        // Memperbarui data jadwal dan mengatur persetujuan ke 0
         $jadwal = JadwalMk::findOrFail($id);
-        $jadwal->update($request->all());
-    
-        // Redirect ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', 'Jadwal berhasil diperbarui!');
+
+        $jadwal->kode_mk = $request->kode_mk;
+        $jadwal->semester = $request->semester;
+        $jadwal->nama = $request->nama;
+        $jadwal->koordinator_mk = $request->koordinator_mk;
+        $jadwal->pengampu_1 = $request->pengampu_1;
+        $jadwal->pengampu_2 = $request->pengampu_2;
+        $jadwal->pengampu_3 = $request->pengampu_3;
+        $jadwal->kelas = $request->kelas;
+        $jadwal->kuota_kelas = $request->kuota_kelas;
+        $jadwal->ruangan = $request->ruangan;
+        $jadwal->hari = $request->hari;
+        $jadwal->jam_mulai = $request->jam_mulai;
+        $jadwal->jam_selesai = $request->jam_selesai;
+        $jadwal->persetujuan = 0;
+        $jadwal->save();
+        
+        return redirect()->back()->with('success', 'Jadwal berhasil diperbarui dan menunggu persetujuan.');
     }
 }

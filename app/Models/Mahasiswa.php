@@ -40,6 +40,11 @@ class Mahasiswa extends Model
 
     public function irs()
     {
-        return $this->hasMany(Irs::class,'id');
+        return $this->hasMany(Irs::class, 'mahasiswa_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'id');
     }
 }

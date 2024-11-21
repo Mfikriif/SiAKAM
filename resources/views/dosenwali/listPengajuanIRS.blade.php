@@ -121,141 +121,141 @@
                         </div>
                     </div>
     
-                    <table class="w-11/12 mx-auto text-center mt-10 border-separate border-spacing-y-3 pb-8">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th class="text-left pl-4">NIM</th>
-                                <th class="text-left pl-4">NAMA</th>
-                                <th>SEMESTER</th>
-                                <th>SKS</th>
-                                <th>AKSI</th>
-                            </tr>
-    
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1. </td>
-                                <td class="text-left pl-4">24060122140118</td>
-                                <td class="text-left pl-4">Leslie Alexander</td>
-                                <td>5</td>
-                                <td>24 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2.</td>
-                                <td class="text-left pl-4">24060122140120</td>
-                                <td class="text-left pl-4">Guy Hawkins</td>
-                                <td>5</td>
-                                <td>22 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3.</td>
-                                <td class="text-left pl-4">24060122140124</td>
-                                <td class="text-left pl-4">Bessie Cooper</td>
-                                <td>5</td>
-                                <td>22 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4.</td>
-                                <td class="text-left pl-4">24060122140128</td>
-                                <td class="text-left pl-4">Denis Rexmen</td>
-                                <td>5</td>
-                                <td>19 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5.</td>
-                                <td class="text-left pl-4">24060122140130</td>
-                                <td class="text-left pl-4">Theresa Webb</td>
-                                <td>5</td>
-                                <td>24 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6.</td>
-                                <td class="text-left pl-4">24060122140132</td>
-                                <td class="text-left pl-4">Thomas Beta</td>
-                                <td>5</td>
-                                <td>22 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>7.</td>
-                                <td class="text-left pl-4">24060122140134</td>
-                                <td class="text-left pl-4">Jeremy Teddy</td>
-                                <td>5</td>
-                                <td>24 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>8.</td>
-                                <td class="text-left pl-4">24060122140135</td>
-                                <td class="text-left pl-4">Jenny Wilson</td>
-                                <td>5</td>
-                                <td>24 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>9.</td>
-                                <td class="text-left pl-4">24060122140138</td>
-                                <td class="text-left pl-4">Jacob Jones</td>
-                                <td>5</td>
-                                <td>21 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>10.</td>
-                                <td class="text-left pl-4">24060122140139</td>
-                                <td class="text-left pl-4">Kristin Digg</td>
-                                <td>5</td>
-                                <td>19 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>11.</td>
-                                <td class="text-left pl-4">24060122140142</td>
-                                <td class="text-left pl-4">Anna Ladiana</td>
-                                <td>5</td>
-                                <td>22 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>12.</td>
-                                <td class="text-left pl-4">24060122140144</td>
-                                <td class="text-left pl-4">Jackson Mandela</td>
-                                <td>5</td>
-                                <td>19 SKS</td>
-                                <td>
-                                    <button class="btn-detail">Detail</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="flex flex-col space-y-4" x-data="{ openIndex: null, openModal: false, currentData: {} }">
+                        <div class="overflow-hidden border rounded-lg border-gray-300 w-11/12 mx-auto my-6 p-4">
+                            @foreach ($mahasiswaPerwalian as $index => $mahasiswa)
+                                <div class="border-b mb-3 rounded-lg overflow-hidden">
+                                    <!-- Accordion Header -->
+                                    <div class="flex justify-between p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors duration-300"
+                                        :class="openIndex === {{ $index }} ? 'bg-gray-100' : ' '"
+                                        @click="openIndex = openIndex === {{ $index }} ? null : {{ $index }}">
+                                        <div class="flex justify-between">
+                                            <div>
+                                                <span class="text-gray-900">{{ $index + 1 }}.</span>
+                                                <span class="ml-4">{{ $mahasiswa->nim }}</span>
+                                                <span class="ml-4">{{ $mahasiswa->nama }}</span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <!-- Text persetujuan irs -->
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <svg :class="openIndex === {{ $index }} ? 'transform rotate-180' : ''"
+                                            class="h-5 w-5 text-gray-600 transition-transform"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                    
+                                    <!-- Accordion Content -->
+                                    <div x-show="openIndex === {{ $index }}" x-collapse class="transition-all duration-300">
+                                        <div class="p-5 bg-white rounded-b-lg shadow-inner overflow-auto">
+                                        @if($mahasiswa->irs->isNotEmpty())
+                                            <div x-data="{ checkAll: false }" class="overflow-hidden w-full overflow-x-auto rounded-md border border-neutral-300">
+                                                <table class="w-full text-left text-sm text-neutral-600">
+                                                    <thead class="border-b border-neutral-300 bg-grey-100 text-neutral-900">
+                                                        <tr class="bg-gray-50">
+                                                            <th scope="col"
+                                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                No </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Kode MK </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize min-w-[150px]">
+                                                                Nama </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Semester </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                SKS </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Sifat </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Kelas </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Ruangan </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Hari </th>
+                                                            <th scope="col"
+                                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
+                                                                Jam </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="divide-y divide-neutral-0">
+                                                        @foreach($mahasiswa->irs as $key => $irs)
+                                                            <tr>
+                                                                <td
+                                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
+                                                                    {{ $loop->iteration }} </td>
+                                                                <td
+                                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->kode_mk }} </td>
+                                                                <td class=" px-5 py-3">
+                                                                    <div class="w-48 flex items-center gap-3">
+                                                                        <div class="data">
+                                                                            <p class="font-normal text-sm text-gray-900">
+                                                                                {{ $irs->nama_mk }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td
+                                                                    class="text-center whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->semester }} </td>
+                                                                <td
+                                                                    class="text-center whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->sks }} </td>
+                                                                <td
+                                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->JadwalMk->sifat }} </td>
+                                                                <td
+                                                                    class="p-5 text-center whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->JadwalMk->kelas }} </td>
+                                                                <td
+                                                                    class="p-5 text-center whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->JadwalMk->ruangan }} </td>
+                                                                <td
+                                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->JadwalMk->hari }} </td>
+                                                                <td
+                                                                    class="p-5 text-center whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                                    {{ $irs->JadwalMk->jam_mulai }} - {{ $irs->JadwalMk->jam_selesai }} </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="flex justify-end mt-4 space-x-4">
+                                                <form action="" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                                                        Setujui
+                                                    </button>
+                                                </form>
+                                                <form action="" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="submit" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                                        Tolak
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <p class="pl-4 py-3">Belum ada data IRS.</p>
+                                        @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

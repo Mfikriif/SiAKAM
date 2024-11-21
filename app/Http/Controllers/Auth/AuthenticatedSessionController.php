@@ -7,7 +7,11 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use App\Models\Mahasiswa;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,21 +26,45 @@ class AuthenticatedSessionController extends Controller
     /**
      * Menangani permintaan autentikasi yang masuk.
      */
-    public function store(LoginRequest $request)
+    public function store(Request $request)
     {
-        $request->authenticate(); // Melakukan autentikasi pengguna
-        $request->session()->regenerate(); // Menghasilkan ulang sesi untuk mencegah serangan session fixation
+        $request->validate([
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-        $user = $request->user();
-        $roles = $this->getUserRoles($user->role); // Mendapatkan peran pengguna
-
-        // Jika pengguna memiliki lebih dari satu peran, arahkan ke halaman pemilihan peran
-        if (count($roles) > 1) {
-            return redirect()->route('role.selection');
+        if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $request->login)->first();
+        } elseif (strlen($request->login) == 14) {
+            $mahasiswa = Mahasiswa::where('nim', $request->login)->first();
+            if ($mahasiswa) {
+                $user = User::where('email', $mahasiswa->email)->first(); 
+            } else {
+                return back()->withErrors([
+                    'login' => 'NIM not found in the database.',
+                ]);
+            }
+        } else {
+            return back()->withErrors([
+                'login' => 'Invalid login credentials.',
+            ]);
         }
-        
-        // Arahkan pengguna ke dashboard sesuai dengan peran mereka
-        return redirect($this->getDashboardUrl($roles[0]));
+
+        // Check if user exists and password matches
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user); 
+            $request->session()->regenerate(); 
+            $roles = $this->getUserRoles($user->role);
+
+            if (count($roles) > 1) {
+                return redirect()->route('role.selection');
+            }
+
+            return redirect($this->getDashboardUrl($roles[0]));
+        }
+        return back()->withErrors([
+            'login' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     /**
@@ -44,16 +72,6 @@ class AuthenticatedSessionController extends Controller
      */
     private function getUserRoles(int $role): array
     {
-        // Catatan peran:
-        // Mahasiswa role = 1
-        // Akademik role = 2
-        // Dosen Wali role = 3
-        // Kaprodi role = 4
-        // Dekan role = 5
-        // Dekan dan Dosen Wali role = 6
-        // Kaprodi dan Dosen Wali role = 7
-        // Dosen role = 8
-        
         $roles = [];
         
         // Menentukan peran berdasarkan ID
@@ -80,6 +98,9 @@ class AuthenticatedSessionController extends Controller
             case 7:
                 $roles[] = 'kaprodi';
                 $roles[] = 'dosenwali';
+                break;
+            default:
+                $roles[] = 'guest';
                 break;
         }
 
@@ -121,17 +142,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function selectRole(Request $request)
     {
-        $role = $request->input('role'); // Mengambil peran yang dipilih dari permintaan
+        $role = $request->input('role');
         $user = auth()->user();
-        $roles = $this->getUserRoles($user->role); // Mengambil peran pengguna
+        $roles = $this->getUserRoles($user->role);
 
-        // Memastikan peran yang dipilih valid
         if (!in_array($role, $roles)) {
-            return redirect()->route('role.selection')->withErrors('Role yang dipilih tidak valid.'); // Kembali jika tidak valid
+            return redirect()->route('role.selection')->withErrors('Role yang dipilih tidak valid.'); 
         }
 
-        session(['user_role' => $role]); // Menyimpan peran pengguna dalam sesi
-        return redirect($this->getDashboardUrl($role)); // Arahkan ke dashboard sesuai peran
+        session(['user_role' => $role]);
+        return redirect($this->getDashboardUrl($role));
     }
 
     /**
@@ -139,9 +159,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout(); // Melakukan logout pengguna
-        $request->session()->invalidate(); // Menghapus sesi
-        $request->session()->regenerateToken(); // Menghasilkan ulang token sesi
-        return redirect('/'); // Arahkan ke halaman utama
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }
