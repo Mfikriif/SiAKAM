@@ -47,8 +47,8 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full object-cover" 
-                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                    <img class="h-8 w-8 rounded-full object-cover"
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}"
                                         alt="User Photo">
                                 </button>
                             </div>
@@ -97,52 +97,55 @@
 
                 <h2 class="text-2xl text-center font-light mx-auto max-w-64 mt-5">KARTU HASIL STUDI (KHS)</h2>
 
-            <div class="flex flex-col">
-        <div class=" overflow-x-auto pb-4">
-            <div class="min-w-full inline-block align-middle">
-                <div class="overflow-hidden rounded-lg border border-black-500 w-11/12 mx-auto mt-5">
-                    <table class="table-auto min-w-full rounded-xl">
-                        <div class="flex justify-between items-center">
-                            <div class="flex-row">
-                                <p class="ml-2 text-xl">Semester-1</p>
-                                <p class="ml-2 text-base font-thin">Jumlah SKS 21</p>
-                                <hr>
-                            </div>
-                            <div class="mr-2">
-                                <button class="text-xl font-bold bg-blue-900 text-white px-2 py-1 rounded">+</button>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between items-center mt-4">
-                            <div class="flex-row">
-                                <p class="ml-2 text-xl">Semester-2</p>
-                                <p class="ml-2 text-base font-thin">Jumlah SKS 24</p>
-                                <hr>
-                            </div>
-                            <div class="mr-2">
-                                <button class="text-xl font-bold bg-blue-900 text-white px-2 py-1 rounded">+</button>
-                            </div>
-                        </div>
-                    </table>
-                </div>
-                <div class="overflow-hidden rounded-lg w-11/12 mx-auto">
-                    <p class="ml-2 mt-5 font-extralight text-lg">IP. Semester : 4</p>
-                    <p class="ml-2 text-gray-500">96/24</p>
-                    <p class="ml-2 ">total(SKSxBOBOT) / total SKS</p>
-                </div>
+                <div class="flex flex-col">
+                    <div class=" overflow-x-auto pb-4">
+                        <div class="min-w-full inline-block align-middle">
+                            <div class="overflow-hidden rounded-lg border border-black-500 w-11/12 mx-auto mt-5">
+                                <table class="table-auto min-w-full rounded-xl">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex-row">
+                                            <p class="ml-2 text-xl">Semester-1</p>
+                                            <p class="ml-2 text-base font-thin">Jumlah SKS 21</p>
+                                            <hr>
+                                        </div>
+                                        <div class="mr-2">
+                                            <button
+                                                class="text-xl font-bold bg-blue-900 text-white px-2 py-1 rounded">+</button>
+                                        </div>
+                                    </div>
 
-                <div class="overflow-hidden rounded-lg w-11/12 mx-auto">
-                    <p class="ml-2 mt-5 font-extralight text-lg">IP. Kumulatif : 4</p>
-                    <p class="ml-2 text-gray-500">96/87</p>
-                    <p class="ml-2 ">total(SKSxBOBOT) terbaik / total SKS</p>
+                                    <div class="flex justify-between items-center mt-4">
+                                        <div class="flex-row">
+                                            <p class="ml-2 text-xl">Semester-2</p>
+                                            <p class="ml-2 text-base font-thin">Jumlah SKS 24</p>
+                                            <hr>
+                                        </div>
+                                        <div class="mr-2">
+                                            <button
+                                                class="text-xl font-bold bg-blue-900 text-white px-2 py-1 rounded">+</button>
+                                        </div>
+                                    </div>
+                                </table>
+                            </div>
+                            <div class="overflow-hidden rounded-lg w-11/12 mx-auto">
+                                <p class="ml-2 mt-5 font-extralight text-lg">IP. Semester : 4</p>
+                                <p class="ml-2 text-gray-500">96/24</p>
+                                <p class="ml-2 ">total(SKSxBOBOT) / total SKS</p>
+                            </div>
+
+                            <div class="overflow-hidden rounded-lg w-11/12 mx-auto">
+                                <p class="ml-2 mt-5 font-extralight text-lg">IP. Kumulatif : 4</p>
+                                <p class="ml-2 text-gray-500">96/87</p>
+                                <p class="ml-2 ">total(SKSxBOBOT) terbaik / total SKS</p>
+                            </div>
+                            <button
+                                class="flex ml-16 mt-3 h-10 w-40 border border-black text-black items-center rounded-md justify-center">
+                                <img class="h-11 w-11 pl-2" src="{{ asset('printer.svg') }}" alt="">
+                                <p class="ml-2 mr-2 font-bold">Cetak KHS</p>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <button class="flex ml-16 mt-3 h-10 w-40 border border-black text-black items-center rounded-md justify-center">
-                    <img class="h-11 w-11 pl-2" src="{{ asset('printer.svg') }}" alt="">
-                    <p class="ml-2 mr-2 font-bold">Cetak KHS</p>
-                </button>
-            </div>
-        </div>
-        </div>
             </div>
         </div>
     </section>

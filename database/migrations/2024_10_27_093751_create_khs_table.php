@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('khs', function (Blueprint $table) {
             $table->integer('id_khs', true);
+            $table->char('nim');
             $table->char('nama');
             $table->char('program_studi');
             $table->integer('semester');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->integer('nilai_angka')->nullable();
             $table->char('nilai_huruf', 2)->nullable();
 
+            $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
         });
     }
 

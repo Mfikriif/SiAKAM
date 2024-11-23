@@ -53,9 +53,9 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full object-cover" 
-                                    src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
-                                    alt="User Photo">
+                                    <img class="h-8 w-8 rounded-full object-cover"
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}"
+                                        alt="User Photo">
                                 </button>
                             </div>
 
@@ -111,7 +111,12 @@
                             <div
                                 class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-xs text-center font-semibold">
                                 belum distujui</div>
+
+                            <div class="my-auto flex text-sm">
+                                <p>Ip Semester Sebelum: {{ $ipSemester }}</p>
+                            </div>
                         </div>
+
                     </div>
                     <div class="flex">
                         <div class="flex-col items-center mt-5">
@@ -131,7 +136,7 @@
                             <div id="sks-maksimum">
                                 <div
                                     class="bg-[#002687] rounded-xl w-20 h-8 ml-1 pt-1.5 text-white text-sm text-center font-semibold">
-                                    24 SKS</div>
+                                    {{ $totalSksDiambil }} SKS</div>
                             </div>
                         </div>
                         <div class="flex-col items-center">
@@ -139,7 +144,7 @@
                             <div id="sks-diambil">
                                 <div
                                     class="bg-[#002687] rounded-xl w-20 h-8 ml-2 pt-1.5 text-white text-sm text-center font-semibold">
-                                    {{ $totalSks }} sks</div>
+                                    {{ $totalSksAmbil }} sks</div>
                             </div>
                         </div>
                     </div>
@@ -239,12 +244,14 @@
                                                                 value="{{ $mk->nama }}">
                                                             <input type="hidden" name="sks"
                                                                 value="{{ $mk->sks }}">
+                                                            <input type="hidden" name="kelas"
+                                                                value="{{ $mk->kelas }}">
                                                             <button
                                                                 class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4
                                                                 <?php
                                                                 $sudah_diambil = false;
-                                                                for ($i = 0; $i < count($irsDiambil); $i++) {
-                                                                    if ($irsDiambil[$i] == $mk->kode_mk) {
+                                                                foreach ($irsDiambil as $diambil) {
+                                                                    if ($diambil->kode_mk == $mk->kode_mk && $diambil->kelas == $mk->kelas) {
                                                                         $sudah_diambil = true;
                                                                         break;
                                                                     }
@@ -253,6 +260,7 @@
                                                                 ?>"
                                                                 kode_mk="{{ $mk->kode_mk }}"
                                                                 nama_mk="{{ $mk->nama }}"
+                                                                kelas = "{{ $mk->kelas }}"
                                                                 sks="{{ $mk->sks }}" type="submit">
                                                                 <?php echo $sudah_diambil ? 'Dipilih' : 'Pilih'; ?>
                                                             </button>

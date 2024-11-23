@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('irs', function (Blueprint $table) {
             $table->id('irs_id');
             $table->unsignedBigInteger('mahasiswa_id');
+            $table->char('nim');
             $table->string('nama');
             $table->string('program_studi');
             $table->integer('semester');            
             $table->string('tahun_akademik')->default('2024/2025');
             $table->string('kode_mk');
             $table->string('nama_mk');
+            $table->char('kelas',1);
             $table->integer('sks');
             $table->boolean('status')->default(false);
             $table->date('tanggal_pengajuan');

@@ -45,27 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         jurusanSelect.addEventListener("change", filterRuangan);
     }
 });
-// document.addEventListener("DOMContentLoaded", function () {
-//     const textElement = document.getElementById("typing-text");
-//     const text = textElement.textContent;
-//     textElement.textContent = "";
-//     let index = 0;
 
-//     function typeEffect() {
-//         if (index < text.length) {
-//             textElement.textContent += text.charAt(index);
-//             index++;
-//             setTimeout(typeEffect, 100);
-//         }
-//     }
-
-//     typeEffect();
-// });
-
-// Tambahkan event listener untuk select element
-
-// ("X-CSRF-TOKEN");
-// document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 document
     .getElementById("matakuliah")
     .addEventListener("change", async function () {
@@ -181,6 +161,7 @@ async function postCourse(course) {
                 kode_mk: course.kode_mk,
                 nama_mk: course.nama,
                 sks: course.sks,
+                kelas: course.kelas,
             }),
         });
 
