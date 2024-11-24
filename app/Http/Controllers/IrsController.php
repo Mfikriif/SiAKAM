@@ -18,40 +18,53 @@ class IrsController extends Controller
 {
     public function index(){
         
-        // Ambil semester mahasiswa
+        // Ambil data mahasiswa yang sedang login
         $user = Auth::user();
-        
-        $mahasiswa = Mahasiswa::where('email',$user->email)->first();
+        $mahasiswa = Mahasiswa::where('email', $user->email)->first();
 
         $semesterMHS = $mahasiswa->semester;
-        // Ambil semua data jadwal mata kuliah
-        $jadwal_MK = JadwalMK::where('semester',$semesterMHS)->get();
+        $jurusan = $mahasiswa->jurusan;
 
-        // Ambil total sks yang telah di ambil
-        // $totalSks = 0;
-        $totalSksAmbil = irs::where('mahasiswa_id',$mahasiswa->id)->get()->sum('sks');
-        // dd($totalSksAmbil);
+        // Ambil semua data jadwal mata kuliah sesuai semester
+        $jadwal_MK = JadwalMK::where('semester', $semesterMHS);
+
+        // Filter jadwal mata kuliah berdasarkan jurusan mahasiswa
+        if ($jurusan == 'S1 Informatika') {
+            $jadwal_MK = $jadwal_MK->where(function($query) {
+                $query->where('kode_mk', 'like', 'PAIK%');
+            });
+        } else if ($jurusan == 'S1 Bioteknologi') {
+            $jadwal_MK = $jadwal_MK->where(function($query) {
+                $query->where('kode_mk', 'like', 'LAB%')
+                      ->orWhere('kode_mk', 'like', 'PAB%');
+            });
+        }
+
+        // Debugging: Tampilkan SQL query
+
+        $jadwal_MK = $jadwal_MK->get();
+        // dd($jadwal_MK);
+
+        // Ambil total SKS yang telah diambil
+        $totalSksAmbil = Irs::where('mahasiswa_id', $mahasiswa->id)->sum('sks');
 
         $irsDiambil = DB::table('irs')
-        ->where('mahasiswa_id', $mahasiswa->id)
-        ->get(['kode_mk','kelas'])
-        ->toArray();
+                        ->where('mahasiswa_id', $mahasiswa->id)
+                        ->get(['kode_mk','kelas'])
+                        ->toArray();
 
-        // menampilkan list mata kuliah diluar semester berjalan
+        // List mata kuliah di luar semester berjalan
         $listMK = JadwalMK::select('kode_mk','nama')
-        ->where('semester','<>',$semesterMHS)
-        ->distinct()
-        ->get();
+                          ->where('semester', '<>', $semesterMHS)
+                          ->distinct()
+                          ->get();
 
+        // Hitung IP semester sebelumnya
         $dataKhs = DB::table('khs')
-        ->where('nim',$mahasiswa->nim)
-        ->where('semester', 4)
-        ->whereNotNull('nilai_huruf')
-        ->get(['sks','nilai_huruf']);
-
-        if($dataKhs->isEmpty()){
-            return reesponse()->json(['message' => 'Data tidak ditemukan','ip semester' => 0],404);
-        }
+                     ->where('nim', $mahasiswa->nim)
+                     ->where('semester', $semesterMHS - 1)
+                     ->whereNotNull('nilai_huruf')
+                     ->get(['sks','nilai_huruf']);
 
         $nilai_bobot = [
             'A' => 4,
@@ -70,16 +83,16 @@ class IrsController extends Controller
             $totalSks += $khs->sks;
         }
 
-        $ipSemester = $totalSks > 0 ? round( $totalBobot / $totalSks, 2): 0;
+        $ipSemester = $totalSks > 0 ? round($totalBobot / $totalSks, 2) : 0;
 
+        // Tentukan jumlah SKS yang dapat diambil
         if($ipSemester >= 3){
             $totalSksDiambil = 24;
-        }else if ($ipSemester > 2.5 && $ipSemester <= 2.9){
+        } else if ($ipSemester > 2.5 && $ipSemester <= 2.9){
             $totalSksDiambil = 20;
-        }else {
+        } else {
             $totalSksDiambil = 18;
         }
-        // dd($ipSemester);
 
         return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil'));
     }
@@ -100,7 +113,7 @@ class IrsController extends Controller
             // Ambil IP Semester untuk menghitung batas maksimal SKS
             $dataKhs = DB::table('khs')
                 ->where('nim', $mahasiswa->nim)
-                ->where('semester', 4) // Sesuaikan semester jika perlu
+                ->where('semester', $mahasiswa->semester - 1) // Sesuaikan semester jika perlu
                 ->whereNotNull('nilai_huruf')
                 ->get(['sks', 'nilai_huruf']);
     
@@ -134,8 +147,9 @@ class IrsController extends Controller
     
             // Validasi apakah total SKS yang sudah diambil melebihi batas
             if (($totalSksAmbil + $request->sks)  > $totalSksDiambil) {
-                return redirect()->back()->withErrors([
-                    'message' => 'Tidak dapat mengambil mata kuliah baru. Total SKS yang sudah diambil (' . $totalSksAmbil . ') telah melebihi batas maksimal (' . $totalSksDiambil . ').'
+                return redirect()->back()->with([
+                    'alert_type' => 'error' ,
+                    'alert_message' => 'Tidak dapat mengambil mata kuliah baru. Total SKS yang sudah diambil (' . $totalSksAmbil . ') telah melebihi batas maksimal (' . $totalSksDiambil . ').'
                 ]);
             }
     
@@ -222,5 +236,6 @@ class IrsController extends Controller
 
         return response()->json($matakuliah);
     }
+
 }
 

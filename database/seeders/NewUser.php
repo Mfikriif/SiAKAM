@@ -111,14 +111,6 @@ class NewUser extends Seeder
                 'role' => '1',
                 'profile_photo' => 'images/profiles/tasrari.jpg',
             ],
-            [
-                'id' => 12,
-                'name' => 'Revanda Putri Andita',
-                'email' => 'revanda@gmail.com',
-                'password' => 'revanda12345',
-                'role' => '1',
-                'profile_photo' => 'images/profiles/revanda.jpg',
-            ],
         ];
         foreach ($users as $user) {
             $user['password'] = Hash::make($user['password']);
