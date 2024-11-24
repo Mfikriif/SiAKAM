@@ -102,7 +102,6 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Kalimalang, Bekasi',
                 'no_hp' => '08112712818',
                 'angkatan' => 2022,
-                'status' => 1,
                 'pembimbing_akademik_id' => 7,
             ],
         ];
