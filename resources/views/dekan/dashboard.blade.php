@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     @vite('resources/css/app.css')
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @vite('resources/js/app.js')
 </head>
 
@@ -92,7 +93,7 @@
                 </h1>
                 <div class="bg-white rounded-lg mt-10">
                     <div class="p-7">
-                        <div class="flex justify-between h-72">
+                        <div class="flex justify-between h-96">
                             <div class="flex w-2/4">
                                 <div class=" w-72">
                                     <p class="  font-semibold text-gray-700 w-full">Profil
@@ -115,27 +116,38 @@
                                     <p>Universitas Diponegoro</p>
                                 </div>
                             </div>
-    
                             <div class="border border-slate-300"></div>
-    
                             <div class="w-2/4 flex justify-center">
                                 <div class="mx-auto my-auto pl-7">
-                                    <div class="pt-4 flex flex-wrap justify-start items-center gap-7">
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Total Mahasiswa</p>
-                                            <p class="pt-2 font-semibold text-lg">{{ $totalMahasiswa }}</p>
+                                    <div class="pt-4 grid grid-cols-3 gap-6">
+                                        <!-- Statistik Total Mahasiswa -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Mahasiswa</p>
+                                            <p class="font-bold text-xl text-gray-800">{{ $totalMahasiswa }}</p>
                                         </div>
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Total Dosen</p>
-                                            <p class="pt-2 font-semibold text-lg">{{ $totalDosen }}</p>
+                            
+                                        <!-- Statistik Total Dosen -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Dosen</p>
+                                            <p class="font-bold text-xl text-gray-800">{{ $totalDosen }}</p>
                                         </div>
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Rerata IPK</p>
-                                            <p class="pt-2 font-semibold text-lg">3.51</p>
+                            
+                                        <!-- Statistik Rerata IPK -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Rerata IPK</p>
+                                            <p class="font-bold text-xl text-gray-800">3.51</p>
                                         </div>
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Pengajuan Jadwal</p>
-                                            <p class="pt-2 font-semibold text-lg">{{ $pendingPengajuanCount }}</p>
+                                    </div>
+                            
+                                    <!-- Grafik -->
+                                    <div class="flex flex-row items-center mt-6 gap-4">
+                                        <div class="bg-white shadow-md rounded-lg p-4 w-1/2">
+                                            <h2 class="text-gray-700 text-sm font-semibold mb-2 text-center">Status Pengajuan Jadwal</h2>
+                                            <canvas id="approvalJadwalPieChart" class="h-40 w-40 mx-auto"></canvas>
+                                        </div>
+                                        <div class="bg-white shadow-md rounded-lg p-4 w-1/2">
+                                            <h2 class="text-gray-700 text-sm font-semibold mb-2 text-center">Status Pengajuan Ruang</h2>
+                                            <canvas id="approvalRuangPieChart" class="h-40 w-40 mx-auto"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -186,6 +198,90 @@
             }
         }
         window.onload = typeEffect;
+    </script>
+
+    <script>
+        // Chart untuk Pengajuan Jadwal
+        const ctxJadwal = document.getElementById('approvalJadwalPieChart').getContext('2d');
+        const approvalJadwalPieChart = new Chart(ctxJadwal, {
+            type: 'pie',
+            data: {
+                labels: ['Belum Disetujui', 'Sudah Disetujui'],
+                datasets: [
+                    {
+                        data: [
+                            {{ $pendingPengajuanJadwal }},
+                            {{ $totalPengajuanJadwal - $pendingPengajuanJadwal }}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)', // Warna Belum Disetujui
+                            'rgba(54, 162, 235, 0.7)', // Warna Sudah Disetujui
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                        ],
+                        borderWidth: 2,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: 'Inter, sans-serif',
+                            },
+                            color: 'rgba(75, 85, 99)',
+                        },
+                    },
+                },
+            },
+        });
+
+        // Chart untuk Pengajuan Ruang
+        const ctxRuang = document.getElementById('approvalRuangPieChart').getContext('2d');
+        const approvalRuangPieChart = new Chart(ctxRuang, {
+            type: 'pie',
+            data: {
+                labels: ['Belum Disetujui', 'Sudah Disetujui'],
+                datasets: [
+                    {
+                        data: [
+                            {{ $pendingPengajuanRuang }},
+                            {{ $totalPengajuanRuang - $pendingPengajuanRuang }}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 206, 86, 0.7)', // Warna Belum Disetujui
+                            'rgba(75, 192, 192, 0.7)', // Warna Sudah Disetujui
+                        ],
+                        borderColor: [
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                        ],
+                        borderWidth: 2,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: 'Inter, sans-serif',
+                            },
+                            color: 'rgba(75, 85, 99)',
+                        },
+                    },
+                },
+            },
+        });
     </script>
 </body>
 

@@ -27,7 +27,6 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Perumahan Bumi Mutiara Blok Ji 2 No 8 Gunung Putri Bogor',
                 'no_hp' => '087870805235',
                 'angkatan' => 2022,
-                'status' => 1,
                 'pembimbing_akademik_id' => 5,
             ],
             [
@@ -43,7 +42,6 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Jalan Tlogo Timun 1, Semarang',
                 'no_hp' => '08112786860',
                 'angkatan' => 2022,
-                'status' => 1,
                 'pembimbing_akademik_id' => 5,
             ],
             [
@@ -59,7 +57,6 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Jalan Kanfer Raya 5, Semarang',
                 'no_hp' => '082138288712',
                 'angkatan' => 2022,
-                'status' => 1,
                 'pembimbing_akademik_id' => 5,
             ],
             [
@@ -75,7 +72,6 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Jalan Sulawesi 48, Pemalang',
                 'no_hp' => '082314755575',
                 'angkatan' => 2022,
-                'status' => 1,
                 'pembimbing_akademik_id' => 5,
             ],
             [
@@ -91,7 +87,6 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Sumurbroto, Semarang',
                 'no_hp' => '08112712818',
                 'angkatan' => 2022,
-                'status' => 1,
                 'pembimbing_akademik_id' => 7,
             ],
         ];

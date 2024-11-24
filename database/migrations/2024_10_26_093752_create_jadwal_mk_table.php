@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('jadwal_mk', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('tahun_ajaran_id');
             $table->string('kode_mk', 10);
             $table->string('hari', 50);
             $table->string('ruangan', 5)->nullable()->index('kode_ruangan');
@@ -36,6 +37,11 @@ return new class extends Migration
             $table->foreign('kode_mk')
                 ->references('kode_mk')
                 ->on('mata_kuliah')
+                ->onDelete('cascade');
+
+            $table->foreign('tahun_ajaran_id')
+                ->references('id')
+                ->on('tahun_ajaran')
                 ->onDelete('cascade');
         });
     }

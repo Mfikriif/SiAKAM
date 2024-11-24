@@ -192,25 +192,64 @@ export async function approveRejectJadwal(id, action) {
     });
 }
 
-// Function to calculate the end time (jam_selesai) based on SKS and jam_mulai
+// Function to calculate and validate the end time (jam_selesai) based on SKS and jam_mulai
 export function calculateJamSelesai() {
-    const jamMulai = document.getElementById("jam_mulai").value;
-    const sks = parseInt(document.getElementById("sks").value) || 0;
-    const durationMinutes = sks * 50; // Each SKS is 50 minutes
+    const jamMulaiInput = document.getElementById("jam_mulai");
+    const jamSelesaiInput = document.getElementById("jam_selesai");
+    const sksInput = document.getElementById("sks");
 
-    if (jamMulai && durationMinutes > 0) {
+    // Retrieve values
+    const jamMulai = jamMulaiInput.value;
+    const sks = parseInt(sksInput.value) || 0;
+
+    // Validate and adjust jam_mulai
+    if (jamMulai) {
         const [hours, minutes] = jamMulai.split(":").map(Number);
-        const jamMulaiDate = new Date();
-        jamMulaiDate.setHours(hours, minutes);
 
-        const jamSelesaiDate = new Date(
-            jamMulaiDate.getTime() + durationMinutes * 60000
-        );
-        const jamSelesai = `${String(jamSelesaiDate.getHours()).padStart(
+        // Round minutes to nearest 10
+        let adjustedMinutes = Math.round(minutes / 10) * 10;
+        let adjustedHours = hours;
+
+        // Handle minutes overflow (e.g., 60 minutes)
+        if (adjustedMinutes === 60) {
+            adjustedMinutes = 0;
+            adjustedHours = (hours + 1) % 24; // Wrap around after 23:59
+        }
+
+        // Format adjusted jam_mulai
+        const adjustedJamMulai = `${String(adjustedHours).padStart(
             2,
             "0"
-        )}:${String(jamSelesaiDate.getMinutes()).padStart(2, "0")}`;
-        document.getElementById("jam_selesai").value = jamSelesai;
+        )}:${String(adjustedMinutes).padStart(2, "0")}`;
+        jamMulaiInput.value = adjustedJamMulai;
+
+        // Proceed to calculate jam_selesai if SKS is provided
+        if (sks > 0) {
+            const durationMinutes = sks * 50; // Each SKS is 50 minutes
+            const jamMulaiDate = new Date();
+            jamMulaiDate.setHours(adjustedHours, adjustedMinutes);
+
+            // Calculate jam selesai
+            const jamSelesaiDate = new Date(
+                jamMulaiDate.getTime() + durationMinutes * 60000
+            );
+            let jamSelesaiHours = jamSelesaiDate.getHours();
+            let jamSelesaiMinutes =
+                Math.ceil(jamSelesaiDate.getMinutes() / 10) * 10;
+
+            // Handle minutes overflow for jam_selesai
+            if (jamSelesaiMinutes === 60) {
+                jamSelesaiMinutes = 0;
+                jamSelesaiHours = (jamSelesaiHours + 1) % 24;
+            }
+
+            // Format jam selesai
+            const jamSelesai = `${String(jamSelesaiHours).padStart(
+                2,
+                "0"
+            )}:${String(jamSelesaiMinutes).padStart(2, "0")}`;
+            jamSelesaiInput.value = jamSelesai;
+        }
     }
 }
 
