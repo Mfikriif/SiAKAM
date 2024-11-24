@@ -118,27 +118,29 @@
     
                             <div class="border border-slate-300"></div>
     
-                            <div class=" w-2/4">
-                                <div class="pt-4 flex flex-wrap justify-center items-center gap-7 mt-5">
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Mahasiswa</p>
-                                        <p class="pt-2 font-semibold text-lg">{{ $totalMahasiswa }}</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Total Dosen</p>
-                                        <p class="pt-2 font-semibold text-lg">{{ $totalDosen }}</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Retata IPK</p>
-                                        <p class="pt-2 font-semibold text-lg">{{ $rerataIPK }}</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Belum Bayar UKT</p>
-                                        <p class="pt-2 font-semibold text-lg">234</p>
-                                    </div>
-                                    <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                        <p class="pt-2 text-xs text-gray-500">Belum mengisi IRS</p>
-                                        <p class="pt-2 font-semibold text-lg">120</p>
+                            <div class="w-2/4 flex justify-center">
+                                <div class="mx-auto my-auto pl-7">
+                                    <div class="pt-4 grid grid-cols-3 gap-6">
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Mahasiswa</p>
+                                            <p class="font-bold text-xl text-gray-800">{{ $totalMahasiswa }}</p>
+                                        </div>
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Dosen</p>
+                                            <p class="font-bold text-xl text-gray-800">{{ $totalDosen }}</p>
+                                        </div>
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Retata IPK</p>
+                                            <p class="font-bold text-xl text-gray-800">{{ $rerataIPK }}</p>
+                                        </div>
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Belum Bayar UKT</p>
+                                            <p class="font-bold text-xl text-gray-800">234</p>
+                                        </div>
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Belum mengisi IRS</p>
+                                            <p class="font-bold text-xl text-gray-800">120</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

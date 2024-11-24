@@ -11,6 +11,7 @@ use App\Http\Controllers\DosenWaliController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\IrsController;
 use App\Http\Controllers\MatkulController;
+use App\Http\Controllers\MahasiswaController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -32,7 +33,11 @@ Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'
 // Controller Mahasiswa Untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::get('mahasiswa/jadwal-kuliah',[MenuController::class,'jadwalKuliah'])->name('mahasiswa.jadwalKuliah');
-    Route::get('mahasiswa/herreg',[MenuController::class,'herReg'])->name('mahasiswa.herReg');
+    Route::get('mahasiswa/herreg',[MahasiswaController::class,'herReg'])->name('mahasiswa.herReg');
+    Route::post('/mahasiswa/{id}/set-aktif', [MahasiswaController::class, 'setAktif'])->name('mahasiswa.setAktif');
+    Route::post('/mahasiswa/{id}/set-cuti', [MahasiswaController::class, 'setCuti'])->name('mahasiswa.setCuti');
+    Route::post('/mahasiswa/{id}/batalkan-status', [MahasiswaController::class, 'batalkanStatus'])->name('mahasiswa.batalkanStatus');
+    Route::get('mahasiswa/khs',[MenuController::class,'khs'])->name('mahasiswa.khs');
     Route::get('mahasiswa/khs',[IrsController::class,'getKhs'])->name('mahasiswa.khs');
     Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
     Route::get('mahasiswa/irs',[IrsController::class, 'index'])->name('mahasiswa.irs');
@@ -90,6 +95,7 @@ Route::middleware('auth', 'kaprodi')->group(function() {
     Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('jadwal.store');
     Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
     Route::put('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
+    Route::get('/jadwal/ruangan/{ruangan?}', [JadwalController::class, 'getRuanganTerpakai'])->name('jadwal.ruangan');
 });
 
 

@@ -12,28 +12,6 @@ use App\Models\JadwalMk;
 
 class HomeController extends Controller
 {
-    public function dashboardDekan()
-    {
-        $user = Auth::user();
-        $dekan = CivitasAkademik::where('email', $user->email)->firstOrFail();
-        $pendingPengajuanCount = JadwalMK::where('persetujuan', 0)->count();
-        $totalMahasiswa = Mahasiswa::count();
-        $totalDosen = 1989;
-        $rerataIPK = 3.51;
-
-        return view('dekan.dashboard', [
-            'user' => $user,
-            'userName' => $dekan->nama,
-            'userNIP' => $dekan->nip,
-            'userEmail' => $dekan->email,
-            'nomorHP' => $dekan->no_hp,
-            'jurusan' => $dekan->jurusan,
-            'pendingPengajuanCount' => $pendingPengajuanCount,
-            'totalMahasiswa' => $totalMahasiswa,
-            'totalDosen' => $totalDosen,
-            'rerataIPK' => $rerataIPK
-        ]);
-    }
 
     public function dashboardAkademik()
     {

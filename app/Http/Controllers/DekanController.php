@@ -17,7 +17,10 @@ class DekanController extends Controller
     {
         $user = Auth::user();
         $dekan = CivitasAkademik::where('email', $user->email)->firstOrFail();
-        $pendingPengajuanCount = JadwalMK::where('persetujuan', 0)->count();
+        $pendingPengajuanJadwal = JadwalMK::where('persetujuan', 0)->count();
+        $totalPengajuanJadwal = JadwalMK::count();
+        $pendingPengajuanRuang = Ruangan::where('persetujuan', 0)->count();
+        $totalPengajuanRuang = Ruangan::count();
         $totalMahasiswa = Mahasiswa::count();
         $totalDosen = User::where('role', '6' or '3')->count();
         $rerataIPK = 3.51;
@@ -29,27 +32,38 @@ class DekanController extends Controller
             'userEmail' => $dekan->email,
             'nomorHP' => $dekan->no_hp,
             'jurusan' => $dekan->jurusan,
-            'pendingPengajuanCount' => $pendingPengajuanCount,
+            'pendingPengajuanJadwal' => $pendingPengajuanJadwal,
+            'totalPengajuanJadwal' => $totalPengajuanJadwal,
+            'pendingPengajuanRuang' => $pendingPengajuanRuang,
+            'totalPengajuanRuang' => $totalPengajuanRuang,
             'totalMahasiswa' => $totalMahasiswa,
             'totalDosen' => $totalDosen,
             'rerataIPK' => $rerataIPK
         ]);
     }
 
-    public function listPengajuanJadwal()
+    public function listPengajuanJadwal(Request $request)
     {
         // Retrieve all room requests, regardless of 'persetujuan' status
         $user = Auth::user();
         $jadwalList = jadwalMK::paginate(10);
     
-        return view('dekan.listPengajuanJadwal', compact('user','jadwalList'));
+        if ($request->ajax()) {
+            return view('dekan.partialPengajuanJadwal', compact('jadwalList'))->render();
+        }
+    
+        return view('dekan.listPengajuanJadwal', compact('user', 'jadwalList'));
     }
     
-    public function listPengajuanRuang()
+    public function listPengajuanRuang(Request $request)
     {
         // Retrieve all room requests, regardless of 'persetujuan' status
         $user = Auth::user();
-        $ruanganList = Ruangan::paginate(10);
+        $ruanganList = Ruangan::paginate(5);
+
+        if ($request->ajax()) {
+            return view('dekan.partialPengajuanRuang', compact('ruanganList'))->render();
+        }
     
         return view('dekan.listPengajuanRuang', compact('user','ruanganList'));
     }

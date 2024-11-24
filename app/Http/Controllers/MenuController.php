@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\JadwalMk;
+use App\Models\Mahasiswa;
 
 class MenuController extends Controller
 {
@@ -12,12 +13,6 @@ class MenuController extends Controller
     {
         $user = Auth::user();
         return view('mahasiswa.jadwalKuliah', compact('user'));
-    }
-
-    public function herReg()
-    {
-        $user = Auth::user();
-        return view('mahasiswa.herReg', compact('user'));
     }
 
     public function khs()
