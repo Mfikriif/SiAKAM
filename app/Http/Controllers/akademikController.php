@@ -73,8 +73,13 @@ class akademikController extends Controller
         // Ambil data mata nama dari database
         $user = Auth::user();
 
+        // Ambil data ruangan dari tabel daftar_ruangan
+        $daftarRuangan = DB::table('daftar_ruangan')->get();
+
+        $kodeRuanganSelected = Ruangan::pluck('kode_ruangan')->toArray();
+
         // Kirim data ke view
-        return view('akademik.inputRuangKuliah', compact('user'));
+        return view('akademik.inputRuangKuliah', compact('user', 'daftarRuangan', 'kodeRuanganSelected'));
     }
 
     // Ruangan Ditolak

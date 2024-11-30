@@ -66,12 +66,12 @@
     </nav>
 
     <section class="relative top-20">
-        <div class="w-2/3 mx-auto flex justify-between text-white" id="container-navigation">
-            <p class="font-bold">Input Ruang Kuliah</p>
+        <div class="w-2/3 mx-auto flex justify-between text-lg text-white" id="container-navigation">
+            <p class="font-bold">INPUT RUANG KULIAH</p>
             <a href="{{ route('akademik.listRuangKuliah') }}">
-                <div class="flex">
-                    <img src="{{ asset('arrow-left.png') }}" alt="">
-                    <p class="ml-2">Kembali / Input Ruang Kuliah</p>
+                <div class="flex items-center">
+                    <img src="{{ asset('arrow-left.png') }}" alt="" class="w-8 h-8 mr-1">
+                    <p>Kembali / List Ruang Kuliah</p>
                 </div>
             </a>
         </div>
@@ -108,11 +108,18 @@
                 <div class="mb-4">
                     <label class="block text-gray-700">Ruangan:</label>
                     <div class="grid grid-cols-4 gap-2">
-                        @foreach (['E101', 'E102', 'E103', 'A101', 'A102', 'A103', 'A104', 'A201', 'A202', 'A203', 'A204', 'A303', 'A304', 'K101', 'K102', 'K202', 'B101', 'B102', 'B103', 'B104', 'B201', 'B202', 'B203', 'B204', 'C101', 'C102', 'C103', 'C104', 'C201', 'C202', 'C203', 'C204', 'D101', 'D102', 'D103', 'D104', 'D201', 'D202', 'D203', 'D204'] as $ruang)
+                        @foreach ($daftarRuangan as $item)
                             <div class="flex items-center">
-                                <input type="checkbox" id="{{ $ruang }}" name="kode_ruangan[]"
-                                    value="{{ $ruang }}" class="mr-2">
-                                <label for="{{ $ruang }}" class="text-gray-700">{{ $ruang }}</label>
+                                <input type="checkbox" 
+                                    id="{{ $item->kode_ruangan }}" 
+                                    name="kode_ruangan[]"
+                                    value="{{ $item->kode_ruangan }}" 
+                                    class="mr-2"
+                                    @if (in_array($item->kode_ruangan, $kodeRuanganSelected)) 
+                                        checked disabled class="opacity-50 cursor-not-allowed"
+                                    @endif>
+                                <label for="{{ $item->kode_ruangan }}" 
+                                    class="text-gray-700" @if (in_array($item->kode_ruangan, $kodeRuanganSelected)) opacity-50 @endif>{{ $item->kode_ruangan }}</label>
                             </div>
                         @endforeach
                     </div>
@@ -147,7 +154,7 @@
             });
         });
     </script>
-@endif
+    @endif
 
 </body>
 

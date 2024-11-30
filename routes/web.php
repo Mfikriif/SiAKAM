@@ -11,6 +11,8 @@ use App\Http\Controllers\DosenWaliController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\IrsController;
 use App\Http\Controllers\MatkulController;
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\RuangController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -40,7 +42,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::delete('mahasiswa/irs/delete',[irsController::class,'delete'])->name('irs.delete');
     Route::post('/mahasiswa/listMk',[irsController::class,'searchMk'])->name('irs.searchMk');
     Route::get('/get-matakuliah-detail/{kodeMK}', [irsController::class, 'getMatakuliahDetail']);
-
+    Route::get('/print-irs/{mahasiswaId}', [PDFController::class, 'generatePDF'])->name('irs.print');
 });
 
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
@@ -49,7 +51,10 @@ Route::middleware('auth', 'akademik')->group(function() {
     Route::post('/Ruangan/store', [akademikController::class, 'store'])->name('Ruangan.store');
     Route::get('akademik/input-ruang-kuliah', [akademikController::class, 'inputRuangKuliah'])->name('akademik.inputRuangKuliah');
     Route::get('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
-    // Route::put('akademik/list-ruang-kuliah',[akademikController::class,'Ruangan'])->name('akademik.listRuangKuliah');
+    Route::get('akademik/buat-ruang',[RuangController::class,'buatRuang'])->name('akademik.buatRuangKuliah');
+    Route::post('/ruang/store',[RuangController::class,'store'])->name('ruang.store');
+    Route::delete('/ruang/{id}',[RuangController::class,'destroy'])->name('ruang.destroy');
+    Route::get('/api/ruang', [RuangController::class, 'getAllRuang'])->name('ruang.getAll');
     Route::delete('/Ruangan/{id}', [akademikController::class, 'destroy'])->name('Ruangan.destroy');
     Route::put('/Ruangan/{id}', [akademikController::class, 'update'])->name('Ruangan.update');
 });

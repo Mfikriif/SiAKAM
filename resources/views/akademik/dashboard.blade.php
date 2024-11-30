@@ -144,11 +144,21 @@
                 </div>
             </div>
             {{-- menu pengajuan ruang kuliah --}}
-            <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-                <a href="{{ route('akademik.listRuangKuliah') }}"class="flex h-20 border text-white items-center rounded-md ">
-                    <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
-                    <p class="mx-auto">Pengajuan Ruang Kuliah</p>
-                </a>
+            <div id="menu-container" class=" w-2/3 mx-auto">
+                <div class="w-100 mt-7 grid grid-cols-2 text-lg">
+                    <a href="{{ route('akademik.listRuangKuliah') }}">
+                        <button class="flex h-20 w-64 border text-white items-center rounded-md ">
+                            <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
+                            <p class="mx-auto">Pengajuan Ruang Kuliah</p>
+                        </button>
+                    </a>
+                    <a href="{{ route('akademik.buatRuangKuliah') }}">
+                        <button class="flex h-20 w-64 border text-white items-center rounded-md ">
+                            <img class="w-11 mr-2 ml-4" src="{{ asset('classroom.svg') }}" alt="">
+                            <p class="mx-auto">Pembuatan Ruang Kuliah</p>
+                        </button>
+                    </a>
+                </div>
             </div>
         </section>
     </main>
