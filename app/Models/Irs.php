@@ -33,9 +33,19 @@ class Irs extends Model
         'tanggal_persetujuan'
     ];
 
+    public function mataKuliah()
+    {
+        return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
+    }
+
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class,'id');
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
+    }
+
+    public function jadwal()
+    {
+        return $this->hasOne(JadwalMk::class, 'kode_mk', 'kode_mk');
     }
 
     public function khs()
