@@ -117,24 +117,28 @@
     
                             <div class="border border-slate-300"></div>
     
-                            <div class=" w-2/4 flex justify-center">
+                            <div class="w-2/4 flex justify-center">
                                 <div class="mx-auto pl-7">
-                                    <div class="pt-4 flex flex-wrap justify-start items-center gap-7">
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Total Mahasiswa</p>
-                                            <p class="pt-2 font-semibold text-lg">4440</p>
+                                    <div class="pt-4 grid grid-cols-3 gap-6">
+                                        <!-- Total Mahasiswa -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Mahasiswa</p>
+                                            <p class="font-bold text-xl text-gray-800">4440</p>
                                         </div>
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Total Gedung</p>
-                                            <p class="pt-2 font-semibold text-lg">11</p>
+                                        <!-- Total Gedung -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Gedung</p>
+                                            <p class="font-bold text-xl text-gray-800">11</p>
                                         </div>
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Total Ruang Kelas</p>
-                                            <p class="pt-2 font-semibold text-lg">130</p>
+                                        <!-- Total Ruang Kelas -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Ruang Kelas</p>
+                                            <p class="font-bold text-xl text-gray-800">130</p>
                                         </div>
-                                        <div class="border border-gray-500 w-36 h-20 flex flex-col items-center rounded-xl">
-                                            <p class="pt-2 text-xs text-gray-500">Total Dosen</p>
-                                            <p class="pt-2 font-semibold text-lg">1989</p>
+                                        <!-- Total Dosen -->
+                                        <div class="border border-gray-300 bg-gray-50 shadow-sm rounded-lg p-4 text-center">
+                                            <p class="text-gray-600 text-sm">Total Dosen</p>
+                                            <p class="font-bold text-xl text-gray-800">1989</p>
                                         </div>
                                     </div>
                                 </div>

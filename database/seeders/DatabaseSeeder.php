@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             CivitasAkademikSeeder::class,
             MataKuliahSeeder::class,
             DaftarRuanganSeeder::class,
+            TahunAjaranSeeder::class,
+            KhsMahasiswa::class,
         ]);
     }
 }

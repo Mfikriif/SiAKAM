@@ -15,6 +15,7 @@ class khs extends Model
 
     protected $fillable = [
         'id_khs',
+        'nim',
         'nama',
         'program_studi',
         'semester',

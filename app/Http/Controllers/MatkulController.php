@@ -12,37 +12,40 @@ use Illuminate\Support\Facades\DB;
 
 class MatkulController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $isInformatika = $user->civitasAkademik && $user->civitasAkademik->jurusan === 'Informatika';
         $isBioteknologi = $user->civitasAkademik && $user->civitasAkademik->jurusan === 'Bioteknologi';
     
         // Filter mata kuliah berdasarkan jurusan dengan pagination
-        $filteredMataKuliah = MataKuliah::where(function($query) use ($isInformatika, $isBioteknologi) {
+        $filteredMataKuliah = MataKuliah::where(function ($query) use ($isInformatika, $isBioteknologi) {
             if ($isInformatika) {
                 $query->where('kode_mk', 'like', 'PAIK%');
             } elseif ($isBioteknologi) {
                 $query->where('kode_mk', 'like', 'LAB%')
-                        ->orWhere('kode_mk', 'like', 'PAB%');
+                      ->orWhere('kode_mk', 'like', 'PAB%');
             }
         })->paginate(10);
+    
+        if ($request->ajax()) {
+            return view('kaprodi.partialMataKuliah', compact('filteredMataKuliah'))->render();
+        }
     
         // Filter jadwal berdasarkan jurusan dengan pagination
-        $filteredJadwalList = JadwalMk::where(function($query) use ($isInformatika, $isBioteknologi) {
+        $filteredJadwalList = JadwalMk::where(function ($query) use ($isInformatika, $isBioteknologi) {
             if ($isInformatika) {
                 $query->where('kode_mk', 'like', 'PAIK%');
             } elseif ($isBioteknologi) {
                 $query->where('kode_mk', 'like', 'LAB%')
-                        ->orWhere('kode_mk', 'like', 'PAB%');
+                      ->orWhere('kode_mk', 'like', 'PAB%');
             }
         })->paginate(10);
     
-        // Kirim data ke view
         return view('kaprodi.pembuatanMk', compact('user', 'filteredMataKuliah', 'filteredJadwalList'));
     }
 
-    // Fungsi untuk menyimpan jadwal baru
+    // Fungsi untuk menyimpan Matkul baru
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -67,8 +70,8 @@ class MatkulController extends Controller
                 }
             ],
             'nama_mk' => 'required',
-            'semester' => 'required|integer',
-            'sks' => 'required|integer',
+            'semester' => 'required|integer|min:0',
+            'sks' => 'required|integer|min:0',
             'sifat' => 'required',
         ]);
 

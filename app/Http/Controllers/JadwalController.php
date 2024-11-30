@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\JadwalMk;
 use App\Models\MataKuliah;
 use App\Models\Ruangan;
+use App\Models\TahunAjaran;
 use App\Models\CivitasAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class JadwalController extends Controller
 {
     // Menampilkan daftar jadwal
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $mataKuliah = MataKuliah::all();
@@ -24,18 +25,33 @@ class JadwalController extends Controller
         $isInformatika = $user->civitasAkademik && $user->civitasAkademik->jurusan === 'Informatika';
         $isBioteknologi = $user->civitasAkademik && $user->civitasAkademik->jurusan === 'Bioteknologi';
 
-        // Filter mata kuliah berdasarkan jurusan
-        $filteredMataKuliah = $mataKuliah->filter(function($mk) use ($isInformatika, $isBioteknologi) {
+        // Cari tahun ajaran aktif
+        $tahunAjaranAktif = TahunAjaran::where('is_active', true)->first();
+
+        // Pastikan tahun ajaran aktif ada
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->withErrors(['tahun_ajaran' => 'Tidak ada tahun ajaran yang aktif!']);
+        }
+
+        // Tentukan apakah semester aktif adalah Ganjil atau Genap
+        $isSemesterGanjil = $tahunAjaranAktif->semester === 'Ganjil';
+
+        // Filter mata kuliah berdasarkan jurusan dan semester (ganjil/genap)
+        $filteredMataKuliah = $mataKuliah->filter(function ($mk) use ($isInformatika, $isBioteknologi, $isSemesterGanjil) {
+            // Ambil angka kedua dari kode mata kuliah
+            $isKodeGanjil = (int) substr($mk->kode_mk, 5, 1) % 2 === 1;
+
+            // Filter berdasarkan jurusan dan semester
             if ($isInformatika) {
-                return str_starts_with($mk->kode_mk, 'PAIK');
+                return str_starts_with($mk->kode_mk, 'PAIK') && ($isSemesterGanjil ? $isKodeGanjil : !$isKodeGanjil);
             } elseif ($isBioteknologi) {
-                return str_starts_with($mk->kode_mk, 'LAB') || str_starts_with($mk->kode_mk, 'PAB');
+                return (str_starts_with($mk->kode_mk, 'LAB') || str_starts_with($mk->kode_mk, 'PAB')) && ($isSemesterGanjil ? $isKodeGanjil : !$isKodeGanjil);
             }
-            return true;
+            return true; // Tampilkan semua mata kuliah untuk jurusan lain
         });
 
         // Filter civitas akademik berdasarkan jurusan
-        $filteredPengampu = $civitasAkademik->filter(function($civitas) use ($isInformatika, $isBioteknologi) {
+        $filteredPengampu = $civitasAkademik->filter(function ($civitas) use ($isInformatika, $isBioteknologi) {
             if ($isInformatika) {
                 return $civitas->jurusan === 'Informatika';
             } elseif ($isBioteknologi) {
@@ -45,21 +61,26 @@ class JadwalController extends Controller
         });
 
         // Filter jadwal berdasarkan jurusan
-        $filteredJadwalList = JadwalMk::where(function($query) use ($isInformatika, $isBioteknologi) {
+        $filteredJadwalList = JadwalMk::where(function ($query) use ($isInformatika, $isBioteknologi) {
             if ($isInformatika) {
                 $query->where('kode_mk', 'like', 'PAIK%');
             } elseif ($isBioteknologi) {
                 $query->where('kode_mk', 'like', 'LAB%')
-                        ->orWhere('kode_mk', 'like', 'PAB%');
+                    ->orWhere('kode_mk', 'like', 'PAB%');
             }
-        })->paginate(5);
+        })->paginate(10);
 
         // Filter ruangan berdasarkan jurusan dan persetujuan
         $ruangan = Ruangan::where('jurusan', $user->civitasAkademik->jurusan)
                         ->where('persetujuan', 1)
                         ->get();
 
-        // Kirim data ke view
+        // Jika request berasal dari AJAX, hanya kembalikan partial view untuk jadwal
+        if ($request->ajax()) {
+            return view('kaprodi.partialJadwal', compact('filteredJadwalList', 'filteredPengampu','filteredMataKuliah','ruangan'))->render();
+        }
+
+        // Kirim semua data ke view utama
         return view('kaprodi.listPengajuan', compact(
             'user', 'mataKuliah', 'filteredMataKuliah', 'filteredPengampu', 'ruangan', 'filteredJadwalList'
         ));
@@ -76,6 +97,8 @@ class JadwalController extends Controller
             'sks' => 'required|integer',
             'sifat' => 'required',
             'kelas' => 'required',
+            'kelas_custom' => 'nullable|string|max:50',
+            'kuota_kelas' => 'required|integer|min:0',
             'ruangan' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -100,8 +123,14 @@ class JadwalController extends Controller
             return redirect()->back()->withErrors(['time' => 'Jadwal harus berada di antara jam kerja (06:00 - 18:15).']);
         }
 
+        // Pengecekan konflik kuota kelas dengan kapasitas ruangan
+        $ruangan = Ruangan::where('kode_ruangan', $request->ruangan)->first();
+        if ($ruangan && $request->kuota_kelas > $ruangan->kapasitas) {
+            return redirect()->back()->withErrors(['conflict' => 'Kuota kelas melebihi kapasitas ruangan!']);
+        }
+
         // Pengecekan konflik ruangan
-        $ruangan = DB::table('jadwal_mk')
+        $ruanganConflict = DB::table('jadwal_mk')
             ->where('ruangan', $request->ruangan)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
@@ -113,7 +142,7 @@ class JadwalController extends Controller
                     });
             })
             ->exists();
-        if ($ruangan) {
+        if ($ruanganConflict) {
             return redirect()->back()->withErrors(['conflict' => 'Jadwal bentrok! Ruangan sudah terpakai pada waktu tersebut.']);
         }
 
@@ -142,7 +171,15 @@ class JadwalController extends Controller
         if ($irisan) {
             return redirect()->back()->withErrors(['conflict' => 'Jadwal bentrok dengan Mata Kuliah Wajib yang lain! ']);
         }
+        // Cari tahun ajaran yang aktif
+        $tahunAjaranAktif = TahunAjaran::where('is_active', true)->first();
 
+        // Jika tidak ada tahun ajaran aktif, kembalikan dengan pesan kesalahan
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->withErrors(['tahun_ajaran' => 'Tidak ada tahun ajaran yang aktif!']);
+        }
+
+        $kelas = $request->kelas === 'Other' ? $request->kelas_custom : $request->kelas;
         // Simpan data ke tabel jadwal_mk
         JadwalMk::create([
             'kode_mk' => $request->kode_mk,
@@ -151,6 +188,7 @@ class JadwalController extends Controller
             'sks' => $request->sks,
             'sifat' => $request->sifat,
             'kelas' => $request->kelas,
+            'kuota_kelas' => $request->kuota_kelas,
             'ruangan' => $request->ruangan,
             'hari' => $request->hari,
             'jam_mulai' => $request->jam_mulai,
@@ -159,6 +197,7 @@ class JadwalController extends Controller
             'pengampu_1' => $request->pengampu_1,
             'pengampu_2' => $request->pengampu_2,
             'pengampu_3' => $request->pengampu_3,
+            'tahun_ajaran_id' => $tahunAjaranAktif->id,
         ]);
 
         return redirect()->back()->with('success', 'Jadwal berhasil ditambahkan!');
@@ -254,7 +293,7 @@ class JadwalController extends Controller
             'pengampu_1' => 'required|string',
             'pengampu_2' => 'nullable|string',
             'pengampu_3' => 'nullable|string',
-            'kelas' => 'required',
+            'kuota_kelas' => 'required|integer|min:0',
             'ruangan' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
@@ -266,6 +305,12 @@ class JadwalController extends Controller
         $jamKerjaBerakhir = '18:15:00';
         if ($request->jam_mulai < $jamKerjaMulai || $request->jam_selesai > $jamKerjaBerakhir) {
             return redirect()->back()->withErrors(['time' => 'Jadwal harus berada di antara jam kerja (06:00 - 18:15).']);
+        }
+
+        // Pengecekan konflik kuota kelas dengan kapasitas ruangan
+        $ruangan = Ruangan::where('kode_ruangan', $request->ruangan)->first();
+        if ($ruangan && $request->kuota_kelas > $ruangan->kapasitas) {
+            return redirect()->back()->withErrors(['conflict' => 'Kuota kelas melebihi kapasitas ruangan!']);
         }
     
         // Pengecekan konflik jadwal
@@ -325,7 +370,6 @@ class JadwalController extends Controller
     
         // Memperbarui data jadwal dan mengatur persetujuan ke 0
         $jadwal = JadwalMk::findOrFail($id);
-
         $jadwal->kode_mk = $request->kode_mk;
         $jadwal->semester = $request->semester;
         $jadwal->nama = $request->nama;
@@ -333,7 +377,7 @@ class JadwalController extends Controller
         $jadwal->pengampu_1 = $request->pengampu_1;
         $jadwal->pengampu_2 = $request->pengampu_2;
         $jadwal->pengampu_3 = $request->pengampu_3;
-        $jadwal->kelas = $request->kelas;
+        $jadwal->kuota_kelas = $request->kuota_kelas;
         $jadwal->ruangan = $request->ruangan;
         $jadwal->hari = $request->hari;
         $jadwal->jam_mulai = $request->jam_mulai;

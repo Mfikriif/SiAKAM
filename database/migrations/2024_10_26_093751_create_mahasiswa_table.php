@@ -25,13 +25,14 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->text('alamat')->nullable();
             $table->string('no_hp')->nullable();
-            $table->boolean('status')->default(true);
+            $table->integer('status')->default(0);
             $table->unsignedBigInteger('pembimbing_akademik_id')->nullable();
 
             $table->foreign('id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+                
             $table->foreign('pembimbing_akademik_id')
                 ->references('id')
                 ->on('users')

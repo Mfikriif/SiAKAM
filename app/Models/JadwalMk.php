@@ -11,6 +11,8 @@ class JadwalMk extends Model
 
     protected $table = 'jadwal_mk';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'kode_mk',
@@ -20,6 +22,7 @@ class JadwalMk extends Model
         'sifat',
         'kelas',
         'ruangan',
+        'kuota_kelas',
         'hari',
         'jam_mulai',
         'jam_selesai',
@@ -27,11 +30,33 @@ class JadwalMk extends Model
         'pengampu_1',
         'pengampu_2',
         'pengampu_3',
-        'reason_for_rejection'
+        'reason_for_rejection',
+        'tahun_ajaran_id'
     ];
-    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($jadwalMK) {
+            // Cari tahun ajaran aktif
+            $tahunAjaranAktif = TahunAjaran::where('is_active', true)->first();
+
+            if ($tahunAjaranAktif) {
+                $jadwalMK->tahun_ajaran_id = $tahunAjaranAktif->id;
+            } else {
+                throw new \Exception('Tidak ada tahun ajaran yang aktif.');
+            }
+        });
+    }
+
     public function mataKuliah()
     {
         return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
+    }
+
+    // Relasi ke tabel tahun_ajaran
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
     }
 }

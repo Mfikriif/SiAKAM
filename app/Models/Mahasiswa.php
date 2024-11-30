@@ -13,11 +13,9 @@ class Mahasiswa extends Model
     use HasFactory;
     
     protected $table = "mahasiswa";
-
-    protected $primaryKey = "id";
+    public $timestamps = false;
 
     protected $fillable = [
-        'id',
         'nim',
         'email',
         'semester',
@@ -38,13 +36,13 @@ class Mahasiswa extends Model
         return $this->belongsTo(CivitasAkademik::class, 'pembimbing_akademik_id');
     }
 
+    public function irs()
+    {
+        return $this->hasMany(Irs::class, 'mahasiswa_id', 'id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'id', 'id');
-    }
-
-    public function irs()
-    {
-        return $this->hasMany(Irs::class,'id');
     }
 }

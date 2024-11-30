@@ -13,6 +13,7 @@ use App\Http\Controllers\IrsController;
 use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\RuangController;
+use App\Http\Controllers\MahasiswaController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -34,15 +35,21 @@ Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'
 // Controller Mahasiswa Untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::get('mahasiswa/jadwal-kuliah',[MenuController::class,'jadwalKuliah'])->name('mahasiswa.jadwalKuliah');
-    Route::get('mahasiswa/herreg',[MenuController::class,'herReg'])->name('mahasiswa.herReg');
+    Route::get('mahasiswa/herreg',[MahasiswaController::class,'herReg'])->name('mahasiswa.herReg');
+    Route::post('/mahasiswa/{id}/set-aktif', [MahasiswaController::class, 'setAktif'])->name('mahasiswa.setAktif');
+    Route::post('/mahasiswa/{id}/set-cuti', [MahasiswaController::class, 'setCuti'])->name('mahasiswa.setCuti');
+    Route::post('/mahasiswa/{id}/batalkan-status', [MahasiswaController::class, 'batalkanStatus'])->name('mahasiswa.batalkanStatus');
     Route::get('mahasiswa/khs',[MenuController::class,'khs'])->name('mahasiswa.khs');
+    Route::get('mahasiswa/khs',[IrsController::class,'getKhs'])->name('mahasiswa.khs');
     Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
     Route::get('mahasiswa/irs',[IrsController::class, 'index'])->name('mahasiswa.irs');
-    Route::post('mahasiswa/irs/store',[irsController::class,'store'])->name('irs.store');
-    Route::delete('mahasiswa/irs/delete',[irsController::class,'delete'])->name('irs.delete');
+    Route::post('/mahasiswa/irs/store',[irsController::class,'store'])->name('irs.store');
+    Route::delete('/mahasiswa/irs/delete',[irsController::class,'delete'])->name('irs.delete');
     Route::post('/mahasiswa/listMk',[irsController::class,'searchMk'])->name('irs.searchMk');
     Route::get('/get-matakuliah-detail/{kodeMK}', [irsController::class, 'getMatakuliahDetail']);
     Route::get('/print-irs/{mahasiswaId}', [PDFController::class, 'generatePDF'])->name('irs.print');
+    // Route::get('khs-mahasiswa',[irsController::class,'getKhs'])->name('mahasiswa.khs');
+
 });
 
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
@@ -77,9 +84,10 @@ Route::middleware(['auth', 'dekan'])->group(function() {
 
 // Controller Dosenwali Untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'dosenwali')->group(function () {
-    Route::get('dosenwali/pengajuan-irs',[MenuController::class,'PengajuanIrsMahasiswa'])->name('dosenwali.listPengajuanIRS');
+    Route::get('dosenwali/pengajuan-irs',[DosenwaliController::class,'IrsMahasiswaPerwalian'])->name('dosenwali.listPengajuanIRS');
     Route::get('dosenwali/mahasiswa-perwalian', [DosenWaliController::class, 'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
     Route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->name('dosenwali.dashboard');
+    Route::post('/approve-all-irs', [DosenwaliController::class, 'approveIrs'])->name('dosenwali.approveIrs');
 });
 
 // Controller Kaprodi Untuk Melindungi Pengaksesan via Link Address
@@ -93,6 +101,7 @@ Route::middleware('auth', 'kaprodi')->group(function() {
     Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('jadwal.store');
     Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
     Route::put('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('jadwal.update');
+    Route::get('/jadwal/ruangan/{ruangan?}', [JadwalController::class, 'getRuanganTerpakai'])->name('jadwal.ruangan');
 });
 
 

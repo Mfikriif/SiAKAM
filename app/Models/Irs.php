@@ -18,12 +18,14 @@ class Irs extends Model
     protected $fillable = [
         'irs_id',
         'mahasiswa_id',
+        'nim',
         'nama',
         'program_studi',
         'semester',
         'tahun_akademik',
         'kode_mk',
         'nama_mk',
+        'kelas',
         'sks',
         'tota_sks',
         'status',
@@ -49,5 +51,10 @@ class Irs extends Model
     public function khs()
     {
         return $this->hasMany(khs::class,'irs_id');
+    }
+
+    public function jadwalMk()
+    {
+        return $this->belongsTo(JadwalMk::class, 'kode_mk', 'kode_mk');
     }
 }
