@@ -5,9 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite('resources/css/app.css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>List Pengajuan IRS Mahasiswa</title>
+    @vite('resources/css/app.css')
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite('resources/js/app.js')
 </head>
 
 <body class="flex flex-col min-h-screen bg-gradient-to-r from-fuchsia-800 to-pink-500">
@@ -112,7 +118,7 @@
                             </select>
                         </div>
                         <div id="input-text">
-                            <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" placeholder="Search"
+                            <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" id="search" placeholder="Search"
                                 type="text">
                         </div>
                         <div id="button-search">
@@ -124,21 +130,26 @@
                     <div class="flex flex-col space-y-4" x-data="{ openIndex: null, openModal: false, currentData: {} }">
                         <div class="overflow-hidden border rounded-lg border-gray-300 w-11/12 mx-auto my-6 p-4">
                             @foreach ($mahasiswaPerwalian as $index => $mahasiswa)
-                                <div class="border-b mb-3 rounded-lg overflow-hidden">
+                                <div class="border-b mb-3 rounded-lg overflow-hidden" id="mahasiswa-list">
                                     <!-- Accordion Header -->
                                     <div class="flex justify-between p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors duration-300"
                                         :class="openIndex === {{ $index }} ? 'bg-gray-100' : ' '"
                                         @click="openIndex = openIndex === {{ $index }} ? null : {{ $index }}">
-                                        <div class="flex justify-between">
+                                        <div class="flex justify-between w-full">
                                             <div>
                                                 <span class="text-gray-900">{{ $index + 1 }}.</span>
                                                 <span class="ml-4">{{ $mahasiswa->nim }}</span>
                                                 <span class="ml-4">{{ $mahasiswa->nama }}</span>
+                                                <span class="ml-4 text-blue-500">Semester {{ $mahasiswa->semester }}</span>
                                             </div>
                                             <div>
-                                                <span>
-                                                    <!-- Text persetujuan irs -->
-                                                </span>
+                                                <div class="mr-3" id="status-{{ $mahasiswa->id }}">
+                                                    @if ($mahasiswa->irs->first() && $mahasiswa->irs->first()->status === 1)
+                                                        <span class="text-green-500">Disetujui</span>
+                                                    @else
+                                                        <span class="text-yellow-500">Belum Disetujui</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                         <svg :class="openIndex === {{ $index }} ? 'transform rotate-180' : ''"
@@ -233,19 +244,12 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div class="flex justify-end mt-4 space-x-4">
-                                                <form action="" method="POST" class="inline">
-                                                    @csrf
-                                                    <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-                                                        Setujui
-                                                    </button>
-                                                </form>
-                                                <form action="" method="POST" class="inline">
-                                                    @csrf
-                                                    <button type="submit" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
-                                                        Tolak
-                                                    </button>
-                                                </form>
+                                            <div class="flex justify-end mt-4 space-x-4" id="aksi-{{ $irs->mahasiswa_id }}">
+                                                @if ($irs->status === 0)
+                                                    <button onclick="approveCancelIrs({{ $irs->mahasiswa_id }}, 'approve')" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-2 border border-green-500 hover:border-transparent rounded">Setujui</button>
+                                                @elseif ($irs->status === 1)
+                                                    <button onclick="approveCancelIrs({{ $irs->mahasiswa_id }}, 'cancel')" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Batalkan Persetujuan</button>
+                                                @endif
                                             </div>
                                         @else
                                             <p class="pl-4 py-3">Belum ada data IRS.</p>
