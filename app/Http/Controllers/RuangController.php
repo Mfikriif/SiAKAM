@@ -22,7 +22,11 @@ class RuangController extends Controller
         $user = Auth::user();
 
         // Return the view with data ruangan
-        return view('akademik.buatRuangKuliah', compact('user','daftarRuangan'));
+        if ($request->ajax()) {
+            return view('akademik.partialRuang', compact('user','daftarRuangan'))->render();
+        }
+
+        return view('akademik.buatRuangKuliah', compact('user', 'daftarRuangan'));
     }
 
         // Menangani pembuatan ruangan baru
