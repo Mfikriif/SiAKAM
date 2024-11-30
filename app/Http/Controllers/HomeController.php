@@ -75,7 +75,8 @@ class HomeController extends Controller
             'jurusan' => $mahasiswa->jurusan,
             'nomorHP' => $mahasiswa->no_hp,
             'namaDoswal' => $doswal->nama ?? 'N/A',
-            'nipDoswal' => $doswal->nip ?? 'N/A'
+            'nipDoswal' => $doswal->nip ?? 'N/A',
+            'statusAktif' => $mahasiswa
         ]);
     }
 }

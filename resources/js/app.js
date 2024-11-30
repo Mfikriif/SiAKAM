@@ -15,9 +15,7 @@ import {
     approveReject,
     changeStatus,
 } from "./ruangan";
-import{
-    approveCancelIrs,
-} from "./irs";
+import { approveCancelIrs } from "./irs";
 
 import Alpine from "alpinejs";
 
@@ -75,167 +73,191 @@ document
     });
 
 function displaySelectedCourse(data) {
+    console.log("Data received in displaySelectedCourse:", data);
+
+    // Pastikan data adalah array
+    if (!Array.isArray(data)) {
+        console.error("Invalid data format: data is not an array", data);
+        return;
+    }
+
     const courseList = document.getElementById("courseList");
     if (!courseList) {
         console.error("courseList element not found!");
         return;
     }
 
-    courseList.innerHTML = ""; // Optionally clear existing entries if needed
+    courseList.innerHTML = ""; // Kosongkan daftar sebelumnya
 
+    // Iterasi data untuk membuat baris tabel
     data.forEach((course, index) => {
-        courseList.appendChild(createCourseRow(course, index));
+        course.index = index + 1; // Tambahkan properti 'index' untuk nomor urut
+        courseList.appendChild(createCourseRow(course, [])); // Kosongkan selectedCourses untuk saat ini
     });
 }
 
-function createCourseRow(course, index) {
+function createCourseRow(course, selectedCourses) {
     const row = document.createElement("tr");
+    row.className = "bg-white transition-all duration-500 hover:bg-gray-50";
+    row.id = `row-${course.kode_mk}`;
 
+    // Buat isi baris sesuai dengan struktur tabel
     row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${course.kode_mk}</td>
-        <td>${course.nama}</td>
-        <td>${course.semester}</td>
-        <td>${course.sks}</td>
-        <td>${course.sifat}</td>
-        <td>${course.kelas}</td>
-        <td>${course.ruangan}</td>
-        <td>${course.hari}</td>
-        <td>${course.jam_mulai} - ${course.jam_selesai}</td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
+            ${course.index} <!-- Ganti dengan loop.index jika diterima dari backend -->
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.kode_mk}
+        </td>
+        <td class="px-5 py-3">
+            <div class="w-48 flex items-center gap-3">
+                <div class="data">
+                    <p class="font-normal text-sm text-gray-900">${course.nama}</p>
+                </div>
+            </div>
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.semester}
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.sks}
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.sifat}
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.kelas}
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.ruangan}
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.hari}
+        </td>
+        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+            ${course.jam_mulai} - ${course.jam_selesai}
+        </td>
     `;
-    row.appendChild(createActionCell(course, row)); // Pass 'row' to the function
+
+    // Tambahkan kolom aksi (tombol Pilih/Batal)
+    const actionCell = createActionCell(course, row);
+    if (actionCell instanceof Node) {
+        const actionColumn = document.createElement("td");
+        actionColumn.className = "flex items-center gap-0.5";
+        actionColumn.appendChild(actionCell);
+        row.appendChild(actionColumn);
+    } else {
+        console.error("createActionCell did not return a Node:", actionCell);
+    }
+
     return row;
 }
 
 function createActionCell(course, row) {
-    // Pass 'row' as a parameter
-    const actionCell = document.createElement("td");
+    const actionCell = document.createElement("td"); // Membuat elemen <td>
 
+    // Cek apakah mata kuliah sudah diambil
     const isSelected = course.is_selected;
-    const pilihButton = createButton(
-        isSelected ? "Dipilih" : "Pilih",
-        isSelected ? "bg-gray-500" : "bg-[#2EC060]",
-        isSelected
-            ? null
-            : async (event) => {
-                  event.preventDefault();
-                  const success = await postCourse(course);
-                  if (success) {
-                      event.target.textContent = "Dipilih";
-                      event.target.classList.remove("bg-[#2EC060]");
-                      event.target.classList.add("bg-gray-500");
-                      event.target.disabled = true;
-                  }
-              },
-        isSelected
-    );
 
-    actionCell.appendChild(pilihButton);
+    // Tombol Pilih
+    const pilihButton = document.createElement("button");
+    pilihButton.textContent = isSelected ? "Dipilih" : "Pilih";
+    pilihButton.className = `w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 ${
+        isSelected ? "bg-gray-500" : "bg-[#2EC060]"
+    } text-white`;
+    pilihButton.disabled = isSelected;
 
-    const batalButton = createButton("Batal", "bg-red-600", () => {
-        deleteCourse(course.kode_mk, course.nama, row); // Pass 'row' to the delete function
-    });
-    actionCell.appendChild(batalButton);
-    return actionCell;
-}
+    pilihButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        console.log("Tombol Pilih diklik!");
 
-function createButton(text, bgColor, eventHandler, isDisabled = false) {
-    const button = document.createElement("button");
-    button.textContent = text;
-    button.className = `w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 ${bgColor} text-white`;
-    if (isDisabled) {
-        button.disabled = true;
-    } else {
-        button.addEventListener("click", eventHandler);
-    }
-    return button;
-}
-
-async function postCourse(course) {
-    const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content");
-    try {
-        const response = await fetch("/mahasiswa/irs/store", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-            },
-            body: JSON.stringify({
-                semester: course.semester,
-                kode_mk: course.kode_mk,
-                nama_mk: course.nama,
-                sks: course.sks,
-                kelas: course.kelas,
-            }),
-        });
-
-        const data = await response.json();
-
-        // Jika respons tidak berhasil, lempar pesan error
-        if (!response.ok)
-            throw new Error(data.message || "Failed to add course");
-
-        // Tampilkan pesan sukses tanpa membuka JSON
-        alert("Course selected successfully");
-
-        // Refresh halaman saat sukses tanpa membuka JSON di halaman browser
-        location.reload(); // Refresh halaman untuk memperbarui tampilan setelah berhasil
-
-        return true; // Indicate success
-    } catch (error) {
-        console.error("Error adding course:", error);
-        // alert(error.message); // Tampilkan pesan error
-        return true; // Indicate failure
-    }
-}
-
-async function deleteCourse(event, button) {
-    const useAjax = button.getAttribute("data-ajax") === "true"; // Deteksi apakah menggunakan AJAX
-
-    if (useAjax) {
-        event.preventDefault(); // Mencegah form dikirim secara normal
-
-        // Ambil data dari form
-        const form = button.closest("form");
-        const kode_mk = form.querySelector("input[name='kode_mk']").value;
-        const nama_mhs = form.querySelector("input[name='nama_mhs']").value;
-        const kelas = form.querySelector("input[name='kelas']").value;
-
-        console.log("Parameters sent to server:", { kode_mk, nama_mhs, kelas });
-
+        // Kirim permintaan POST ke server
         try {
-            const response = await fetch("/mahasiswa/irs/delete", {
-                method: "DELETE",
+            const response = await fetch("/mahasiswa/irs/store", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": document
                         .querySelector('meta[name="csrf-token"]')
                         .getAttribute("content"),
                 },
-                body: JSON.stringify({ kode_mk, nama_mhs, kelas }),
+                body: JSON.stringify({
+                    semester: course.semester,
+                    kode_mk: course.kode_mk,
+                    nama_mk: course.nama,
+                    sks: course.sks,
+                    kelas: course.kelas,
+                }),
             });
 
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            if (data.success) {
-                console.log("Course deleted successfully:", data.message);
-                button.closest("tr").remove(); // Hapus baris dari tabel jika berhasil
+            if (response.ok) {
+                console.log("Mata kuliah berhasil dipilih.");
+                actionCell.innerHTML = ""; // Bersihkan isi actionCell
+                actionCell.appendChild(createBatalButton(course, row));
             } else {
-                throw new Error(data.message);
+                alert("Gagal memilih mata kuliah.");
             }
         } catch (error) {
-            console.error("Failed to delete course:", error);
-            Swal.fire(
-                "Error!",
-                "Gagal menghapus mata kuliah. Coba lagi.",
-                "error"
-            );
+            console.error("Error:", error);
         }
-    }
-    // Jika data-ajax !== "true", biarkan form dikirim seperti biasa
+    });
+
+    actionCell.appendChild(pilihButton); // Tambahkan tombol Pilih ke actionCell
+
+    return actionCell; // Pastikan actionCell adalah elemen Node (td)
+}
+
+function createBatalButton(course, row) {
+    const batalButton = document.createElement("button");
+    batalButton.textContent = "Batal";
+    batalButton.className =
+        "w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-red-600 text-white";
+
+    batalButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        console.log("Tombol Batal diklik!");
+
+        // Kirim permintaan DELETE ke server menggunakan POST dengan _method=DELETE
+        try {
+            const response = await fetch("/mahasiswa/irs/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify({
+                    _method: "DELETE", // Override method untuk DELETE
+                    kode_mk: course.kode_mk,
+                    nama_mhs: course.nama_mhs, // Pastikan nama mahasiswa dikirim
+                    kelas: course.kelas,
+                }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    console.log("Mata kuliah berhasil dibatalkan.");
+                    alert(result.message); // Tampilkan pesan sukses
+                } else {
+                    console.error(
+                        "Gagal membatalkan mata kuliah:",
+                        result.message
+                    );
+                    alert(result.message); // Tampilkan pesan error
+                }
+            } else {
+                console.error("Gagal membatalkan mata kuliah. Server error.");
+                alert("Gagal membatalkan mata kuliah. Server error.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan saat membatalkan mata kuliah.");
+        }
+    });
+
+    const actionCell = document.createElement("td");
+    actionCell.appendChild(batalButton);
+    return actionCell;
 }
