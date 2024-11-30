@@ -185,36 +185,51 @@ async function postCourse(course) {
     }
 }
 
-async function deleteCourse(kode_mk, nama_mhs, row) {
-    fetch("/mahasiswa/irs/delete", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        },
-        body: JSON.stringify({ kode_mk, nama_mhs }),
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.json(); // Only parse as JSON if the response is OK
-            } else {
-                throw new Error(
-                    "Failed to delete course: Server responded with " +
-                        response.status
-                );
+async function deleteCourse(event, button) {
+    const useAjax = button.getAttribute("data-ajax") === "true"; // Deteksi apakah menggunakan AJAX
+
+    if (useAjax) {
+        event.preventDefault(); // Mencegah form dikirim secara normal
+
+        // Ambil data dari form
+        const form = button.closest("form");
+        const kode_mk = form.querySelector("input[name='kode_mk']").value;
+        const nama_mhs = form.querySelector("input[name='nama_mhs']").value;
+        const kelas = form.querySelector("input[name='kelas']").value;
+
+        console.log("Parameters sent to server:", { kode_mk, nama_mhs, kelas });
+
+        try {
+            const response = await fetch("/mahasiswa/irs/delete", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify({ kode_mk, nama_mhs, kelas }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
             }
-        })
-        .then((data) => {
+
+            const data = await response.json();
             if (data.success) {
-                console.log("Deletion successful:", data.message);
-                row.remove(); // Remove the row from the table
+                console.log("Course deleted successfully:", data.message);
+                button.closest("tr").remove(); // Hapus baris dari tabel jika berhasil
             } else {
                 throw new Error(data.message);
             }
-        })
-        .catch((error) => {
+        } catch (error) {
             console.error("Failed to delete course:", error);
-        });
+            Swal.fire(
+                "Error!",
+                "Gagal menghapus mata kuliah. Coba lagi.",
+                "error"
+            );
+        }
+    }
+    // Jika data-ajax !== "true", biarkan form dikirim seperti biasa
 }

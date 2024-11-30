@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Irs;
 use App\Models\khs;
+use App\Models\TahunAjaran;
 
 class IrsController extends Controller
 {
@@ -85,11 +86,13 @@ class IrsController extends Controller
 
         $ipSemester = $totalSks > 0 ? round($totalBobot / $totalSks, 2) : 0;
 
-        // Tentukan jumlah SKS yang dapat diambil
-        if($ipSemester >= 3){
+        // Tentukan total SKS yang diperbolehkan berdasarkan IP semester
+        if ($ipSemester >= 3.00) {
             $totalSksDiambil = 24;
-        } else if ($ipSemester > 2.5 && $ipSemester <= 2.9){
-            $totalSksDiambil = 20;
+        } elseif ($ipSemester >= 2.50 && $ipSemester <= 2.99) {
+            $totalSksDiambil = 22;
+        } else if ($ipSemester >= 2.00 && $ipSemester <= 2.49 ){
+            $totalSksDiambil = 20 ;
         } else {
             $totalSksDiambil = 18;
         }
@@ -137,10 +140,12 @@ class IrsController extends Controller
             $ipSemester = $totalSks > 0 ? round($totalBobot / $totalSks, 2) : 0;
     
             // Tentukan total SKS yang diperbolehkan berdasarkan IP semester
-            if ($ipSemester >= 3) {
+            if ($ipSemester >= 3.00) {
                 $totalSksDiambil = 24;
-            } elseif ($ipSemester > 2.5 && $ipSemester <= 2.9) {
-                $totalSksDiambil = 20;
+            } elseif ($ipSemester >= 2.50 && $ipSemester <= 2.99) {
+                $totalSksDiambil = 22;
+            } else if ($ipSemester >= 2.00 && $ipSemester <= 2.49 ){
+                $totalSksDiambil = 20 ;
             } else {
                 $totalSksDiambil = 18;
             }
@@ -152,6 +157,9 @@ class IrsController extends Controller
                     'alert_message' => 'Tidak dapat mengambil mata kuliah baru. Total SKS yang sudah diambil (' . $totalSksAmbil . ') telah melebihi batas maksimal (' . $totalSksDiambil . ').'
                 ]);
             }
+
+            $tahunAjaran = TahunAjaran::where('is_active', 1)->first();
+            $semesterAkademikAktif = $tahunAjaran->tahun. ' '.$tahunAjaran->semester;
     
             // Validasi request
             $request->validate([
@@ -169,6 +177,7 @@ class IrsController extends Controller
                 'nama' => $mahasiswa->nama,
                 'program_studi' => $mahasiswa->jurusan,
                 'semester' => $request->semester,
+                'tahun_akademik' => $semesterAkademikAktif,
                 'kode_mk' => $request->kode_mk,
                 'nama_mk' => $request->nama_mk,
                 'kelas' => $request->kelas,
@@ -201,11 +210,13 @@ class IrsController extends Controller
         $validated = $request->validate([
             'kode_mk' => 'required',
             'nama_mhs' => 'required',
+            'kelas' => 'required',
         ]);
     
         try {
             $irs = Irs::where('kode_mk', $validated['kode_mk'])
                       ->where('nama', $validated['nama_mhs'])
+                      ->where('kelas', $validated['kelas'])
                       ->first();
             
             if ($irs) {

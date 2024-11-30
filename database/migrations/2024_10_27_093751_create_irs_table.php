@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('program_studi');
             $table->integer('semester');            
-            $table->string('tahun_akademik')->default('2024/2025');
+            $table->string('tahun_akademik');
             $table->string('kode_mk');
             $table->string('nama_mk');
             $table->char('kelas',1);

@@ -89,21 +89,6 @@ class MahasiswaSeeder extends Seeder
                 'angkatan' => 2022,
                 'pembimbing_akademik_id' => 7,
             ],
-            [
-                'id' => 12,
-                'nama' => 'Revanda Putri Andari',
-                'nim' => '24020222130091',
-                'email' => 'revanda@gmail.com',
-                'semester' => 5,
-                'jurusan' => 'S1 Bioteknologi',
-                'tempat_lahir' => 'Bekasi',
-                'tanggal_lahir' => '2004-09-24',
-                'jenis_kelamin' => 'L',
-                'alamat' => 'Kalimalang, Bekasi',
-                'no_hp' => '08112712818',
-                'angkatan' => 2022,
-                'pembimbing_akademik_id' => 7,
-            ],
         ];
 
         // Insert data ke tabel mahasiswa
