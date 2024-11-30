@@ -26,6 +26,7 @@ class IrsController extends Controller
         $semesterMHS = $mahasiswa->semester;
         $jurusan = $mahasiswa->jurusan;
 
+        $statusAktif = $mahasiswa->status;
         // Ambil semua data jadwal mata kuliah sesuai semester
         $jadwal_MK = JadwalMK::where('semester', $semesterMHS);
 
@@ -41,9 +42,15 @@ class IrsController extends Controller
             });
         }
 
+        $alertStatusAktif = null;
         // Debugging: Tampilkan SQL query
-
-        $jadwal_MK = $jadwal_MK->get();
+        if($statusAktif == 1){
+            $jadwal_MK = $jadwal_MK->get();
+        }else if($statusAktif == -1){
+            $alertStatusAktif = 'ANDA TIDAK BISA MENGAMBIL PERKULIAHAN DISEMESTER INI';
+        }else{
+            $alertStatusAktif = 'Anda belum melakukan Her-registrasi, Silahkan lakukan Her-registrasi terlebih dahulu';
+        }
         // dd($jadwal_MK);
 
         // Ambil total SKS yang telah diambil
@@ -97,7 +104,15 @@ class IrsController extends Controller
             $totalSksDiambil = 18;
         }
 
-        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil'));
+        $statusIRS = Irs::where('mahasiswa_id', $mahasiswa->id)
+        ->where('semester', $semesterMHS)
+        ->first();
+    
+        // Pastikan $statusIRS tidak null sebelum mengakses properti
+        $statusIRS = $statusIRS ? $statusIRS->status : null;
+    
+        // dd($statusIRS);
+        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','alertStatusAktif'));
     }
 
     public function store(Request $request)
@@ -109,7 +124,20 @@ class IrsController extends Controller
             if (!$mahasiswa) {
                 return redirect()->back()->withErrors(['message' => 'Mahasiswa tidak ditemukan.']);
             }
-    
+
+            //validasi matakuliah apakah sudah diambil atau belum
+            $mataKuliahExist =Irs::where('mahasiswa_id',$mahasiswa->id)
+            ->where('kode_mk',$request->kode_mk)
+            ->where('nama_mk',$request->nama_mk)
+            ->exists(); 
+            
+            // dd($mataKuliahExist);
+            if($mataKuliahExist){
+                return redirect()->back()->with([
+                    'alert_type'=>'error',
+                    'alert_message'=> 'Mata kuliah sudah diambil.'
+                ]);
+            }
             // Hitung total SKS yang sudah diambil
             $totalSksAmbil = irs::where('mahasiswa_id', $mahasiswa->id)->get()->sum('sks');
     
@@ -169,7 +197,7 @@ class IrsController extends Controller
                 'kelas' => 'required',
                 'sks' => 'required',
             ]);
-    
+
             // Buat data IRS
             $irs = Irs::create([
                 'mahasiswa_id' => $mahasiswa->id,
@@ -204,7 +232,6 @@ class IrsController extends Controller
     
     
 
-
     public function delete(Request $request)
     {
         $validated = $request->validate([
@@ -218,7 +245,7 @@ class IrsController extends Controller
                       ->where('nama', $validated['nama_mhs'])
                       ->where('kelas', $validated['kelas'])
                       ->first();
-            
+    
             if ($irs) {
                 $irs->delete();
             }
@@ -226,13 +253,12 @@ class IrsController extends Controller
             khs::where('kode_mk', $validated['kode_mk'])
                 ->where('nama', $validated['nama_mhs'])
                 ->delete();
-    
-            // Make sure to return a success message even if no records are found
             return redirect()->back()->with('success', 'Penghapusan IRS berhasil.');
-    
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['message' => 'Gagal mengambil IRS: ' . $e->getMessage()],500);
-
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus mata kuliah: ' . $e->getMessage(),
+            ], 500);
         }
     }
     
