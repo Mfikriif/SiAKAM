@@ -30,16 +30,25 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
-                        <button type="button"
-                            class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span class="absolute -inset-1.5"></span>
-                            <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                        </button>
+                        <div x-data="{ open: false }" class="relative">
+                            <!-- Tombol untuk membuka/menutup popup -->
+                            <button @click="open = !open" type="button"
+                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <span class="sr-only">View notifications</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                            </button>
+
+                            <!-- Popup notifikasi -->
+                            <div x-show="open"
+                                class="absolute top-10 right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg p-4"
+                                @click.away="open = false" x-transition>
+                                <p class="text-gray-800">Hello! Ini adalah notifikasi.</p>
+                            </div>
+                        </div>
 
                         <div>
                             <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
@@ -110,7 +119,8 @@
                         <div id="irs-status" class="flex flex-col">
                             <div
                                 class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-xs text-center font-semibold">
-                                belum distujui</div>
+                                {{ $statusIRS == 1 ? 'Disetujui' : 'Belum Disetujui' }}
+                            </div>
 
                             <div class="my-auto flex text-sm mt-2 font-semibold tracking-wide">
                                 <p>Ip Semester Sebelumnya: {{ $ipSemester }}
@@ -234,6 +244,7 @@
                                                     class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                     {{ $mk->jam_mulai }} - {{ $mk->jam_selesai }} </td>
                                                 <td class="flex items-center gap-0.5">
+
                                                     <div class="">
                                                         @php
                                                             $sudah_diambil = false;
@@ -293,19 +304,28 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+
                                 </table>
+                                @if ($alertStatusAktif)
+                                    <div class="text-xl my-10 text-center">
+                                        {{ $alertStatusAktif }}
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="w-11/12 mx-auto flex justify-end mt-5">
-            <a href="{{ route('irs.print', ['mahasiswaId' => $mahasiswa->id]) }}"    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
-                </svg>
-                Cetak IRS
-            </a>
+                <a href="{{ route('irs.print', ['mahasiswaId' => $mahasiswa->id]) }}"
+                    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                    </svg>
+                    Cetak IRS
+                </a>
             </div>
     </section>
 

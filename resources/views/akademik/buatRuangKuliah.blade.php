@@ -5,9 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>List Ruang Kuliah</title>
     @vite('resources/css/app.css')
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('path/to/sweetalertHelper.js') }}"></script>
+    @vite('resources/js/app.js')
 </head>
 
 <body class="bg-gradient-to-r from-fuchsia-800 from-1% to bg-pink-500">
@@ -183,41 +192,16 @@
                 </div>
             </div>
         </div>
-        <div class="overflow-x-auto">        
-        <!-- Menampilkan Daftar Ruangan -->
-        <table class="w-11/12 mx-auto text-center mt-2 border-separate border-spacing-y-3 pb-8">
-            <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                    <th class="px-2 py-4 border-b">No</th>
-                    <th class="px-2 py-4 border-b">Kode Ruangan</th>
-                    <th class="px-2 py-4 border-b">Keterangan</th>
-                    <th class="px-2 py-4 border-b">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($daftarRuangan as $index => $ruang)
-                    <tr>
-                        <td class="px-4 py-2">{{ ($daftarRuangan->currentPage() -1) * $daftarRuangan->perPage() + $loop->iteration }}</td>
-                        <td class="px-4 py-2">{{ $ruang->kode_ruangan }}</td>
-                        <td class="px-4 py-2">{{ $ruang->keterangan }}</td>
-                        <td>
-                            <form action="{{ route('ruang.destroy', $ruang->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus ruangan ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="mt-2 bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded transition duration-200">
-                                    Hapus
-                                </button>
-                            </form>
-                        <td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="flex justify-center">
-            {{ $daftarRuangan->links() }}
+        <div class="overflow-x-auto mb-4" id="ruanganContainer">
+            @if($daftarRuangan->isEmpty())
+                <div class="flex flex-col items-center justify-center py-5 text-gray-500">
+                    <h3 class="text-lg font-semibold">Belum Ada Data</h3>
+                    <p class="text-sm">Silakan tambahkan data terlebih dahulu menggunakan tombol di atas.</p>
+                </div>
+            @else
+                @include('akademik.partialRuang')
+            @endif
         </div>
-    </div>
     </section>
 </main>
     
@@ -227,6 +211,77 @@
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>
     </footer>
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const errors = @json($errors->all());
+                showErrors(errors);
+            });
+        </script>
+    @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tangkap klik pada pagination
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('#paginationLinks a')) {
+                    e.preventDefault();
+                    const url = e.target.closest('a').href;
+
+                    // Panggil data baru menggunakan fetch
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                        .then(response => response.text())
+                        .then(html => {
+                            document.getElementById('ruanganContainer').innerHTML = html;
+                        })
+                        .catch(error => console.error('Error fetching data:', error));
+                }
+            });
+        });
+    </script>
+
+<script>
+    function confirmDelete(url) {
+        Swal.fire({
+            title: 'Apakah kamu yakin?',
+            text: 'Anda tidak akan dapat memulihkan data ini!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tidak, batalkan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = url;
+
+                var csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = document.querySelector('meta[name="csrf-token"]').content;
+                form.appendChild(csrfInput);
+
+                var methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'DELETE';
+                form.appendChild(methodInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            } else {
+                Swal.fire('Dibatalkan', 'Data Anda aman!', 'error');
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

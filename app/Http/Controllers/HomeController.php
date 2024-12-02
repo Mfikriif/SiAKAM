@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
 use App\Models\CivitasAkademik;
 use App\Models\JadwalMk;
+use App\Models\Irs;
 
 
 class HomeController extends Controller
@@ -67,6 +68,21 @@ class HomeController extends Controller
         $user = Auth::user();
         $mahasiswa = Mahasiswa::where('email', $user->email)->firstOrFail();
         $doswal = CivitasAkademik::where('id', $mahasiswa->pembimbing_akademik_id)->first();
+        $statusIrs = Irs::where('nim', $mahasiswa->nim)
+        ->where('semester',$mahasiswa->semester)
+        ->first();
+
+    if ($statusIrs) {
+        if ($statusIrs->status == 1) {
+            $statusNotif = 'Irs anda telah disetujui';
+        } elseif ($statusIrs->status == 0) {
+            $statusNotif = 'Irs anda belum disetujui';
+        } else {
+            $statusNotif = null; // Tidak menampilkan apapun
+        }
+    } else {
+        $statusNotif = null; // Tidak menampilkan apapun jika data tidak ditemukan
+    }
 
         return view('mahasiswa.dashboard', [
             'user' => $user,
@@ -75,7 +91,8 @@ class HomeController extends Controller
             'jurusan' => $mahasiswa->jurusan,
             'nomorHP' => $mahasiswa->no_hp,
             'namaDoswal' => $doswal->nama ?? 'N/A',
-            'nipDoswal' => $doswal->nip ?? 'N/A'
-        ]);
+            'nipDoswal' => $doswal->nip ?? 'N/A',
+            'statusAktif' => $mahasiswa,
+        ],compact('statusNotif'));
     }
 }

@@ -25,15 +25,31 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
-                        <button type="button"
-                            class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span class="sr-only">View notifications</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                            </svg>
-                        </button>
+                        <div x-data="{ open: false }" class="relative">
+                            <!-- Tombol untuk membuka/menutup popup -->
+                            <button @click="open = !open" type="button"
+                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <span class="sr-only">View notifications</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                                </svg>
+                            </button>
+
+                            <!-- Popup notifikasi -->
+                            <div x-show="open"
+                                class="absolute top-10 right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg p-4"
+                                @click.away="open = false" x-transition>
+                                @if ($statusNotif)
+                                    <div class="notifikasi">
+                                        {{ $statusNotif }}
+                                    </div>
+                                @endif
+
+                            </div>
+                        </div>
+
                         <div>
                             <h3 class="ml-3 text-white">{{ Auth::user()->name }}</h3>
                         </div>
@@ -44,8 +60,8 @@
                                     class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full object-cover" 
-                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                    <img class="h-8 w-8 rounded-full object-cover"
+                                        src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}"
                                         alt="User Photo">
                                 </button>
                             </div>
@@ -91,8 +107,8 @@
                         <p class="ml-4 font-semibold text-gray-700">Profil Mahasiswa</p>
                         <div class="flex">
                             <div class="flex w-2/4">
-                                <img class="rounded-full ml-2 mt-5 w-36 h-36 object-cover" 
-                                    src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}" 
+                                <img class="rounded-full ml-2 mt-5 w-36 h-36 object-cover"
+                                    src="{{ $user->profile_photo && file_exists(public_path($user->profile_photo)) ? asset($user->profile_photo) : asset('images/profiles/default_photo.jpg') }}"
                                     alt="User Photo">
                                 <div class="ml-6 text-base text-gray-500 mt-6 tracking-wide">
                                     <p>{{ $user->name }} <br>
@@ -127,8 +143,10 @@
                                 <div class="h-px w-full border-solid border-slate-400 border mt-3 mx-auto"></div>
                                 <div class="w-96 mx-auto">
                                     <div class="text-center text-xs font-light mt-2">
-                                        <p><span class="font-semibold text-gray-500 text-xs">Dosen wali:</span> {{ $namaDoswal }}</p>
-                                        <p><span class="font-semibold text-gray-500 text-xs">NIP:</span> {{ $nipDoswal }}</p>
+                                        <p><span class="font-semibold text-gray-500 text-xs">Dosen wali:</span>
+                                            {{ $namaDoswal }}</p>
+                                        <p><span class="font-semibold text-gray-500 text-xs">NIP:</span>
+                                            {{ $nipDoswal }}</p>
                                     </div>
                                     <div class="flex justify-between mt-4">
                                         <div class="text-xs text-gray-500">
@@ -143,7 +161,15 @@
                                         <div class="w-px h-9 border-solid border-slate-400 border"></div>
                                         <div class="text-xs text-gray-500">
                                             <p>Status Akademik</p>
-                                            <p class="mt-2 bg-green-600 w-9 text-center text-white rounded-sm mx-auto">AKTIF</p>
+                                            <p class="mt-2 bg-green-600 w-9 text-center text-white rounded-sm mx-auto">
+                                                @if ($statusAktif->status == 1)
+                                                    Aktif
+                                                @elseif ($statusAktif->status == -1)
+                                                    Cuti
+                                                @else
+                                                    Belum Herreg
+                                                @endif
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -153,19 +179,23 @@
                 </div>
             </div>
             <div class="w-2/3 mx-auto mt-7 grid grid-cols-4 text-lg">
-                <a href="{{ route('mahasiswa.herReg') }}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+                <a href="{{ route('mahasiswa.herReg') }}"
+                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                     <img class="w-11 mr-2" src="{{ asset('logoMHS.svg') }}" alt="">
                     <p>Her-Registrasi</p>
                 </a>
-                <a href="{{ route('mahasiswa.irs') }}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+                <a href="{{ route('mahasiswa.irs') }}"
+                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                     <img class="h-11 w-11 pl-2" src="{{ asset('irsLogo.svg') }}" alt="">
                     <p class="ml-2">IRS Mahasiswa</p>
                 </a>
-                <a href="{{ route('mahasiswa.khs') }}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+                <a href="{{ route('mahasiswa.khs') }}"
+                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                     <img class="w-11 pl-2" src="{{ asset('khsLogo.svg') }}" alt="">
                     <p class="ml-2">KHS Mahasiswa</p>
                 </a>
-                <a href="{{ route('mahasiswa.jadwalKuliah') }}" class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
+                <a href="{{ route('mahasiswa.jadwalKuliah') }}"
+                    class="flex h-20 w-48 border text-white items-center rounded-md justify-center">
                     <img class="w-11 pl-2" src="{{ asset('calendarLogo.svg') }}" alt="">
                     <p class="ml-2">Jadwal Kuliah</p>
                 </a>
@@ -185,7 +215,7 @@
         const text = "{{ $userName }}";
         const typingText = document.getElementById("typing-text");
         let index = 0;
-    
+
         function typeEffect() {
             if (index < text.length) {
                 typingText.innerHTML += text.charAt(index);
