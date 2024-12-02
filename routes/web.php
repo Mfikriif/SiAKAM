@@ -35,7 +35,7 @@ Route::post('/select-role', [AuthenticatedSessionController::class, 'selectRole'
 
 // Controller Mahasiswa Untuk Melindungi Pengaksesan via Link Address
 Route::middleware('auth', 'mahasiswa')->group(function() {
-    Route::get('mahasiswa/jadwal-kuliah',[MenuController::class,'jadwalKuliah'])->name('mahasiswa.jadwalKuliah');
+    Route::get('/mahasiswa/jadwal-kuliah',[MahasiswaController::class,'jadwalMahasiswa'])->name('mahasiswa.jadwalKuliah');
     Route::get('mahasiswa/herreg',[MahasiswaController::class,'herReg'])->name('mahasiswa.herReg');
     Route::post('/mahasiswa/{id}/set-aktif', [MahasiswaController::class, 'setAktif'])->name('mahasiswa.setAktif');
     Route::post('/mahasiswa/{id}/set-cuti', [MahasiswaController::class, 'setCuti'])->name('mahasiswa.setCuti');

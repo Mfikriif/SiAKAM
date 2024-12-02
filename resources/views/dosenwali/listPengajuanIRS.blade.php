@@ -98,37 +98,57 @@
     </section>
 
     <main class="flex-1">
-        <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 " id="body">
+        <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-5" id="body">
             <div class="container-table ">
                 <div id="table-list">
-    
-                    <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">LIST PENGAJUAN IRS MAHASISWA</h2>
-    
+                    <h2 class="text-2xl text-center mx-auto max-w-64 mt-5 mb-8">LIST PENGAJUAN IRS MAHASISWA</h2>
                     <div class=" flex justify-end mt-5 mr-16">
-                        <div id="dropdown">
-                            <select name="angkatan" id="angkatan"
-                                class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
-                                <option value="" disabled selected>Angkatan</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
-                            </select>
-                        </div>
-                        <div id="input-text">
-                            <input class="bg-[#002687] rounded-l-xl h-8 mr-1 text-white" id="search" placeholder="Search"
-                                type="text">
-                        </div>
-                        <div id="button-search">
-                            <button class="bg-[#002687] h-8 w-8 rounded-r-xl pl-2 "><img src="{{ asset('searchLogo.svg') }}"
-                                    alt=""></button>
-                        </div>
+                        <form method="GET" action="{{ route('dosenwali.listPengajuanIRS') }}" class="flex">
+                            <div>
+                                <select name="status" id="status" class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
+                                    <option value="">-- Status -- </option>
+                                    <option value="Disetujui" {{ request('status') == 'Disetujui' ? 'selected' : '' }}>Disetujui
+                                    </option>
+                                    <option value="Belum Disetujui" {{ request('status') == 'Belum Disetujui' ? 'selected' : '' }}>Belum Disetujui
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <select name="angkatan" id="angkatan" class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
+                                    <option value="">-- Angkatan -- </option>
+                                    <option value="2019" {{ request('angkatan') == '2019' ? 'selected' : '' }}>2019
+                                    </option>
+                                    <option value="2020" {{ request('angkatan') == '2020' ? 'selected' : '' }}>2020
+                                    </option>
+                                    <option value="2021" {{ request('angkatan') == '2021' ? 'selected' : '' }}>2021
+                                    </option>
+                                    <option value="2022" {{ request('angkatan') == '2022' ? 'selected' : '' }}>2022
+                                    </option>
+                                    <option value="2023" {{ request('angkatan') == '2023' ? 'selected' : '' }}>2023
+                                    </option>
+                                    <option value="2024" {{ request('angkatan') == '2024' ? 'selected' : '' }}>2024
+                                    </option>
+                                </select>
+                            </div>
+    
+                            <div>
+                                <input name="search" value="{{ request('search') }}"
+                                    class="bg-[#002687] text-white h-8 rounded-l-xl pl-3" placeholder="Search.."
+                                    type="text">
+                            </div>
+    
+                            <div>
+                                <button class="bg-[#002687] h-8 w-8 rounded-r-xl flex items-center justify-center"
+                                    type="submit">
+                                    <img src="{{ asset('searchLogo.svg') }}" alt="">
+                                </button>
+                            </div>
+                        </form>
                     </div>
     
                     <div class="flex flex-col space-y-4" x-data="{ openIndex: null, openModal: false, currentData: {} }">
-                        <div class="overflow-hidden border rounded-lg border-gray-300 w-11/12 mx-auto my-6 p-4">
+                        <div class="overflow-hidden border rounded-lg border-gray-300 w-11/12 mx-auto my-6 pt-3 px-3">
                             @foreach ($mahasiswaPerwalian as $index => $mahasiswa)
                                 <div class="border-b mb-3 rounded-lg overflow-hidden" id="mahasiswa-list">
                                     <!-- Accordion Header -->
@@ -252,7 +272,9 @@
                                                 @endif
                                             </div>
                                         @else
-                                            <p class="pl-4 py-3">Belum ada data IRS.</p>
+                                            <div class="flex justify-center">
+                                                <p class="pl-4 py-3">Belum ada data IRS</p>
+                                            </div>
                                         @endif
                                         </div>
                                     </div>
@@ -274,5 +296,4 @@
         </div>
     </footer>
 </body>
-
 </html>
