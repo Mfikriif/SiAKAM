@@ -174,7 +174,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-auto">
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-24">
         <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
