@@ -40,7 +40,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::post('/mahasiswa/{id}/set-aktif', [MahasiswaController::class, 'setAktif'])->name('mahasiswa.setAktif');
     Route::post('/mahasiswa/{id}/set-cuti', [MahasiswaController::class, 'setCuti'])->name('mahasiswa.setCuti');
     Route::post('/mahasiswa/{id}/batalkan-status', [MahasiswaController::class, 'batalkanStatus'])->name('mahasiswa.batalkanStatus');
-    Route::get('mahasiswa/khs',[MenuController::class,'khs'])->name('mahasiswa.khs');
+    Route::get('mahasiswa/menu-khs',[MenuController::class,'khs'])->name('mahasiswa.khs');
     Route::get('mahasiswa/khs',[khsController::class,'index'])->name('mahasiswa.khs');
     Route::get('mahasiswa/dashboard',[HomeController::class,'dashboardMahasiswa'])->name('mahasiswa.dashboard');
     Route::get('mahasiswa/irs',[IrsController::class, 'index'])->name('mahasiswa.irs');
@@ -49,8 +49,6 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::post('/mahasiswa/listMk',[irsController::class,'searchMk'])->name('irs.searchMk');
     Route::get('/get-matakuliah-detail/{kodeMK}', [irsController::class, 'getMatakuliahDetail']);
     Route::get('/print-irs/{mahasiswaId}', [PDFController::class, 'generatePDF'])->name('irs.print');
-    // Route::get('khs-mahasiswa',[irsController::class,'getKhs'])->name('mahasiswa.khs');
-
 });
 
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address
