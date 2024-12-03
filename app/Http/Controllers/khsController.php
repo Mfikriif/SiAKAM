@@ -65,11 +65,12 @@ class khsController extends Controller
         $ipk = $totalSks > 0 ? round($totalBobot / $totalSks, 2) : 0;
 
         // Mengirimkan data ke view
+
         return view('mahasiswa.khs', [
             'user' => $user,
             'khsMahasiswa' => $khsMahasiswa,
             'ipsPerSemester' => $ipsPerSemester,
             'ipk' => $ipk,
-        ]);
+        ], compact('user', 'mahasiswa', 'khsMahasiswa'));
     }
 }

@@ -30,7 +30,7 @@ class khs extends Model
 
     public function matakuliah()
     {
-        return $this->belongsTo(MataKuliah::class,'kode_mk','kode_nk');
+        return $this->belongsTo(MataKuliah::class,'kode_mk','kode_mk');
     }
 
     public function irs()

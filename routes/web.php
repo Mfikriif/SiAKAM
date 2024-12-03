@@ -15,6 +15,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\khsController;
+use App\Http\Controllers\pdfKhsController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -49,6 +50,8 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::post('/mahasiswa/listMk',[irsController::class,'searchMk'])->name('irs.searchMk');
     Route::get('/get-matakuliah-detail/{kodeMK}', [irsController::class, 'getMatakuliahDetail']);
     Route::get('/print-irs/{mahasiswaId}', [PDFController::class, 'generatePDF'])->name('irs.print');
+    Route::get('/print-khs/{nim}', [pdfKhsController::class, 'generatePDFKhs'])->name('khs.print');
+
 });
 
 // Controller Akademik untuk Melindungi Pengaksesan via Link Address

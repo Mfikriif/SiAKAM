@@ -212,6 +212,16 @@
                 </div>
             </div>
         </div>
+        <div class="w-11/12 mx-auto flex justify-end mt-5">
+            <a href="{{ route('khs.print', ['nim' => $mahasiswa->nim]) }}"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                </svg>
+                Cetak KHS
+            </a>
+        </div>
     </section>
 
     <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
