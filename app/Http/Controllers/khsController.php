@@ -27,9 +27,6 @@ class KhsController extends Controller
         // dd($khsMahasiswa);
 
         // Mengirimkan data ke view
-        return view('mahasiswa.khs', [
-            'user' => $user,
-            'khsMahasiswa' => $khsMahasiswa, 
-        ]);
+        return view('mahasiswa.khs', compact('user', 'mahasiswa', 'khsMahasiswa'));
     }
 }
