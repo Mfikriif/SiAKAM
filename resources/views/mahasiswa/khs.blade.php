@@ -123,6 +123,24 @@
                                 <div x-show="openIndex === {{ $semester }}" x-collapse
                                     class="transition-all duration-300">
                                     <div class="p-5 bg-white rounded-b-lg shadow-inner overflow-auto">
+                                        <div class="flex mb-3">
+                                            <div class="flex-col items-center">
+                                                <p class="text-sm ml-1 mb-1">IP Semester</p>
+                                                <div id="ips">
+                                                    <div
+                                                        class="bg-[#002687] rounded-xl w-20 h-8 ml-1 pt-1.5 text-white text-sm text-center font-semibold">
+                                                        {{ $ipsPerSemester[$semester] ?? '0.00' }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-col items-center">
+                                                <p class="text-sm ml-2 mb-1">IP Kumulatif</p>
+                                                <div id="ipk">
+                                                    <div
+                                                        class="bg-[#002687] rounded-xl w-20 h-8 ml-2 pt-1.5 text-white text-sm text-center font-semibold">
+                                                        {{ $ipk }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div x-data="{ checkAll: false }"
                                             class="overflow-hidden w-full overflow-x-auto rounded-md border border-neutral-300">
                                             <table class="w-full text-left text-sm text-neutral-600">
@@ -206,14 +224,12 @@
         </div>
     </section>
 
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
-    </section>
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
+        </div>
+    </footer>
 </body>
 
 </html>

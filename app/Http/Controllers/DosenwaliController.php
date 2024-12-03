@@ -12,7 +12,8 @@ class DosenwaliController extends Controller
     {
         $dosenWaliId = Auth::user()->id;
         // Ambil data mahasiswa berdasarkan pembimbing akademik
-        $query = Mahasiswa::where('pembimbing_akademik_id', $dosenWaliId);
+        $query = Mahasiswa::where('pembimbing_akademik_id', $dosenWaliId)
+                            ->orderBy('nim', 'asc');
     
         // Filter berdasarkan angkatan jika ada
         if ($request->filled('angkatan')) {
@@ -23,7 +24,7 @@ class DosenwaliController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%')
-                    ->orWhere('nim', 'like', '%' . $request->search . '%');
+                ->orWhere('nim', 'like', '%' . $request->search . '%');
             });
         }
     
@@ -38,11 +39,30 @@ class DosenwaliController extends Controller
     {
         $dosenWaliId = Auth::user()->id;
 
-        // Ambil data mahasiswa berdasarkan pembimbing akademik, beserta data IRS mereka
         $query = Mahasiswa::where('pembimbing_akademik_id', $dosenWaliId)
-                            ->with(['Irs.JadwalMk']); // Memuat data IRS terkait untuk setiap mahasiswa
+                            ->with(['Irs.JadwalMk'])
+                            ->orderBy('nim', 'asc');
 
-        // Filter berdasarkan angkatan jika ada
+        // Filter berdasarkan status jika ada
+        if ($request->filled('status')) {
+            if ($request->status === 'Disetujui') {
+                $status = 1;
+
+                $query->whereHas('Irs', function ($q) use ($status) {
+                    $q->where('status', $status);
+                });
+            } elseif ($request->status === 'Belum Disetujui') {
+                $status = 0;
+    
+                $query->where(function ($q) use ($status) {
+                    $q->whereDoesntHave('Irs')
+                      ->orWhereHas('Irs', function ($q) use ($status) {
+                          $q->where('status', $status);
+                      });
+                });
+            }
+        }
+
         if ($request->filled('angkatan')) {
             $query->where('angkatan', $request->angkatan);
         }

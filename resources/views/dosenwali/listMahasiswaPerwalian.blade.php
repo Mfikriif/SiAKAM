@@ -102,8 +102,8 @@
                             <!-- Dropdown for 'Angkatan' -->
                             <div id="dropdown">
                                 <select name="angkatan" id="angkatan"
-                                    class="bg-white border-gray-300 rounded-l-xl h-8 w-40 mr-3 text-sm py-px">
-                                    <option value="" disabled selected>Angkatan</option>
+                                    class="bg-white border-gray-300 rounded-xl h-8 w-40 mr-3 text-sm py-px">
+                                    <option value="">-- Angkatan --</option>
                                     <option value="2019" {{ request('angkatan') == '2019' ? 'selected' : '' }}>2019
                                     </option>
                                     <option value="2020" {{ request('angkatan') == '2020' ? 'selected' : '' }}>2020
@@ -143,7 +143,6 @@
                                 <th class="text-left pl-4">NIM</th>
                                 <th class="text-left pl-4">NAMA</th>
                                 <th>ANGKATAN</th>
-                                <th>SKS</th>
                                 <th>STATUS</th>
                             </tr>
     
@@ -155,7 +154,6 @@
                                     <td class="text-left pl-4">{{ $mahasiswa->nim }}</td>
                                     <td class="text-left pl-4">{{ $mahasiswa->nama }}</td>
                                     <td>{{ $mahasiswa->angkatan }}</td>
-                                    <td>{{ $mahasiswa->sks }} SKS</td>
                                     <td>
                                         @if ($mahasiswa->status == 1)
                                             AKTIF

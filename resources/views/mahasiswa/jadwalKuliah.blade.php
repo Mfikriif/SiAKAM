@@ -91,186 +91,82 @@
         </div>
     </section>
 
-    <section class="w-11/12 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-6" id="body">
-        <div class="container-table ">
-            <div id="table-list">
-
-                <h2 class="text-2xl text-center font-light mx-auto max-w-64 mt-5">JADWAL KULIAH</h2>
-                <div class="flex flex-col items-center mt-5 mb-5 mr-20 ml-20">
-                    <p class="ml-auto mb-2 font-light">SKS YANG DIAMBIL</p>
-                    <div class="h-8 w-1/12 flex bg-[#002687] text-white font-bold rounded-lg pt-1 pl-5 mr-5 ml-auto">18
-                        SKS</div>
-                </div>
-
-                <div class="flex flex-col">
-                    <div class=" overflow-x-auto pb-4">
-                        <div class="min-w-full inline-block align-middle">
-                            <div class="overflow-hidden  border rounded-lg border-gray-300 w-11/12 mx-auto">
-                                <table class="table-auto min-w-full rounded-xl">
-                                    <thead>
-                                        <tr class="bg-gray-50">
-                                            <th scope="col"
-                                                class="p-5 text-center whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
-                                                HARI </th>
-                                            <th scope="col"
-                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
-                                                MATA KULIAH </th>
-                                            <th scope="col"
-                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize min-w-[150px]">
-                                                RUANGAN </th>
-                                            <th scope="col"
-                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
-                                                WAKTU </th>
-                                            <th scope="col"
-                                                class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize">
-                                                SKS </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-300 ">
+    <main class="flex-1">
+        <section class="w-2/3 mx-auto relative top-36 bg-white rounded-lg pt-5 pb-5">
+            <div class="container-table ">
+                <div id="table-list">
+                    <h2 class="text-2xl text-center mx-auto max-w-64 mt-5">JADWAL KULIAH</h2>
+                    @if ($jadwalList->isNotEmpty() && $jadwalList->contains('status', 1))
+                    <div class="flex justify-end items-center mt-5 mb-5 mr-20">
+                        <div class="flex-col items-center">
+                            <p class="ml-auto mb-2">TOTAL SKS</p>
+                            <div class="bg-[#002687] rounded-xl w-20 h-8 pt-1.5 text-white text-sm text-center font-semibold"> {{ $totalSksAmbil }} SKS </div>
+                        </div>
+                    </div>
+    
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto pb-4">
+                            <div class="min-w-full inline-block align-middle">
+                                <div class="overflow-hidden border rounded-lg border-gray-300 w-11/12 mx-auto">
+                                    <table class="table-auto min-w-full rounded-xl">
+                                        <thead>
+                                            <tr class="bg-gray-50">
+                                                <th scope="col"
+                                                    class="p-4 text-center whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    No </th>
+                                                <th scope="col"
+                                                    class="p-4 pl-8 text-left whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    Hari </th>
+                                                <th scope="col"
+                                                    class="p-4 text-left whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    Mata Kuliah </th>
+                                                <th scope="col"
+                                                    class="p-4 text-center whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    SKS </th>
+                                                <th scope="col"
+                                                    class="p-4 text-center whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    Kelas </th>
+                                                <th scope="col"
+                                                    class="p-4 text-center whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    Ruangan </th>
+                                                <th scope="col"
+                                                    class="p-4 text-center whitespace-nowrap text-base leading-6 font-semibold text-gray-900 capitalize">
+                                                    Waktu </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-300 ">
+                                        @foreach ($jadwalList as $jadwal)
                                         <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
-                                                SENIN </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                REKAYASA PERANGKAT LUNAK </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">E101</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                15.40-18.10 WIB</td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                3</td>
-                                        </tr>
-                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center ">
-                                                SELASA </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                MANAJEMEN BASIS DATA </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">E101</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                07.00-09.30 WIB</td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                3</td>
-                                        </tr>
-                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
-                                                SELASA </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                GRAFIKA DAN KOMPUTASI VISUAL </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">E103</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                13:00:00 s/d 15:30:00</td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                3</td>
-                                        </tr>
-                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
-                                                RABU </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                PEMROGRAMAN BERORIENTASI OBJEK </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">E101</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                15:40:00 s/d 18:10:00</td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                4</td>
-                                        </tr>
-                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
-                                                KAMIS </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                SISTEM CERDAS </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">E101</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                07:00:00 s/d 09:30:00</td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                3</td>
-                                        </tr>
-                                        <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 text-center">
-                                                JUMAT </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                ANALISIS DAN STRATEGI ALGORITMA </td>
-                                            <td class=" px-5 py-3">
-                                                <div class="w-48 flex items-center gap-3">
-                                                    <div class="data">
-                                                        <p class="font-normal text-sm text-gray-900">E101</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                07:00:00 s/d 09:30:00</td>
-                                            <td
-                                                class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                3</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <td class="p-5 whitespace-nowrap text-base leading-6 font-normal text-gray-900 text-center"> {{ $loop->iteration }} </td>
+                                            <td class="p-5 pl-8 whitespace-nowrap text-base leading-6 font-normal text-gray-900 text-left"> {{ $jadwal->JadwalMk->hari }} </td>
+                                            <td class="p-5 whitespace-nowrap text-base leading-6 font-normal text-gray-900"> {{ $jadwal->nama_mk }} </td>
+                                            <td class="p-5 whitespace-nowrap text-base leading-6 font-normal text-gray-900 text-center"> {{ $jadwal->sks }} </td>
+                                            <td class="p-5 whitespace-nowrap text-base leading-6 font-normal text-gray-900 text-center"> {{ $jadwal->jadwalMk->kelas }} </td>
+                                            <td class="p-5 whitespace-nowrap text-base leading-6 font-normal text-gray-900 text-center"> {{ $jadwal->jadwalMk->ruangan }} </td>
+                                            <td class="p-5 whitespace-nowrap text-base leading-6 font-normal text-gray-900 text-center"> {{ $jadwal->JadwalMk->jam_mulai }} s/d {{ $jadwal->JadwalMk->jam_selesai }} </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+                        @else
+                            <div class="border rounded-lg border-gray-300 w-11/12 mx-auto my-10 p-8 text-center">
+                                <p class="text-lg">IRS Belum Disetujui</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-64">
+        <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
+            <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
+            <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>
-    </section>
-
-    <section class="relative top-32">
-        <footer class="bg-[#D9D9D9] bg-opacity-30 mt-20">
-            <div class="flex w-2/3 h-9 mx-auto justify-between items-center text-white ">
-                <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
-                <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
-            </div>
-        </footer>
-    </section>
+    </footer>
 </body>
-
 </html>
