@@ -21,8 +21,27 @@ class pdfKhsController extends Controller
         $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
 
         // Mengambil IRS data untuk mahasiswa yang dipilih
-        $khsData = khs::where('nim', $nim)->where('semester', $mahasiswa->semester)
-            ->get();
+        $khsData = khs::where('nim', $nim)->get();
+
+        // Mengambil IPS
+        $nilai_bobot = [
+            'A' => 4,
+            'B' => 3,
+            'C' => 2,
+            'D' => 1,
+            'E' => 0,
+        ];
+
+        $totalBobot = 0;
+        $totalSks = 0;
+
+        foreach ($khsData as $khs) {
+            $bobot = $nilai_bobot[$khs->nilai_huruf] ?? 0;
+            $totalBobot += $khs->sks * $bobot;
+            $totalSks += $khs->sks;
+        }
+
+        $ipKumulatif = $totalSks > 0 ? round($totalBobot / $totalSks, 2) : 0;        
 
         // Mengorganisir data untuk ke view
         $data = [
@@ -31,6 +50,7 @@ class pdfKhsController extends Controller
             'mahasiswa' => $mahasiswa,
             'khsData' => $khsData,
             'image' => Auth::user()->profile_photo, // Mengirimkan data user
+            'ipk' => $ipKumulatif,
         ];
 
         $pdf = Pdf::loadView('mahasiswa.pdfKHS', $data);

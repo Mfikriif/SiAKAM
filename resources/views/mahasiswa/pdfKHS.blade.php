@@ -104,7 +104,7 @@
         </tbody>
     </table>
 
-    <p>IP Semester : </p>
+    <p>IP Kumulatif : {{ $ipk }}</p>
 
     <div class="signature-container">
         <!-- Bagian Pembimbing Akademik -->
