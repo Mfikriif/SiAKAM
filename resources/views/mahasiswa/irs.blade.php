@@ -273,6 +273,13 @@
                                                                     value="{{ $mk->sks }}">
                                                                 <input type="hidden" name="kelas"
                                                                     value="{{ $mk->kelas }}">
+                                                                <input type="hidden" name="hari"
+                                                                    value="{{ $mk->hari }}">
+                                                                <input type="hidden" name="jam_mulai"
+                                                                    value="{{ $mk->jam_mulai }}">
+                                                                <input type="hidden" name="jam_selesai"
+                                                                    value="{{ $mk->jam_selesai }}">
+
                                                                 <button
                                                                     class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-[#2EC060] text-white"
                                                                     type="submit">
