@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('nama_mk');
             $table->char('kelas',1);
             $table->integer('sks');
+             // Menambahkan kolom hari, jam_mulai, dan jam_selesai
+            $table->string('hari', 50)->nullable();
+            $table->time('jam_mulai')->nullable();
+            $table->time('jam_selesai')->nullable();
             $table->boolean('status')->default(false);
             $table->date('tanggal_pengajuan');
             $table->date('tanggal_persetujuan')->nullable();

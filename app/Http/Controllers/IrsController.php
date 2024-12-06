@@ -141,6 +141,21 @@ class IrsController extends Controller
                     'alert_message'=> 'Mata kuliah sudah diambil.'
                 ]);
             }
+
+              // Pengecekan jadwal tabrakan (jam dan hari)
+            $jadwalTabrakan = Irs::where('mahasiswa_id', $mahasiswa->id)
+            ->where('hari', $request->hari)
+            ->where('jam_mulai',$request->jam_mulai)
+            ->exists()
+            ;
+
+            if ($jadwalTabrakan) {
+                return redirect()->back()->with([
+                    'alert_type' => 'error',
+                    'alert_message' => 'Jadwal mata kuliah bertabrakan dengan jadwal yang sudah diambil.'
+                ]);
+            }
+
             // Hitung total SKS yang sudah diambil
             $totalSksAmbil = irs::where('mahasiswa_id', $mahasiswa->id)->get()->sum('sks');
     
@@ -199,6 +214,9 @@ class IrsController extends Controller
                 'semester' => 'required|integer',
                 'kelas' => 'required',
                 'sks' => 'required',
+                'hari' => 'required',
+                'jam_mulai' => 'required',
+                'jam_selesai' => 'required',
             ]);
 
             // Buat data IRS
@@ -213,6 +231,9 @@ class IrsController extends Controller
                 'nama_mk' => $request->nama_mk,
                 'kelas' => $request->kelas,
                 'sks' => $request->sks,
+                'hari' => $request->hari,
+                'jam_mulai' => $request->jam_mulai,
+                'jam_selesai' => $request->sks,
                 'tanggal_pengajuan' => now()
             ]);
     
