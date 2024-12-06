@@ -30,7 +30,6 @@ class Irs extends Model
         'hari',
         'jam_mulai',
         'jam_selesai',
-        'tota_sks',
         'status',
         'tanggal_pengajuan',
         'tanggal_persetujuan'

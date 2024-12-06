@@ -123,4 +123,28 @@ class DosenwaliController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Persetujuan IRS Mahasiswa berhasil dibatalkan.']);
     }
+
+    public function delete($mahasiswaId)
+    {
+        try {
+            // Hapus data IRS
+            $irs = Irs::where('mahasiswa_id', $mahasiswaId)->first();
+            if ($irs) {
+                $irs->delete();
+            }
+    
+            // Ubah status mahasiswa menjadi -1 (cuti)
+            $herreg = Mahasiswa::find($mahasiswaId);
+            if ($herreg) {
+                $herreg->status = -1; // Set status cuti
+                $herreg->save();
+            } else {
+                return response()->json(['success' => false, 'message' => 'Mahasiswa tidak ditemukan.']);
+            }
+    
+            return response()->json(['success' => true, 'message' => 'IRS berhasil dibatalkan dan status mahasiswa diubah menjadi cuti (-1).']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat membatalkan IRS.']);
+        }
+    }
 }

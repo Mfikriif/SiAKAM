@@ -45,4 +45,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class, 'id', 'id');
     }
+
+    public function herreg()
+    {
+        return $this->hasOne(Herreg::class, 'nim', 'nim');
+    }
 }

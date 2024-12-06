@@ -18,6 +18,8 @@ class CreateTahunAjaranTable extends Migration
             $table->string('tahun', 9); // Contoh format: "2023/2024"
             $table->enum('semester', ['Ganjil', 'Genap']);
             $table->boolean('is_active')->default(false);
+            $table->date('start_date')->nullable(); // Tanggal mulai semester
+            $table->date('end_date')->nullable();   // Tanggal selesai semester
             $table->timestamps();
         
             $table->unique(['tahun', 'semester']); // Menambahkan aturan unique pada kombinasi tahun dan semester

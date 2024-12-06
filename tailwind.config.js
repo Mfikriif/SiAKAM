@@ -29,6 +29,9 @@ export default {
             margin: {
                 97: "400px",
             },
+            height: {
+                98: "1400px",
+            },
         },
     },
 

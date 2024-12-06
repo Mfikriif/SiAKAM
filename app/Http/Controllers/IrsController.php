@@ -107,12 +107,15 @@ class IrsController extends Controller
         $statusIRS = Irs::where('mahasiswa_id', $mahasiswa->id)
         ->where('semester', $semesterMHS)
         ->first();
-    
+        $statusIRSLock = Irs::where('mahasiswa_id', $mahasiswa->id)->first();
         // Pastikan $statusIRS tidak null sebelum mengakses properti
-        $statusIRS = $statusIRS ? $statusIRS->status : null;
+        $statusIRSDua = $statusIRS ? $statusIRS->status : null;
+        if ($statusIRSLock && $statusIRSLock->status == 1) {
+            return view('mahasiswa.irs-locked', compact('mahasiswa', 'user'));
+        }
     
         // dd($statusIRS);
-        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','alertStatusAktif'));
+        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','statusIRSDua','alertStatusAktif'));
     }
 
     public function store(Request $request)

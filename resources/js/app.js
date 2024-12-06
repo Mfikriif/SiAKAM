@@ -15,7 +15,7 @@ import {
     approveReject,
     changeStatus,
 } from "./ruangan";
-import { approveCancelIrs } from "./irs";
+import { approveCancelIrs, deleteIrs } from "./irs";
 
 import Alpine from "alpinejs";
 
@@ -39,6 +39,7 @@ window.changeStatus = changeStatus;
 
 // Expose irs functions globally
 window.approveCancelIrs = approveCancelIrs;
+window.deleteIrs = deleteIrs;
 
 document.addEventListener("DOMContentLoaded", function () {
     // Memulai event listeners

@@ -220,8 +220,13 @@
                                             <div x-data="{ customKelas: false, kelas: '', kelasCustom: '' }">
                                                 <label for="kelas" class="block text-sm font-medium text-gray-600">Kelas</label>
                                                 
-                                                <!-- Select box untuk kelas -->
-                                                <select name="kelas" id="kelas" x-model="kelas" @change="customKelas = (kelas === 'Other')" required
+                                                <!-- Dropdown untuk memilih kelas -->
+                                                <select 
+                                                    name="kelas" 
+                                                    id="kelas" 
+                                                    x-model="kelas" 
+                                                    @change="customKelas = (kelas === 'Other'); kelasCustom = ''" 
+                                                    required
                                                     class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition">
                                                     <option value="">Pilih Kelas</option>
                                                     <option value="A">A</option>
@@ -231,7 +236,7 @@
                                                     <option value="Other">Lainnya</option>
                                                 </select>
                                             
-                                                <!-- Input untuk kelas custom -->
+                                                <!-- Input kustom untuk kelas -->
                                                 <input 
                                                     type="text" 
                                                     name="kelas_custom" 
@@ -241,7 +246,8 @@
                                                     placeholder="Masukkan Kelas"
                                                     class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition"
                                                     maxlength="50"
-                                                    :required="customKelas">
+                                                    :required="customKelas"
+                                                    x-cloak>
                                             </div>
                                             <!-- Ruangan -->
                                             <div>
