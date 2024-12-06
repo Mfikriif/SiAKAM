@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             DaftarRuanganSeeder::class,
             TahunAjaranSeeder::class,
             KhsMahasiswa::class,
+            HerregSeeder::class,
         ]);
     }
 }

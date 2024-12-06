@@ -187,7 +187,7 @@ class JadwalController extends Controller
             'semester' => $request->semester,
             'sks' => $request->sks,
             'sifat' => $request->sifat,
-            'kelas' => $request->kelas,
+            'kelas' => $kelas,
             'kuota_kelas' => $request->kuota_kelas,
             'ruangan' => $request->ruangan,
             'hari' => $request->hari,

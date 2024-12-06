@@ -27,7 +27,6 @@ class Irs extends Model
         'nama_mk',
         'kelas',
         'sks',
-        'tota_sks',
         'status',
         'tanggal_pengajuan',
         'tanggal_persetujuan'

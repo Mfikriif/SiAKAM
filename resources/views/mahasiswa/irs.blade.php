@@ -119,7 +119,7 @@
                         <div id="irs-status" class="flex flex-col">
                             <div
                                 class="bg-[#2EC060] rounded-xl w-24 h-8 mr-3 pt-1.5 text-white text-xs text-center font-semibold">
-                                {{ $statusIRS == 1 ? 'Disetujui' : 'Belum Disetujui' }}
+                                {{ $statusIRSDua == 1 ? 'Disetujui' : 'Belum Disetujui' }}
                             </div>
 
                             <div class="my-auto flex text-sm mt-2 font-semibold tracking-wide">

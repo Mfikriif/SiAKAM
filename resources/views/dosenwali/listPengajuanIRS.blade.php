@@ -266,9 +266,16 @@
                                             </div>
                                             <div class="flex justify-end mt-4 space-x-4" id="aksi-{{ $irs->mahasiswa_id }}">
                                                 @if ($irs->status === 0)
-                                                    <button onclick="approveCancelIrs({{ $irs->mahasiswa_id }}, 'approve')" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-2 border border-green-500 hover:border-transparent rounded">Setujui</button>
+                                                    <button onclick="approveCancelIrs({{ $irs->mahasiswa_id }}, 'approve')" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-2 border border-green-500 hover:border-transparent rounded">
+                                                        Setujui
+                                                    </button>
                                                 @elseif ($irs->status === 1)
-                                                    <button onclick="approveCancelIrs({{ $irs->mahasiswa_id }}, 'cancel')" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Batalkan Persetujuan</button>
+                                                    <button onclick="approveCancelIrs({{ $irs->mahasiswa_id }}, 'cancel')" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                                                        Batalkan Persetujuan
+                                                    </button>
+                                                    <button onclick="deleteIrs({{ $irs->mahasiswa_id }})" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">
+                                                        Batalkan IRS
+                                                    </button>
                                                 @endif
                                             </div>
                                         @else
@@ -286,7 +293,6 @@
             </div>
         </section>
     </main>
-    
 
     <!-- Footer -->
     <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">

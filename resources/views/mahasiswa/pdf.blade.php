@@ -98,11 +98,11 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $irs->kode_mk }}</td>
-                <td>{{ $irs->mataKuliah->nama_mk }}</td>
+                <td>{{ $irs->nama_mk }}</td>
                 <td>{{ $irs->jadwal->kelas ?? '-' }}</td>
-                <td>{{ $irs->mataKuliah->sks }}</td>
+                <td>{{ $irs->sks }}</td>
                 <td>{{ $irs->jadwal->ruangan ?? '-' }}</td>
-                <td>{{ $irs->mataKuliah->sifat ?? 'Tidak Diketahui' }}</td>
+                <td>{{ $irs->sifat ?? 'Tidak Diketahui' }}</td>
                 <td>
                     @if($irs->jadwal)
                         {{ $irs->jadwal->pengampu_1 }}

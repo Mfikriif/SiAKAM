@@ -26,6 +26,8 @@ class TahunAjaranSeeder extends Seeder
                 'tahun' => "{$year}/{$nextYear}",
                 'semester' => 'Ganjil',
                 'is_active' => ($year === 2024 && $nextYear === 2025), // Aktif hanya untuk 2024/2025 Ganjil
+                'start_date' => "{$year}-08-01", // Mulai 1 Agustus tahun berjalan
+                'end_date' => "{$year}-12-31",   // Berakhir 31 Desember tahun berjalan
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -35,6 +37,8 @@ class TahunAjaranSeeder extends Seeder
                 'tahun' => "{$year}/{$nextYear}",
                 'semester' => 'Genap',
                 'is_active' => false, // Semua semester Genap tidak aktif
+                'start_date' => "{$nextYear}-02-01", // Mulai 1 Februari tahun berikutnya
+                'end_date' => "{$nextYear}-06-30",   // Berakhir 30 Juni tahun berikutnya
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
