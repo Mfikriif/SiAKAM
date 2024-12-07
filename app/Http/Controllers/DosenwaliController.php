@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\Irs;
+use App\Models\khs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,15 +12,19 @@ class DosenwaliController extends Controller
     public function MahasiswaPerwalian(Request $request)
     {
         $dosenWaliId = Auth::user()->id;
+
         // Ambil data mahasiswa berdasarkan pembimbing akademik
-        $query = Mahasiswa::where('pembimbing_akademik_id', $dosenWaliId)
-                            ->orderBy('nim', 'asc');
-    
+        $query = Mahasiswa::with(['khs' => function ($query) {
+            $query->orderBy('semester', 'asc'); // Urutkan data KHS berdasarkan semester
+        }])
+        ->where('pembimbing_akademik_id', $dosenWaliId)
+        ->orderBy('nim', 'asc');
+
         // Filter berdasarkan angkatan jika ada
         if ($request->filled('angkatan')) {
             $query->where('angkatan', $request->angkatan);
         }
-    
+
         // Pencarian berdasarkan nama atau NIM
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
@@ -27,12 +32,21 @@ class DosenwaliController extends Controller
                 ->orWhere('nim', 'like', '%' . $request->search . '%');
             });
         }
-    
+
         // Dapatkan data mahasiswa setelah filter dan pencarian
         $mahasiswaPerwalian = $query->get();
+
+        // Ambil data KHS berdasarkan NIM mahasiswa
+        foreach ($mahasiswaPerwalian as $mahasiswa) {
+            $mahasiswa->khs = Khs::where('nim', $mahasiswa->nim)
+                                ->orderBy('semester', 'asc')
+                                ->get();
+        }
+
         $user = Auth::user();
-        // Kembalikan ke view dengan data mahasiswa perwalian
-        return view('dosenwali.listMahasiswaPerwalian', compact('user','mahasiswaPerwalian'));
+
+        // Kembalikan ke view dengan data mahasiswa perwalian beserta KHS
+        return view('dosenwali.listMahasiswaPerwalian', compact('user', 'mahasiswaPerwalian'));
     }
 
     public function IrsMahasiswaPerwalian(Request $request)
