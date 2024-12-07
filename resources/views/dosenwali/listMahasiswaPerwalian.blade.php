@@ -173,7 +173,7 @@
                                                             <td class="py-3 px-4">{{ $khs->nama_mk }}</td>
                                                             <td class="py-3 px-4 text-center">{{ $khs->semester }}</td>
                                                             <td class="py-3 px-4 text-center">{{ $khs->sks }}</td>
-                                                            <td class="py-3 px-4 text-center">{{ $khs->nilai }}</td>
+                                                            <td class="py-3 px-4 text-center">{{ $khs->nilai_huruf }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
