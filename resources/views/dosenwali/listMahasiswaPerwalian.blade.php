@@ -152,6 +152,17 @@
                                         <!-- Subheading -->
                                         <h3 class="font-semibold text-lg text-gray-800 mb-4">Transkrip Mahasiswa</h3>
 
+                                        <!-- Print Button for Dosen Wali -->
+                                        <div class="text-right mb-4">
+                                            <a href="{{ route('dosenwali.printKhs', ['nim' => $mahasiswa->nim]) }}"
+                                            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring focus:ring-blue-300">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16h8M8 12h8M4 8h16M4 4h16"></path>
+                                                </svg>
+                                                Print Transkrip
+                                            </a>
+                                        </div>
+
                                         <!-- Table -->
                                         @if ($mahasiswa->khs->isNotEmpty())
                                             <table class="w-full text-left text-sm text-gray-600">
