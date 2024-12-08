@@ -11,8 +11,6 @@ class JadwalMk extends Model
 
     protected $table = 'jadwal_mk';
 
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'kode_mk',
