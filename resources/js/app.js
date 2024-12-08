@@ -188,6 +188,9 @@ function createActionCell(course, row) {
                     nama_mk: course.nama,
                     sks: course.sks,
                     kelas: course.kelas,
+                    hari: course.hari,
+                    jam_mulai: course.jam_mulai,
+                    jam_selesai: course.jam_selesai,
                 }),
             });
 

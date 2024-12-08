@@ -131,12 +131,12 @@
                                     <div class="flex justify-between ml-1 mt-4 text-gray-500">
                                         <div>
                                             <p>IPk</p>
-                                            <p>4.0</p>
+                                            <p>{{ $ipk }}</p>
                                         </div>
                                         <div class="w-px h-12 border-solid border border-slate-400"></div>
                                         <div>
                                             <p>SKSk</p>
-                                            <p class="ml-1">87</p>
+                                            <p class="ml-1">{{ $sks }}</p>
                                         </div>
                                     </div>
                                 </div>
