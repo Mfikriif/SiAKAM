@@ -46,6 +46,12 @@ class Mahasiswa extends Model
         return $this->belongsTo(User::class, 'id', 'id');
     }
 
+    public function khs()
+    {
+        return $this->hasMany(Khs::class, 'nim', 'nim')
+                    ->orderBy('semester', 'asc'); // Urutkan berdasarkan semester
+    }
+
     public function herreg()
     {
         return $this->hasOne(Herreg::class, 'nim', 'nim');

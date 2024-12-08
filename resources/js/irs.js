@@ -35,9 +35,15 @@ export async function approveCancelIrs(mahasiswa_id, action) {
                         .removeClass("text-yellow-500")
                         .addClass("text-green-500");
                     $(`#aksi-${mahasiswa_id}`).html(`
-                        <div class="flex justify-center">
-                            <button onclick="approveCancelIrs(${mahasiswa_id}, 'cancel')" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">Batalkan Persetujuan</button>
-                            <button onclick="deleteIrs(${mahasiswa_id})" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">Batalkan IRS</button>
+                        <div class="flex justify-center space-x-4">
+                            <button onclick="approveCancelIrs(${mahasiswa_id}, 'cancel')" 
+                                class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded">
+                                Batalkan Persetujuan
+                            </button>
+                            <button onclick="deleteIrs(${mahasiswa_id})" 
+                                class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-4 border border-red-500 hover:border-transparent rounded">
+                                Batalkan IRS
+                            </button>
                         </div>
                     `);
 
@@ -52,8 +58,10 @@ export async function approveCancelIrs(mahasiswa_id, action) {
                         .addClass("text-yellow-500");
                     $(`#aksi-${mahasiswa_id}`).html(`
                         <div class="flex justify-center">
-                            <button onclick="approveCancelIrs(${mahasiswa_id}, 'approve')" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-2 border border-green-500 hover:border-transparent rounded">Setujui</button>
-                            <button onclick="deleteIrs(${mahasiswa_id})" class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-1 px-2 border border-red-500 hover:border-transparent rounded">Batalkan IRS</button>
+                            <button onclick="approveCancelIrs(${mahasiswa_id}, 'approve')" 
+                                class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded">
+                                Setujui
+                            </button>
                         </div>
                     `);
 

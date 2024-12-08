@@ -92,6 +92,7 @@ Route::middleware('auth', 'dosenwali')->group(function () {
     Route::post('/dosenwali/approve-irs/{mahasiswa_id}', [DosenWaliController::class, 'approveIrsMahasiswa'])->name('dosenwali.approveIrsMahasiswa');
     Route::post('/dosenwali/cancel-approval/{mahasiswa_id}', [DosenWaliController::class, 'cancelApproval'])->name('dosenwali.cancelApproval');
     Route::delete('/dosenwali/delete/{mahasiswaId}', [DosenWaliController::class, 'delete'])->name('dosenwali.delete');
+    Route::get('/dosenwali/mahasiswa-perwalian/print-khs/{nim}', [pdfKhsController::class, 'generatePDFKhs'])->name('dosenwali.printKhs');
 });
 
 // Controller Kaprodi Untuk Melindungi Pengaksesan via Link Address
