@@ -299,8 +299,7 @@
                                                                     value="{{ $mahasiswa->nama }}">
                                                                 <button
                                                                     class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-red-600 text-white"
-                                                                    onclick="deleteIrs(event, 'Konfirmasi', 'Apakah Anda yakin?', 'warning', 'Ya, batalkan!', 'success')"
-                                                                    type="submit">
+                                                                    {{-- onclick="deleteIrs(event, 'Konfirmasi', 'Apakah Anda yakin?', 'warning', 'Ya, batalkan!', 'success')" --}} type="submit">
                                                                     Batal
                                                                 </button>
                                                             </form>

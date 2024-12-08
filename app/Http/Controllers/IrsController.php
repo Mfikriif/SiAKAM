@@ -277,7 +277,10 @@ class IrsController extends Controller
             khs::where('kode_mk', $validated['kode_mk'])
                 ->where('nama', $validated['nama_mhs'])
                 ->delete();
-            return redirect()->back()->with('success', 'Penghapusan IRS berhasil.');
+                return redirect()->back()->with([
+                    'alert_type' => 'success',
+                    'alert_message' => 'Jadwal mata kuliah berhasil di hapus.'
+                ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
