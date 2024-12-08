@@ -102,7 +102,7 @@
                 <td>{{ $irs->jadwal->kelas ?? '-' }}</td>
                 <td>{{ $irs->sks }}</td>
                 <td>{{ $irs->jadwal->ruangan ?? '-' }}</td>
-                <td>{{ $irs->sifat ?? 'Tidak Diketahui' }}</td>
+                <td>{{ $irs->sifat ?? 'Wajib' }}</td>
                 <td>
                     @if($irs->jadwal)
                         {{ $irs->jadwal->pengampu_1 }}
