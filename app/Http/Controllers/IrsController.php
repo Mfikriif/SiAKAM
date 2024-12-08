@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Irs;
 use App\Models\khs;
 use App\Models\TahunAjaran;
+use Carbon\Carbon;
 
 class IrsController extends Controller
 {
@@ -61,18 +62,26 @@ class IrsController extends Controller
                         ->get(['kode_mk','kelas'])
                         ->toArray();
 
-        // List mata kuliah di luar semester berjalan
-        $listMK = JadwalMK::select('kode_mk','nama')
-                          ->where('semester', '<>', $semesterMHS)
-                          ->distinct()
-                          ->get();
+        $ringkasanIRS = Irs::where('mahasiswa_id', $mahasiswa->id)
+        ->join('jadwal_mk', 'irs.kode_mk', '=', 'jadwal_mk.kode_mk')
+        ->get(['irs.kode_mk', 'jadwal_mk.nama', 'irs.sks', 'irs.kelas']);
+
+        // Tanggal sekarang dikurangi 10 hari
+        $tanggalBatas = Carbon::now()->subDays(10);
+
+        // Query list mata kuliah
+        $listMK = JadwalMk::select('kode_mk', 'nama', 'updated_at')
+                    ->where('persetujuan', 1)
+                    ->whereDate('updated_at', '<=', $tanggalBatas) // H+10 hari
+                    ->distinct()
+                    ->get();
 
         // Hitung IP semester sebelumnya
         $dataKhs = DB::table('khs')
-                     ->where('nim', $mahasiswa->nim)
-                     ->where('semester', $semesterMHS - 1)
-                     ->whereNotNull('nilai_huruf')
-                     ->get(['sks','nilai_huruf']);
+                    ->where('nim', $mahasiswa->nim)
+                    ->where('semester', $semesterMHS - 1)
+                    ->whereNotNull('nilai_huruf')
+                    ->get(['sks','nilai_huruf']);
 
         $nilai_bobot = [
             'A' => 4,
@@ -115,7 +124,19 @@ class IrsController extends Controller
         }
     
         // dd($statusIRS);
-        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','statusIRSDua','alertStatusAktif'));
+        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','statusIRSDua','alertStatusAktif','ringkasanIRS'));
+    }
+
+    public function getRingkasan()
+    {
+        $userId = Auth::id();
+
+        // Ambil ringkasan IRS yang diambil oleh user
+        $ringkasanIRS = Irs::where('mahasiswa_id', $userId)
+                            ->join('jadwal_mk', 'irs.kode_mk', '=', 'jadwal_mk.kode_mk')
+                            ->get(['irs.kode_mk', 'jadwal_mk.nama', 'irs.sks', 'irs.kelas']);
+
+        return response()->json($ringkasanIRS);
     }
 
     public function store(Request $request)

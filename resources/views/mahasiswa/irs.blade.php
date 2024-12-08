@@ -130,16 +130,27 @@
 
                     </div>
                     <div class="flex">
-                        <div class="flex-col items-center mt-5">
+                        <div class="flex-col items-center mt-5 mr-4">
                             <div id="dropdown">
-                                <select name="matakuliah" id="matakuliah"
-                                    class="bg-white rounded-xl h-8 w-64 mc-5 text-sm py-px">
-                                    <option value="" disabled selected>Cari mata kuliah</option>
-                                    @foreach ($listMK as $mk)
-                                        <option value="{{ $mk->kode_mk }}">{{ $mk->kode_mk . '-' . $mk->nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                @php
+                                    // Cek apakah data tersedia
+                                    $dataTersedia = count($listMK) > 0;
+                                @endphp
+                        
+                                @if ($dataTersedia)
+                                    <!-- Jika ada data yang sudah H+10 hari -->
+                                    <select name="matakuliah" id="matakuliah" class="bg-white rounded-xl h-8 w-64 mc-5 text-sm py-px">
+                                        <option value="" disabled selected>Cari mata kuliah</option>
+                                        @foreach ($listMK as $mk)
+                                            <option value="{{ $mk['kode_mk'] }}">{{ $mk['kode_mk'] . ' - ' . $mk['nama'] }}</option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <!-- Jika tidak ada data -->
+                                    <div class="text-red-500 text-sm font-semibold">
+                                        Mata Kuliah Pilihan Akan Dibuka Setelah H+10 Hari Pengisian IRS
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="flex-col items-center">
@@ -324,6 +335,25 @@
                     </div>
                 </div>
             </div>
+            <div id="ringkasan-irs" class="w-11/12 mx-auto mt-10">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Mata Kuliah yang Diambil</h3>
+                <table id="table-ringkasan" class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="border p-2">No</th>
+                            <th class="border p-2">Kode MK</th>
+                            <th class="border p-2">Nama</th>
+                            <th class="border p-2">SKS</th>
+                            <th class="border p-2">Kelas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ringkasan-body">
+                        <tr>
+                            <td colspan="5" class="border p-2 text-center">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="w-11/12 mx-auto flex justify-end mt-5">
                 <a href="{{ route('irs.print', ['mahasiswaId' => $mahasiswa->id]) }}"
                     class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
@@ -337,12 +367,62 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-52">
+    <footer class="bg-[#D9D9D9] bg-opacity-30 mt-[600px]">
         <div class="flex w-2/3 h-20 mx-auto justify-between items-center text-white">
             <p>TIM SiAKAM <span class="font-semibold"> Universitas Diponegoro</span></p>
             <p>Dibangun dengan penuh kekhawatiran 🔥🔥</p>
         </div>
     </footer>
+
+    <script>
+        // Fungsi untuk mengambil data ringkasan IRS
+        function fetchRingkasanIRS() {
+            fetch("{{ route('irs.ringkasan') }}", {
+                method: "GET",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Accept": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('ringkasan-body');
+                tbody.innerHTML = ''; // Kosongkan tabel terlebih dahulu
+    
+                if (data.length > 0) {
+                    data.forEach((item, index) => {
+                        const row = `
+                            <tr>
+                                <td class="border p-2 text-center">${index + 1}</td>
+                                <td class="border p-2 text-center">${item.kode_mk}</td>
+                                <td class="border p-2">${item.nama}</td>
+                                <td class="border p-2 text-center">${item.sks}</td>
+                                <td class="border p-2 text-center">${item.kelas}</td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                } else {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="border p-2 text-center">Belum ada mata kuliah yang diambil</td>
+                        </tr>
+                    `;
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    
+        // Panggil fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', fetchRingkasanIRS);
+    
+        // Panggil fungsi setiap ada aksi "Pilih" atau "Batal"
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('update-ringkasan')) {
+                fetchRingkasanIRS();
+            }
+        });
+    </script>
 
     <script>
         // Tampilkan SweetAlert jika ada pesan di session
