@@ -20,11 +20,11 @@ class PDFController extends Controller
         // Mengambil data mahasiswa 
         $mahasiswa = Mahasiswa::with('Dosenwali')->findOrFail($mahasiswaId);
 
-        // Mengambil IRS data untuk mahasiswa yang dipilih
-        $irsData = Irs::where('mahasiswa_id', $mahasiswaId)->where('semester', $mahasiswa->semester)
-            ->with(['mataKuliah', 'jadwal'])
-            ->get();
-
+        $irsData = Irs::where('mahasiswa_id', $mahasiswaId)
+        ->where('tahun_akademik', '2024/2025 Ganjil')
+        ->with(['mataKuliah', 'jadwal'])
+        ->get();
+    
         // Mengorganisir data untuk ke view
         $data = [
             'title' => 'Print IRS',
