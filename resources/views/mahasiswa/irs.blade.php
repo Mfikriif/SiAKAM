@@ -148,7 +148,7 @@
                                 @else
                                     <!-- Jika tidak ada data -->
                                     <div class="text-red-500 text-sm font-semibold">
-                                        Mata Kuliah Pilihan Akan Dibuka Setelah H+10 Hari Pengisian IRS
+                                        Mata Kuliah Lainnya Akan Dibuka Setelah H+10 Hari Pengisian IRS
                                     </div>
                                 @endif
                             </div>
