@@ -6,6 +6,8 @@ use App\Models\Irs;
 use App\Models\khs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Models\TahunAjaran;
 
 class DosenwaliController extends Controller
 {
@@ -120,45 +122,104 @@ class DosenwaliController extends Controller
 
     public function cancelApproval($mahasiswa_id)
     {
+        // Ambil tahun ajaran aktif
+        $tahunAjaran = TahunAjaran::where('is_active', true)->first();
+
+        if (!$tahunAjaran || !$tahunAjaran->start_date) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tahun ajaran aktif tidak ditemukan atau tidak memiliki tanggal mulai.'
+            ]);
+        }
+
+        // Tentukan batas 2 minggu
+        $batasDuaMinggu = Carbon::parse($tahunAjaran->start_date)->addDays(14);
+
         // Ambil semua IRS mahasiswa dengan status disetujui
-        $irsList = Irs::where('mahasiswa_id', $mahasiswa_id)->where('status', 1)->get();
+        $irsList = Irs::where('mahasiswa_id', $mahasiswa_id)
+                    ->where('status', 1)
+                    ->get();
 
         if ($irsList->isEmpty()) {
             return redirect()->back()->with('error', 'Tidak ada IRS yang dapat dibatalkan.');
         }
 
-        // Ubah status semua IRS menjadi belum disetujui (status = 0)
         foreach ($irsList as $irs) {
+            $tanggalPersetujuan = $irs->tanggal_persetujuan;
+
+            // Periksa apakah tanggal persetujuan berada dalam 2 minggu sejak awal semester
+            if ($tanggalPersetujuan && $tanggalPersetujuan > $batasDuaMinggu) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Persetujuan tidak dapat dibatalkan karena sudah melewati batas 2 minggu.'
+                ]);
+            }
+
+            // Batalkan persetujuan
             $irs->update([
                 'status' => 0,
                 'tanggal_persetujuan' => null,
             ]);
         }
 
-        return response()->json(['success' => true, 'message' => 'Persetujuan IRS Mahasiswa berhasil dibatalkan.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Persetujuan IRS berhasil dibatalkan.'
+        ]);
     }
 
     public function delete($mahasiswaId)
     {
         try {
-            // Hapus data IRS
-            $irs = Irs::where('mahasiswa_id', $mahasiswaId)->first();
-            if ($irs) {
-                $irs->delete();
+            // Ambil tahun ajaran aktif
+            $tahunAjaran = TahunAjaran::where('is_active', true)->first();
+
+            if (!$tahunAjaran || !$tahunAjaran->start_date) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tahun ajaran aktif tidak ditemukan atau tidak memiliki tanggal mulai.'
+                ]);
             }
-    
-            // Ubah status mahasiswa menjadi -1 (cuti)
-            $herreg = Mahasiswa::find($mahasiswaId);
-            if ($herreg) {
-                $herreg->status = -1; // Set status cuti
-                $herreg->save();
-            } else {
-                return response()->json(['success' => false, 'message' => 'Mahasiswa tidak ditemukan.']);
+
+            // Tentukan batas 4 minggu
+            $batasEmpatMinggu = Carbon::parse($tahunAjaran->start_date)->addDays(28);
+
+            // Ambil IRS berdasarkan mahasiswa_id
+            $irsList = Irs::where('mahasiswa_id', $mahasiswaId)
+                        ->where('status', 1) // Hanya IRS yang sudah disetujui
+                        ->get();
+
+            if ($irsList->isEmpty()) {
+                return redirect()->back()->with('error', 'Tidak ada IRS yang dapat dibatalkan.');
             }
-    
-            return response()->json(['success' => true, 'message' => 'IRS berhasil dibatalkan dan status mahasiswa diubah menjadi cuti (-1).']);
+
+            foreach ($irsList as $irs) {
+                $tanggalPersetujuan = $irs->tanggal_persetujuan;
+
+                // Periksa apakah tanggal persetujuan berada dalam batas waktu 4 minggu
+                if ($tanggalPersetujuan && $tanggalPersetujuan > $batasEmpatMinggu) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'IRS tidak dapat dibatalkan karena sudah melewati batas 4 minggu.'
+                    ]);
+                }
+
+                // Batalkan persetujuan (ubah status menjadi 0)
+                $irs->update([
+                    'status' => 0,
+                    'tanggal_persetujuan' => null,
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Persetujuan IRS berhasil dibatalkan.'
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat membatalkan IRS.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat membatalkan persetujuan IRS.'
+            ]);
         }
     }
 }
