@@ -52,6 +52,7 @@ Route::middleware('auth', 'mahasiswa')->group(function() {
     Route::get('/print-irs/{mahasiswaId}', [PDFController::class, 'generatePDF'])->name('irs.print');
     Route::get('/print-khs/{nim}', [pdfKhsController::class, 'generatePDFKhs'])->name('khs.print');
     Route::get('/irs/ringkasan', [IRSController::class, 'getRingkasan'])->name('irs.ringkasan');
+    Route::get('/histori-irs/{nim}', [irsController::class, 'printHistoriIrs'])->name('irshistori.print');
 
 });
 

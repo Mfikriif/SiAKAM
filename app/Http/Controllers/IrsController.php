@@ -15,6 +15,7 @@ use App\Models\Irs;
 use App\Models\khs;
 use App\Models\TahunAjaran;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class IrsController extends Controller
 {
@@ -26,6 +27,20 @@ class IrsController extends Controller
 
         $semesterMHS = $mahasiswa->semester;
         $jurusan = $mahasiswa->jurusan;
+
+        // Ambil tahun ajaran aktif
+        $tahunAjaran = TahunAjaran::where('is_active', true)->first();
+
+        if (!$tahunAjaran) {
+            return redirect()->back()->withErrors(['message' => 'Tahun ajaran aktif tidak ditemukan.']);
+        }
+
+        // Hitung batas 2 minggu dari awal semester
+        $startDate = Carbon::parse($tahunAjaran->start_date);
+        $batasDuaMinggu = $startDate->addDays(14);
+
+        // Tentukan apakah waktu sekarang sudah melewati 2 minggu
+        $isBeyondTwoWeeks = Carbon::now()->greaterThan($batasDuaMinggu);
 
         $statusAktif = $mahasiswa->status;
         // Ambil semua data jadwal mata kuliah sesuai semester
@@ -48,7 +63,7 @@ class IrsController extends Controller
         if($statusAktif == 1){
             $jadwal_MK = $jadwal_MK->get();
         }else if($statusAktif == -1){
-            $alertStatusAktif = 'ANDA TIDAK BISA MENGAMBIL PERKULIAHAN DISEMESTER INI';
+            $alertStatusAktif = 'ANDA TIDAK BISA MENGAMBIL PERKULIAHAN DI SEMESTER INI';
         }else{
             $alertStatusAktif = 'Anda belum melakukan Her-registrasi, Silahkan lakukan Her-registrasi terlebih dahulu';
         }
@@ -112,6 +127,11 @@ class IrsController extends Controller
         } else {
             $totalSksDiambil = 18;
         }
+        // Mengambil data KHS mahasiswa berdasarkan nim dan mengelompokkan berdasarkan semester
+        $khsMahasiswa = DB::table('irs')
+        ->where('nim', $mahasiswa->nim)
+        ->get()
+        ->groupBy('tahun_akademik', 'asc');
 
         $statusIRS = Irs::where('mahasiswa_id', $mahasiswa->id)
         ->where('semester', $semesterMHS)
@@ -120,13 +140,14 @@ class IrsController extends Controller
         // Pastikan $statusIRS tidak null sebelum mengakses properti
         $statusIRSDua = $statusIRS ? $statusIRS->status : null;
         if ($statusIRSLock && $statusIRSLock->status == 1) {
-            return view('mahasiswa.irs-locked', compact('mahasiswa', 'user'));
+            return view('mahasiswa.irs-locked', compact('mahasiswa', 'user', 'khsMahasiswa'));
         }
     
         // dd($statusIRS);
-        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','statusIRSDua','alertStatusAktif','ringkasanIRS'));
+        return view('mahasiswa.irs', compact('jadwal_MK','user','irsDiambil','mahasiswa','totalSksAmbil','listMK','ipSemester','totalSksDiambil','statusIRS','statusIRSDua','alertStatusAktif','ringkasanIRS','isBeyondTwoWeeks'));
     }
 
+    
     public function getRingkasan()
     {
         $userId = Auth::id();
@@ -320,6 +341,35 @@ class IrsController extends Controller
         }
 
         return response()->json($matakuliah);
+    }
+
+    public function printHistoriIrs($nim)
+    {
+        // Ambil data mahasiswa berdasarkan NIM
+        $mahasiswa = Mahasiswa::where('nim', $nim)->first();
+    
+        if (!$mahasiswa) {
+            return redirect()->back()->withErrors(['message' => 'Mahasiswa tidak ditemukan.']);
+        }
+    
+        // Ambil data IRS yang disetujui, diurutkan berdasarkan tahun ajaran dan semester
+        $irsHistori = Irs::where('mahasiswa_id', $mahasiswa->id)
+                        ->where('status', 1) // Hanya IRS yang telah disetujui
+                        ->orderBy('tahun_akademik', 'asc')
+                        ->orderBy('semester', 'asc')
+                        ->get();
+    
+        // Kelompokkan IRS berdasarkan tahun ajaran
+        $groupedHistori = $irsHistori->groupBy('tahun_akademik');
+    
+        $data = [
+            'mahasiswa' => $mahasiswa,
+            'groupedHistori' => $groupedHistori,
+        ];
+    
+        // Buat PDF
+        $pdf = Pdf::loadView('mahasiswa.print-histori-irs', $data);
+        return $pdf->stream("Histori_IRS_{$nim}.pdf");
     }
 
 }

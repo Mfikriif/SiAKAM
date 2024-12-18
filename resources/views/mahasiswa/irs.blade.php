@@ -251,84 +251,69 @@
                                                 <td
                                                     class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                     {{ $mk->hari }} </td>
-                                                <td
-                                                    class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                    {{ $mk->jam_mulai }} - {{ $mk->jam_selesai }} </td>
-                                                <td class="flex items-center gap-0.5">
-
-                                                    <div class="">
-                                                        @php
-                                                            $sudah_diambil = false;
-                                                            foreach ($irsDiambil as $diambil) {
-                                                                if (
-                                                                    $diambil->kode_mk == $mk->kode_mk &&
-                                                                    $diambil->kelas == $mk->kelas
-                                                                ) {
-                                                                    $sudah_diambil = true;
-                                                                    break;
+                                                    <td class="flex items-center gap-0.5">
+                                                        <div class="">
+                                                            @php
+                                                                $sudah_diambil = false;
+                                                                foreach ($irsDiambil as $diambil) {
+                                                                    if (
+                                                                        $diambil->kode_mk == $mk->kode_mk &&
+                                                                        $diambil->kelas == $mk->kelas
+                                                                    ) {
+                                                                        $sudah_diambil = true;
+                                                                        break;
+                                                                    }
                                                                 }
-                                                            }
-                                                        @endphp
-
-                                                        @if (!$sudah_diambil)
-                                                            <!-- Tampilkan tombol Pilih jika mata kuliah belum diambil -->
-                                                            <form action="{{ route('irs.store') }}" method="POST">
-                                                                @csrf
-                                                                <input type="hidden" name="semester"
-                                                                    value="{{ $mk->semester }}">
-                                                                <input type="hidden" name="kode_mk"
-                                                                    value="{{ $mk->kode_mk }}">
-                                                                <input type="hidden" name="nama_mk"
-                                                                    value="{{ $mk->nama }}">
-                                                                <input type="hidden" name="sks"
-                                                                    value="{{ $mk->sks }}">
-                                                                <input type="hidden" name="kelas"
-                                                                    value="{{ $mk->kelas }}">
-                                                                <input type="hidden" name="hari"
-                                                                    value="{{ $mk->hari }}">
-                                                                <input type="hidden" name="jam_mulai"
-                                                                    value="{{ $mk->jam_mulai }}">
-                                                                <input type="hidden" name="jam_selesai"
-                                                                    value="{{ $mk->jam_selesai }}">
-
-                                                                <button
-                                                                    class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-[#2EC060] text-white"
-                                                                    type="submit">
-                                                                    Pilih
-                                                                </button>
-                                                            </form>
-                                                        @else
-                                                            <!-- Tampilkan tombol Batal jika mata kuliah sudah diambil -->
-                                                            <form action="{{ route('irs.delete') }}" method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <input type="hidden" name="kode_mk"
-                                                                    value="{{ $mk->kode_mk }}">
-                                                                <input type="hidden" name="kelas"
-                                                                    value="{{ $mk->kelas }}">
-                                                                <input type="hidden" name="nama_mhs"
-                                                                    value="{{ $mahasiswa->nama }}">
-                                                                <button
-                                                                    class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-red-600 text-white"
-                                                                    {{-- onclick="deleteIrs(event, 'Konfirmasi', 'Apakah Anda yakin?', 'warning', 'Ya, batalkan!', 'success')" --}} type="submit">
-                                                                    Batal
-                                                                </button>
-                                                            </form>
-                                                        @endif
-                                                    </div>
-                                                </td>
-
+                                                            @endphp
+                                                    
+                                                            @if (!$sudah_diambil && !$isBeyondTwoWeeks)
+                                                                <!-- Tampilkan tombol Pilih jika mata kuliah belum diambil dan waktu belum melebihi 2 minggu -->
+                                                                <form action="{{ route('irs.store') }}" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="semester" value="{{ $mk->semester }}">
+                                                                    <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
+                                                                    <input type="hidden" name="nama_mk" value="{{ $mk->nama }}">
+                                                                    <input type="hidden" name="sks" value="{{ $mk->sks }}">
+                                                                    <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
+                                                                    <input type="hidden" name="hari" value="{{ $mk->hari }}">
+                                                                    <input type="hidden" name="jam_mulai" value="{{ $mk->jam_mulai }}">
+                                                                    <input type="hidden" name="jam_selesai" value="{{ $mk->jam_selesai }}">
+                                                    
+                                                                    <button
+                                                                        class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-[#2EC060] text-white"
+                                                                        type="submit">
+                                                                        Pilih
+                                                                    </button>
+                                                                </form>
+                                                            @elseif ($sudah_diambil)
+                                                                <!-- Tampilkan tombol Batal jika mata kuliah sudah diambil -->
+                                                                <form action="{{ route('irs.delete') }}" method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <input type="hidden" name="kode_mk" value="{{ $mk->kode_mk }}">
+                                                                    <input type="hidden" name="kelas" value="{{ $mk->kelas }}">
+                                                                    <input type="hidden" name="nama_mhs" value="{{ $mahasiswa->nama }}">
+                                                                    <button
+                                                                        class="pilih-matkul w-16 h-8 text-center pt-px rounded-lg mt-4 ml-2 bg-red-600 text-white"
+                                                                        type="submit">
+                                                                        Batal
+                                                                    </button>
+                                                                </form>
+                                                            @elseif (!$sudah_diambil && $isBeyondTwoWeeks)
+                                                                <!-- Tampilkan pesan jika mata kuliah belum diambil tapi sudah melebihi 2 minggu -->
+                                                                <span class="text-muted">Tidak dapat dipilih, sudah melebihi 2 minggu</span>
+                                                            @endif
+                                                        </div>
+                                                    </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
-
                                 </table>
                                 @if ($alertStatusAktif)
                                     <div class="text-xl my-10 text-center">
                                         {{ $alertStatusAktif }}
                                     </div>
                                 @endif
-
                             </div>
                         </div>
                     </div>
@@ -353,7 +338,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="w-11/12 mx-auto flex justify-end mt-5">
+            <div class="w-11/12 mx-auto flex justify-end mt-5 space-x-4">
+                <!-- Tombol Cetak IRS -->
                 <a href="{{ route('irs.print', ['mahasiswaId' => $mahasiswa->id]) }}"
                     class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -361,6 +347,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
                     </svg>
                     Cetak IRS
+                </a>
+            
+                <!-- Tombol Cetak Histori IRS -->
+                <a href="{{ route('irshistori.print', ['nim' => $mahasiswa->nim]) }}"
+                    class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"></path>
+                    </svg>
+                    Cetak Histori IRS
                 </a>
             </div>
     </section>
