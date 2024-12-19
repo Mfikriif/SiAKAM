@@ -222,4 +222,75 @@ class DosenwaliController extends Controller
             ]);
         }
     }
+    public function rekapMahasiswaPerwalian(Request $request)
+    {
+        $dosenWaliId = Auth::user()->id;
+    
+        $query = Mahasiswa::where('pembimbing_akademik_id', $dosenWaliId)
+                            ->with(['irs.jadwalMk'])
+                            ->orderBy('nim', 'asc');
+    
+        // Filter berdasarkan status jika ada
+        if ($request->filled('status')) {
+            if ($request->status === 'Disetujui') {
+                $status = 1;
+                $query->whereHas('irs', function ($q) use ($status) {
+                    $q->where('status', $status);
+                });
+            } elseif ($request->status === 'Belum Disetujui') {
+                $status = 0;
+                $query->where(function ($q) use ($status) {
+                    $q->whereDoesntHave('irs')
+                      ->orWhereHas('irs', function ($q) use ($status) {
+                          $q->where('status', $status);
+                      });
+                });
+            }
+        }
+    
+        if ($request->filled('angkatan')) {
+            $query->where('angkatan', $request->angkatan);
+        }
+    
+        // Pencarian berdasarkan nama atau NIM
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('nim', 'like', '%' . $request->search . '%');
+            });
+        }
+    
+        // Ambil data mahasiswa setelah filter
+        $mahasiswaPerwalian = $query->get();
+    
+        // Hitung jumlah mahasiswa yang sudah mengisi IRS dan belum
+        $jumlahSudahMengisi = $mahasiswaPerwalian->filter(function ($mahasiswa) {
+            return $mahasiswa->irs->isNotEmpty();
+        })->count();
+    
+        $jumlahBelumMengisi = $mahasiswaPerwalian->count() - $jumlahSudahMengisi;
+    
+        // Ambil nama mahasiswa yang belum mengisi IRS
+        $mahasiswaBelumMengisi = $mahasiswaPerwalian->filter(function ($mahasiswa) {
+            return $mahasiswa->irs->isEmpty();
+        })->pluck('nama');
+    
+        // Ambil nama mahasiswa yang sudah mengisi IRS
+        $mahasiswaSudahMengisi = $mahasiswaPerwalian->filter(function ($mahasiswa) {
+            return $mahasiswa->irs->isNotEmpty();
+        })->pluck('nama');
+
+        $user = Auth::user();
+    
+        // Kembalikan ke view dengan data
+        return view('dosenwali.rekapMahasiswaPerwalian', compact(
+            'user', 
+            'mahasiswaPerwalian', 
+            'jumlahSudahMengisi', 
+            'jumlahBelumMengisi', 
+            'mahasiswaBelumMengisi',
+            'mahasiswaSudahMengisi'
+        ));
+    }
+    
 }
