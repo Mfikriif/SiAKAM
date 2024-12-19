@@ -90,6 +90,7 @@ Route::middleware(['auth', 'dekan'])->group(function() {
 Route::middleware('auth', 'dosenwali')->group(function () {
     Route::get('dosenwali/pengajuan-irs',[DosenwaliController::class,'IrsMahasiswaPerwalian'])->name('dosenwali.listPengajuanIRS');
     Route::get('dosenwali/mahasiswa-perwalian', [DosenWaliController::class, 'MahasiswaPerwalian'])->name('dosenwali.mahasiswaPerwalian');
+    Route::get('dosenwali/rekap-perwalian', [DosenWaliController::class, 'rekapMahasiswaPerwalian'])->name('dosenwali.rekapMahasiswaPerwalian');
     Route::get('dosenwali/dashboard',[HomeController::class,'dashboardDosenwali'])->name('dosenwali.dashboard');
     Route::post('/dosenwali/approve-irs/{mahasiswa_id}', [DosenWaliController::class, 'approveIrsMahasiswa'])->name('dosenwali.approveIrsMahasiswa');
     Route::post('/dosenwali/cancel-approval/{mahasiswa_id}', [DosenWaliController::class, 'cancelApproval'])->name('dosenwali.cancelApproval');

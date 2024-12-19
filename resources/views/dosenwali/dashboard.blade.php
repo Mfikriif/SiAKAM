@@ -160,6 +160,12 @@
                         <p class=" text-center mr-5">Mahasiswa Perwalian</p>
                     </button>
                 </a>
+                <a href="{{ route('dosenwali.rekapMahasiswaPerwalian') }}">
+                    <button class="flex h-20 w-64 border text-white items-center rounded-md justify-center ">
+                        <img class="h-11 w-20  " src="{{ asset('logoMHS.svg') }}" alt="">
+                        <p class=" text-center mr-5">Rekap Perwalian</p>
+                    </button>
+                </a>
             </div>
         </section>
     </main>
